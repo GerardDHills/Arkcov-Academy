@@ -1,0 +1,112 @@
+.admin { animation: fadeIn 0.4s ease-out; }
+
+.header { margin-bottom: 2rem; }
+.header h1 { font-size: 1.8rem; color: var(--navy); }
+.header p { color: var(--text-muted); margin-top: 0.3rem; font-weight: 600; }
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1.2rem;
+  margin-bottom: 2.5rem;
+}
+
+.actionCard {
+  background: white;
+  border-radius: 20px;
+  padding: 2rem;
+  box-shadow: var(--shadow-soft);
+  border: 1px solid rgba(0, 0, 0, 0.04);
+  transition: all 0.3s;
+  text-decoration: none;
+  position: relative;
+  cursor: pointer;
+}
+
+.actionCard:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-hero);
+}
+
+.actionIcon { font-size: 2rem; margin-bottom: 1rem; }
+
+.actionCard h3 {
+  font-size: 1.1rem;
+  color: var(--navy);
+  margin-bottom: 0.4rem;
+}
+
+.actionCard p {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+.actionArrow {
+  position: absolute;
+  top: 1.5rem; right: 1.5rem;
+  font-size: 1.2rem;
+  color: var(--text-light);
+  transition: 0.2s;
+}
+
+.actionCard:hover .actionArrow {
+  color: var(--crimson);
+  transform: translateX(4px);
+}
+
+.comingSoon {
+  display: inline-block;
+  margin-top: 0.8rem;
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  background: var(--cream);
+  color: var(--text-light);
+  padding: 0.25rem 0.7rem;
+  border-radius: 6px;
+}
+
+.quickStats { margin-top: 1rem; }
+.quickStats h2 { font-size: 1.3rem; color: var(--navy); margin-bottom: 1.2rem; }
+
+.statsRow {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+}
+
+.stat {
+  background: white;
+  border-radius: 16px;
+  padding: 1.5rem;
+  text-align: center;
+  box-shadow: var(--shadow-soft);
+}
+
+.statNum {
+  font-family: 'Sora', sans-serif;
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--navy);
+}
+
+.statLabel {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text-light);
+  margin-top: 0.3rem;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 768px) {
+  .grid { grid-template-columns: 1fr; }
+  .statsRow { grid-template-columns: repeat(2, 1fr); }
+}

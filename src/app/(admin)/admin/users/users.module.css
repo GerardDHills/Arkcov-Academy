@@ -1,0 +1,29 @@
+.page { animation: fadeIn 0.4s ease-out; }
+.header { margin-bottom: 1.5rem; }
+.header h1 { font-size: 1.8rem; color: var(--navy); }
+.header p { color: var(--text-muted); margin-top: 0.2rem; font-weight: 600; }
+
+.statsGrid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 2rem; }
+.statCard { background: white; border-radius: 16px; padding: 1.3rem; text-align: center; box-shadow: var(--shadow-soft); }
+.statValue { font-family: 'Sora', sans-serif; font-size: 2rem; font-weight: 800; color: var(--navy); }
+.statLabel { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--text-light); margin-top: 0.2rem; }
+
+.table { background: white; border-radius: 20px; box-shadow: var(--shadow-soft); overflow: hidden; }
+.tableHeader { display: grid; grid-template-columns: 1.5fr 1.5fr 0.8fr 0.8fr; padding: 0.8rem 1.5rem; background: var(--cream); font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 2px; color: var(--text-light); }
+.tableRow { display: grid; grid-template-columns: 1.5fr 1.5fr 0.8fr 0.8fr; padding: 0.9rem 1.5rem; align-items: center; border-bottom: 1px solid rgba(0,0,0,0.04); transition: 0.15s; }
+.tableRow:hover { background: var(--cream); }
+
+.nameCell { display: flex; align-items: center; gap: 0.7rem; }
+.avatar { width: 32px; height: 32px; border-radius: 50%; background: var(--crimson); color: white; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 0.8rem; flex-shrink: 0; }
+.name { font-weight: 700; color: var(--navy); font-size: 0.9rem; }
+.email { font-size: 0.85rem; color: var(--text-muted); }
+.date { font-size: 0.8rem; color: var(--text-light); }
+
+.roleBadge { font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; padding: 0.2rem 0.6rem; border-radius: 5px; }
+.free { background: rgba(24,181,160,0.08); color: var(--accent-teal); }
+.member { background: var(--crimson-soft); color: var(--crimson); }
+.family { background: rgba(74,124,255,0.08); color: var(--accent-blue); }
+.admin { background: rgba(212,168,67,0.1); color: var(--gold); }
+
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@media (max-width: 768px) { .statsGrid { grid-template-columns: repeat(2, 1fr); } .tableHeader { display: none; } .tableRow { grid-template-columns: 1fr; gap: 0.3rem; } }
