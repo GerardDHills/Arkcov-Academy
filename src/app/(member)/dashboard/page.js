@@ -1,17 +1,18 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import Icon from '@/components/Icon';
 import { useAuth } from '@/components/AuthProvider';
 import Link from 'next/link';
 import styles from './dashboard.module.css';
 
 const quickLinks = [
-  { href: '/explore?type=course', icon: '📚', label: 'Courses', desc: 'Learn about sickle cell disease' },
-  { href: '/explore?type=movie', icon: '🎬', label: 'Movies', desc: 'Watch medical entertainment' },
-  { href: '/explore?type=podcast', icon: '🎙️', label: 'Podcasts', desc: 'Listen and learn' },
-  { href: '/explore?type=tv_show', icon: '📺', label: 'TV Shows', desc: 'Binge health science' },
-  { href: '/explore?type=animated_short', icon: '✨', label: 'Animated Shorts', desc: 'Warriors Thrive and more' },
-  { href: '/explore?type=interactive_game', icon: '🎮', label: 'Games', desc: 'Play Warriors Thrive' },
+  { href: '/explore?type=course', icon: 'book', label: 'Courses', desc: 'Structured lessons, at your pace' },
+  { href: '/explore?type=movie', icon: 'film', label: 'Movies', desc: 'Watch medical entertainment' },
+  { href: '/explore?type=podcast', icon: 'mic', label: 'Podcasts', desc: 'Listen and learn' },
+  { href: '/explore?type=tv_show', icon: 'tv', label: 'TV Shows', desc: 'Binge health science' },
+  { href: '/explore?type=animated_short', icon: 'sparkle', label: 'Animated Shorts', desc: 'Warriors Thrive and more' },
+  { href: '/explore?type=interactive_game', icon: 'game', label: 'Games', desc: 'Play Warriors Thrive' },
 ];
 
 export default function DashboardPage() {
@@ -39,9 +40,9 @@ export default function DashboardPage() {
       <div className={styles.welcome}>
         <div>
           <h1 className={styles.welcomeTitle}>
-            Welcome back, <span className={styles.highlight}>{user?.name?.split(' ')[0]}</span>
+            Welcome back, Cadet <span className={styles.highlight}>{user?.name?.split(' ')[0]}</span>
           </h1>
-          <p className={styles.welcomeSub}>Ready to continue your healing journey?</p>
+          <p className={styles.welcomeSub}>Ready to continue your mission? Train · Heal · Discover · Inspire</p>
         </div>
         <div className={styles.welcomeAvatar}>
           {user?.name?.charAt(0).toUpperCase()}
@@ -59,7 +60,7 @@ export default function DashboardPage() {
       ) : user?.role !== 'admin' && (
         <div className={styles.memberBanner}>
           <div>
-            <h3>{user?.role === 'family' ? '👨‍👩‍👧‍👦 Family Plan' : '⭐ Member Plan'} Active</h3>
+            <h3>{user?.role === 'family' ? 'Family Plan' : 'Member Plan'} Active</h3>
             <p>You have full access to the Arkcov Academy library</p>
           </div>
           <button className="btn btn-outline" onClick={async () => {
@@ -75,7 +76,7 @@ export default function DashboardPage() {
         <div className={styles.quickGrid}>
           {quickLinks.map((link) => (
             <Link key={link.href} href={link.href} className={styles.quickCard}>
-              <div className={styles.quickIcon}>{link.icon}</div>
+              <div className={styles.quickIcon}><Icon name={link.icon} size={26} /></div>
               <h3>{link.label}</h3>
               <p>{link.desc}</p>
             </Link>
@@ -93,7 +94,7 @@ export default function DashboardPage() {
                   {item.thumbnail_url ? (
                     <img src={item.thumbnail_url} alt={item.content_title} />
                   ) : (
-                    <div className={styles.progressThumbFallback}>📚</div>
+                    <div className={styles.progressThumbFallback}><Icon name="book" size={28} /></div>
                   )}
                   <div className={styles.progressBar}>
                     <div className={styles.progressFill} style={{ width: `${item.progress_percent}%` }} />
@@ -108,7 +109,7 @@ export default function DashboardPage() {
           </div>
         ) : (
           <div className={styles.emptyState}>
-            <div className={styles.emptyIcon}>📖</div>
+            <div className={styles.emptyIcon}><Icon name="book" size={40} /></div>
             <h3>No courses in progress yet</h3>
             <p>Start a course to track your progress here</p>
             <Link href="/explore?type=course" className="btn btn-outline btn-sm">Browse Courses</Link>

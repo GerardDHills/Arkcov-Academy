@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useAuth } from '@/components/AuthProvider';
 import styles from './auth.module.css';
+import { ArkcovCrest } from '@/components/BrandMark';
 
 function LoginForm() {
   const [email, setEmail] = useState('');
@@ -38,28 +39,31 @@ function LoginForm() {
       </div>
       <div className={styles.authCard}>
         <Link href="/" className={styles.logoLink}>
-          <img src="/images/logo_new.png" alt="Arkcov Academy" className={styles.logo} />
+          <ArkcovCrest size={110} title="Arkcov Academy home" />
         </Link>
-        <h1 className={styles.title}>Welcome Back</h1>
-        <p className={styles.subtitle}>Log in to continue your journey</p>
+        <h1 className={styles.title}>Welcome back, Cadet</h1>
+        <p className={styles.subtitle}>Log in to continue your mission</p>
 
         {error && <div className="message message-error">{error}</div>}
 
         <form onSubmit={handleSubmit} className={styles.form}>
           <div className="form-group">
-            <label className="form-label">Email</label>
+            <label className="form-label" htmlFor="email">Email</label>
             <input
+              id="email"
               type="email"
               className="form-input"
-              placeholder="warrior@arkcov.com"
+              placeholder="cadet@example.com"
+              autoComplete="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
             />
           </div>
           <div className="form-group">
-            <label className="form-label">Password</label>
+            <label className="form-label" htmlFor="password">Password</label>
             <input
+              id="password"
               type="password"
               className="form-input"
               placeholder="Enter your password"

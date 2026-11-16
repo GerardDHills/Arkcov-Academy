@@ -118,7 +118,7 @@ export default function PricingPage() {
 
         <div className={styles.container}>
           <div className={styles.header}>
-            <div className={styles.eyebrow}>🔑 Membership</div>
+            <div className={styles.eyebrow}>Membership</div>
             <h1>Choose Your Plan</h1>
             <p>Unlock the full Arkcov Academy experience</p>
           </div>

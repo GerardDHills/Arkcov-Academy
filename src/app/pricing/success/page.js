@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, Suspense } from 'react';
+import { ArkcovCrest } from '@/components/BrandMark';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import Navbar from '@/components/Navbar';
@@ -24,7 +25,7 @@ function SuccessContent() {
       <Navbar />
       <div className={styles.page}>
         <div className={styles.card}>
-          <div className={styles.icon}>🎉</div>
+          <div className={styles.icon}><ArkcovCrest size={110} title="Arkcov Academy crest" /></div>
           <h1>Welcome to Arkcov Academy!</h1>
           <p>Your membership is now active. You have full access to the library, interactive games, and member perks.</p>
           <div className={styles.buttons}>

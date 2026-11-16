@@ -1,6 +1,7 @@
 'use client';
 
 import { useAuth } from '@/components/AuthProvider';
+import Icon from '@/components/Icon';
 import Link from 'next/link';
 import styles from './admin.module.css';
 
@@ -16,21 +17,21 @@ export default function AdminPage() {
 
       <div className={styles.grid}>
         <Link href="/admin/content" className={styles.actionCard}>
-          <div className={styles.actionIcon}>📁</div>
+          <div className={styles.actionIcon}><Icon name="folder" size={28} /></div>
           <h3>Content Manager</h3>
           <p>Upload and manage courses, movies, podcasts, TV shows, and games</p>
           <span className={styles.actionArrow}>→</span>
         </Link>
 
         <Link href="/admin/users" className={styles.actionCard}>
-          <div className={styles.actionIcon}>👥</div>
+          <div className={styles.actionIcon}><Icon name="users" size={28} /></div>
           <h3>User Management</h3>
           <p>View members, manage roles, and track subscriptions</p>
           <span className={styles.actionArrow}>→</span>
         </Link>
 
         <Link href="/admin/analytics" className={styles.actionCard}>
-          <div className={styles.actionIcon}>📊</div>
+          <div className={styles.actionIcon}><Icon name="chart" size={28} /></div>
           <h3>Analytics</h3>
           <p>Track engagement, revenue, and platform growth</p>
           <span className={styles.actionArrow}>→</span>

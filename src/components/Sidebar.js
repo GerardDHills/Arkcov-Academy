@@ -5,23 +5,23 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useAuth } from './AuthProvider';
 import styles from './Sidebar.module.css';
+import Icon from './Icon';
 
 const memberLinks = [
-  { href: '/dashboard', label: 'Dashboard', icon: '🏠' },
-  { href: '/explore', label: 'Explore', icon: '🔍' },
-  { href: '/explore?type=course', label: 'Courses', icon: '📚' },
-  { href: '/explore?type=podcast', label: 'Podcasts', icon: '🎙️' },
-  { href: '/explore?type=movie', label: 'Movies', icon: '🎬' },
-  { href: '/explore?type=tv_show', label: 'TV Shows', icon: '📺' },
-  { href: '/explore?type=animated_short', label: 'Animated Shorts', icon: '✨' },
-  { href: '/explore?type=interactive_game', label: 'Interactive Games', icon: '🎮' },
+  { href: '/dashboard', label: 'Dashboard', icon: 'home' },
+  { href: '/explore', label: 'Explore', icon: 'compass' },
+  { href: '/explore?type=course', label: 'Courses', icon: 'book' },
+  { href: '/explore?type=podcast', label: 'Podcasts', icon: 'mic' },
+  { href: '/explore?type=movie', label: 'Movies', icon: 'film' },
+  { href: '/explore?type=tv_show', label: 'TV Shows', icon: 'tv' },
+  { href: '/explore?type=animated_short', label: 'Animated Shorts', icon: 'sparkle' },
+  { href: '/explore?type=interactive_game', label: 'Interactive Games', icon: 'game' },
 ];
 
 const adminLinks = [
-  { href: '/admin', label: 'Admin Home', icon: '⚡' },
-  { href: '/admin/content', label: 'Content Manager', icon: '📁' },
-  { href: '/admin/users', label: 'Users', icon: '👥' },
-  { href: '/admin/analytics', label: 'Analytics', icon: '📊' },
+  { href: '/admin', label: 'Admin Home', icon: 'bolt' },
+  { href: '/admin/content', label: 'Content Manager', icon: 'folder' },
+  { href: '/admin/users', label: 'Users', icon: 'users' },
 ];
 
 export default function Sidebar() {
@@ -32,20 +32,22 @@ export default function Sidebar() {
   const links = isAdmin ? adminLinks : memberLinks;
 
   return (
-    <aside className={`${styles.sidebar} ${collapsed ? styles.collapsed : ''}`}>
-      <button className={styles.toggle} onClick={() => setCollapsed(!collapsed)}>
+    <aside className={`${styles.sidebar} ${collapsed ? styles.collapsed : ''}`} aria-label={isAdmin ? 'Admin menu' : 'Academy menu'}>
+      <button className={styles.toggle} onClick={() => setCollapsed(!collapsed)} aria-label={collapsed ? 'Expand menu' : 'Collapse menu'} aria-expanded={!collapsed}>
         {collapsed ? '→' : '←'}
       </button>
 
       <div className={styles.section}>
-        <div className={styles.sectionLabel}>{isAdmin ? 'Admin' : 'Menu'}</div>
+        <div className={styles.sectionLabel}>{isAdmin ? 'Admin' : 'Academy'}</div>
         {links.map((link) => (
           <Link
             key={link.href}
             href={link.href}
             className={`${styles.link} ${pathname === link.href ? styles.active : ''}`}
+            aria-current={pathname === link.href ? 'page' : undefined}
+            title={collapsed ? link.label : undefined}
           >
-            <span className={styles.icon}>{link.icon}</span>
+            <span className={styles.icon}><Icon name={link.icon} size={19} /></span>
             {!collapsed && <span className={styles.label}>{link.label}</span>}
           </Link>
         ))}
@@ -56,7 +58,7 @@ export default function Sidebar() {
           <div className={styles.sectionLabel}>Admin</div>
           {adminLinks.slice(0, 2).map((link) => (
             <Link key={link.href} href={link.href} className={styles.link}>
-              <span className={styles.icon}>{link.icon}</span>
+              <span className={styles.icon}><Icon name={link.icon} size={19} /></span>
               {!collapsed && <span className={styles.label}>{link.label}</span>}
             </Link>
           ))}
@@ -65,10 +67,10 @@ export default function Sidebar() {
 
       {!collapsed && (
         <div className={styles.tierCard}>
-          <div className={styles.tierLabel}>{user?.role === 'free' ? 'Free Plan' : user?.role === 'admin' ? 'Admin' : `${user?.role} Plan`}</div>
+          <div className={styles.tierLabel}>{user?.role === 'free' ? 'Free cadet' : user?.role === 'admin' ? 'Admin' : `${user?.role} plan`}</div>
           {user?.role === 'free' && (
             <>
-              <p className={styles.tierDesc}>Upgrade for full access</p>
+              <p className={styles.tierDesc}>Upgrade for the full library, games and certificates</p>
               <Link href="/pricing" className={styles.upgradeBtn}>Upgrade</Link>
             </>
           )}

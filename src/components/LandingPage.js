@@ -2,168 +2,349 @@
 
 import Link from 'next/link';
 import styles from './LandingPage.module.css';
+import Icon from './Icon';
+import { ArkcovMark, ArkcovLockup, ArkcovCrest } from './BrandMark';
+
+// ---------- Content (edit copy here without touching layout) ----------
+
+const PATHS = [
+  {
+    icon: 'family',
+    title: 'Young explorers & families',
+    who: 'Ages 7 and up, learning together',
+    text: 'Animated shorts, games and stories that make the human body an adventure you share at home.',
+    links: [{ label: 'Browse the library', href: '#explore' }, { label: 'Family plan', href: '#join' }],
+  },
+  {
+    icon: 'shield',
+    title: 'Cadets',
+    who: 'Middle and high school students',
+    text: 'Structured courses, progress tracking and certificates for students who are curious about science and medicine.',
+    links: [{ label: 'Cadet training', href: '#training' }, { label: 'Inspiring Healers', href: '#programs' }],
+  },
+  {
+    icon: 'stethoscope',
+    title: 'Future healers',
+    who: 'College, pre-med and health-science students',
+    text: 'Mentorship, scholarship opportunities and the encouragement to keep going on the road into medicine.',
+    links: [{ label: 'Scholars Foundation', href: '#programs' }, { label: 'Join the Academy', href: '/signup' }],
+  },
+  {
+    icon: 'school',
+    title: 'Educators & partners',
+    who: 'Schools, churches, clinics and community groups',
+    text: 'Bring Arkcov stories, games and curriculum to your classroom or community.',
+    links: [{ label: 'About the Academy', href: '#about' }, { label: 'Create a free account', href: '/signup' }],
+  },
+];
+
+const CONTENT_TYPES = [
+  { icon: 'book', label: 'Courses', type: 'course' },
+  { icon: 'mic', label: 'Podcasts', type: 'podcast' },
+  { icon: 'film', label: 'Movies', type: 'movie' },
+  { icon: 'tv', label: 'TV shows', type: 'tv_show' },
+  { icon: 'sparkle', label: 'Animated shorts', type: 'animated_short' },
+  { icon: 'game', label: 'Interactive games', type: 'interactive_game' },
+];
+
+const VIDEOS = [
+  { src: '/videos/arkcov_commercial.mp4', poster: '/images/posters/arkcov-commercial.jpg', tag: 'Featured', title: 'Welcome to Arkcov Academy', text: "The world's first medical entertainment platform, built to inspire the next generation of healers." },
+  { src: '/videos/healthworld_commercial.mp4', poster: '/images/posters/healthworld-commercial.jpg', tag: 'Series', title: 'HealthWorld Academy', text: 'Immersive medical education that brings health science to life through story.' },
+  { src: '/videos/characters_glow.mp4', poster: '/images/posters/characters-glow.jpg', tag: 'Animated short', title: 'Characters Come to Life', text: 'The Warriors Thrive characters leap off the board into a world of adventure and healing.' },
+];
+
+const PILLARS = [
+  { word: 'Train', text: 'Learn how the body works through courses, films and games.' },
+  { word: 'Heal', text: 'Understand health and illness, and how care really happens.' },
+  { word: 'Discover', text: 'Explore science, technology, engineering, arts and medicine.' },
+  { word: 'Inspire', text: 'See yourself as a healer, and lift others up with you.' },
+];
+
+const STEPS = [
+  { n: 'I', title: 'Enlist', text: 'Create a free account and choose what you want to learn first.' },
+  { n: 'II', title: 'Train', text: 'Work through courses and media at your own pace. Your progress is saved on your dashboard.' },
+  { n: 'III', title: 'Earn', text: 'Members complete courses for certificates and badges, and unlock mentorship and scholarship tools.' },
+];
+
+const GEAR = [
+  { icon: 'journal', title: 'Medicine Bullet Journal', text: "The cadet's field journal for learning, reflection and rounds.", status: 'Coming soon' },
+  { icon: 'game', title: 'Warriors Thrive', text: 'The cooperative sickle cell board game for 2 to 8 Warriors, ages 7 and up.', status: 'Available now', href: 'https://playwarriorsthrive.com' },
+  { icon: 'shield', title: 'Cadet apparel & patches', text: 'Crest patches, jackets and gear for Academy cadets.', status: 'Coming soon' },
+];
+
+const TIERS = [
+  { name: 'Free', price: '$0', desc: 'Explore and get started', features: ['Content previews', 'Newsletter & updates', 'Scholarship hub (basic)', 'Store access'], cta: 'Sign up free', btn: 'btn-outline' },
+  { name: 'Member', price: '$9', per: '/mo', desc: 'Full access to everything', features: ['Full library access', 'Interactive games', 'Certificates & badges', 'Scholarship tools', 'Member store discounts'], cta: 'Become a member', btn: 'btn-crimson', featured: true },
+  { name: 'Family', price: '$14', per: '/mo', desc: 'For families learning together', features: ['Everything in Member', 'Up to 5 profiles', 'Parental controls', 'Priority registration', 'Family bundles'], cta: 'Start family plan', btn: 'btn-navy' },
+];
+
+// ---------- Page ----------
 
 export default function LandingPage() {
+  const year = new Date().getFullYear();
+
   return (
-    <div className={styles.landing}>
-      {/* Hero */}
-      <section className={styles.hero} id="home">
-        <div className={styles.bgShapes}>
-          <div className={styles.shape1} />
-          <div className={styles.shape2} />
-          <div className={styles.shape3} />
-        </div>
-        <div className={styles.heroGrid}>
+    <main className={styles.landing} id="main">
+      {/* ===== HERO ===== */}
+      <section className={styles.hero} id="home" aria-labelledby="hero-title">
+        <div className={styles.heroGlow} aria-hidden="true" />
+        <div className={`${styles.container} ${styles.heroGrid}`}>
           <div className={styles.heroText}>
-            <div className={styles.eyebrow}><div className={styles.pulseDot} /> Now Enrolling</div>
-            <h1 className={styles.heroTitle}>
-              Medical Entertainment That Builds <span className={styles.highlight}>Health Literacy</span>
+            <p className={styles.eyebrowLight}><span className={styles.pulseDot} aria-hidden="true" /> Arkcov Academy · Now enrolling</p>
+            <h1 id="hero-title" className={styles.heroTitle}>
+              Your mission <em>begins</em> <span className="text-gold">here.</span>
             </h1>
+            <p className={styles.motto}>Train · Heal · Discover · Inspire</p>
             <p className={styles.heroDesc}>
-              Streaming. Courses. Games. Mentorship. Scholarships. Arkcov Academy re-presents medicine as art — because <strong>it&apos;s cool to be smart.</strong>
+              Courses, films, games and mentorship that re-present medicine as art, for curious kids,
+              families, students and future healers. Because it&apos;s cool to be smart.
             </p>
             <div className={styles.heroBtns}>
-              <Link href="/signup" className="btn btn-crimson btn-lg">🚀 Join the Academy</Link>
-              <Link href="#explore" className="btn btn-outline btn-lg">▶ Explore Content</Link>
+              <Link href="/signup" className="btn btn-crimson btn-lg">Join the Academy</Link>
+              <Link href="#paths" className="btn btn-ghost btn-lg">Find your path</Link>
             </div>
-            <div className={styles.stats}>
-              <div className={styles.stat}>
-                <div className={styles.statVal}>6+</div>
-                <div className={styles.statLabel}>Content Types</div>
-              </div>
-              <div className={styles.stat}>
-                <div className={styles.statVal}>All Ages</div>
-                <div className={styles.statLabel}>Kids to Adults</div>
-              </div>
-              <div className={styles.stat}>
-                <div className={styles.statVal}>STEM</div>
-                <div className={styles.statLabel}>Education + Fun</div>
-              </div>
-            </div>
+            <ul className={styles.stats}>
+              <li><strong>All ages</strong><span>Kids to adults</span></li>
+              <li><strong>6 ways</strong><span>to learn</span></li>
+              <li><strong>Free</strong><span>to start</span></li>
+            </ul>
           </div>
+
           <div className={styles.heroVisual}>
-            <div className={styles.floatCard} style={{ top: '15%', left: '-20px' }}>
-              <span className={styles.floatIcon}>🩺</span> Inspiring Healers
+            <div className={styles.archFrame}>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/images/students.png" alt="Four Arkcov Academy cadets in navy uniforms" />
             </div>
-            <div className={styles.floatCard} style={{ bottom: '15%', right: '-15px', animationDelay: '2s' }}>
-              <span className={styles.floatIcon}>🎓</span> Scholarship Hub
-            </div>
-            <div className={styles.visualCard}>
-              <img src="/images/students.png" alt="Arkcov Academy Students" />
-            </div>
+            <div className={styles.heroCrest}><ArkcovCrest size={150} /></div>
           </div>
         </div>
       </section>
 
-      {/* Explore Preview */}
-      <section className={styles.section} id="explore" style={{ background: 'var(--warm-white)' }}>
+      {/* ===== FIND YOUR PATH ===== */}
+      <section className={styles.section} id="paths" aria-labelledby="paths-title">
         <div className={styles.container}>
-          <div className={styles.sectionEyebrow}>📺 Explore the Library</div>
-          <h2 className={styles.sectionTitle}>Courses. Podcasts. Movies.<br/>Games. All in One Place.</h2>
-          <p className={styles.sectionSub}>From animated series to interactive medical games — complex health science made accessible and exciting for everyone.</p>
+          <div className={styles.head}>
+            <p className={styles.eyebrow}>Every learner has a place here</p>
+            <h2 id="paths-title" className={styles.sectionTitle}>Find your path</h2>
+            <p className={styles.sectionSub}>Start where you are. Each path points to the parts of the Academy built for you.</p>
+          </div>
+          <div className={styles.pathsGrid}>
+            {PATHS.map((p) => (
+              <article key={p.title} className={styles.pathCard}>
+                <div className={styles.pathIcon}><Icon name={p.icon} size={24} /></div>
+                <h3>{p.title}</h3>
+                <p className={styles.pathWho}>{p.who}</p>
+                <p>{p.text}</p>
+                <ul className={styles.pathLinks}>
+                  {p.links.map((l) => (
+                    <li key={l.label}><Link href={l.href}>{l.label} <Icon name="arrow" size={16} /></Link></li>
+                  ))}
+                </ul>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ===== LIBRARY ===== */}
+      <section className={`${styles.section} ${styles.sectionWhite}`} id="explore" aria-labelledby="explore-title">
+        <div className={styles.container}>
+          <div className={styles.head}>
+            <p className={styles.eyebrow}>The library</p>
+            <h2 id="explore-title" className={styles.sectionTitle}>Courses. Podcasts. Movies. Games.<br />All in one place.</h2>
+            <p className={styles.sectionSub}>From animated series to interactive medical games, complex health science made clear and exciting.</p>
+          </div>
+          <ul className={styles.typeChips} aria-label="Ways to learn">
+            {CONTENT_TYPES.map((t) => (
+              <li key={t.type}><Link href={`/explore?type=${t.type}`}><Icon name={t.icon} size={18} /> {t.label}</Link></li>
+            ))}
+          </ul>
           <div className={styles.contentGrid}>
-            <div className={styles.contentCard}>
-              <div className={styles.cardMedia}><video src="/videos/arkcov_commercial.mp4" muted preload="metadata" /><div className={styles.playOverlay}><div className={styles.playBtn}>▶</div></div></div>
-              <div className={styles.cardBody}><span className={styles.cardTag}>Featured</span><h3>Welcome to Arkcov Academy</h3><p>The world&apos;s first medical entertainment platform designed to inspire the next generation of healers.</p></div>
+            {VIDEOS.map((v) => (
+              <article key={v.title} className={styles.contentCard}>
+                <div className={styles.cardMedia}>
+                  <video src={v.src} poster={v.poster} controls muted playsInline preload="metadata" aria-label={`${v.title} trailer`} />
+                </div>
+                <div className={styles.cardBody}>
+                  <span className={styles.cardTag}>{v.tag}</span>
+                  <h3>{v.title}</h3>
+                  <p>{v.text}</p>
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ===== CADET TRAINING ===== */}
+      <section className={`${styles.section} ${styles.sectionNavy}`} id="training" aria-labelledby="training-title">
+        <div className={styles.container}>
+          <div className={styles.trainingGrid}>
+            <div>
+              <p className={styles.eyebrowLight}>Cadet training</p>
+              <h2 id="training-title" className={styles.sectionTitleLight}>How the Academy works</h2>
+              <p className={styles.sectionSubLight}>Learning that feels like a mission, with a clear path from first lesson to certificate.</p>
+              <ol className={styles.steps}>
+                {STEPS.map((s) => (
+                  <li key={s.title}>
+                    <span className={styles.stepNum} aria-hidden="true">{s.n}</span>
+                    <div><h3>{s.title}</h3><p>{s.text}</p></div>
+                  </li>
+                ))}
+              </ol>
+              <Link href="/signup" className="btn btn-gold btn-lg">Enlist free</Link>
             </div>
-            <div className={styles.contentCard}>
-              <div className={styles.cardMedia}><video src="/videos/healthworld_commercial.mp4" muted preload="metadata" /><div className={styles.playOverlay}><div className={styles.playBtn}>▶</div></div></div>
-              <div className={styles.cardBody}><span className={styles.cardTag}>Series</span><h3>HealthWorld Academy</h3><p>Immersive medical education that brings health science to life through compelling storytelling.</p></div>
-            </div>
-            <div className={styles.contentCard}>
-              <div className={styles.cardMedia}><video src="/videos/characters_glow.mp4" muted preload="metadata" /><div className={styles.playOverlay}><div className={styles.playBtn}>▶</div></div></div>
-              <div className={styles.cardBody}><span className={styles.cardTag}>Animated Short</span><h3>Characters Come to Life</h3><p>Watch the Warriors Thrive characters leap off the board into a world of adventure and healing.</p></div>
+            <div className={styles.pillars}>
+              {PILLARS.map((p) => (
+                <div key={p.word} className={styles.pillar}>
+                  <h3>{p.word}</h3>
+                  <p>{p.text}</p>
+                </div>
+              ))}
             </div>
           </div>
         </div>
       </section>
 
-      {/* Programs */}
-      <section className={styles.section} id="programs">
+      {/* ===== PROGRAMS ===== */}
+      <section className={styles.section} id="programs" aria-labelledby="programs-title">
         <div className={styles.container}>
-          <div className={styles.sectionEyebrow}>🌟 Empowerment Programs</div>
-          <h2 className={styles.sectionTitle}>Beyond Streaming. Real Pathways to Healing Careers.</h2>
+          <div className={styles.head}>
+            <p className={styles.eyebrow}>Empowerment programs</p>
+            <h2 id="programs-title" className={styles.sectionTitle}>Real pathways to healing careers</h2>
+          </div>
           <div className={styles.programsGrid}>
-            <div className={`${styles.programCard} ${styles.healers}`}>
-              <div className={styles.programIcon}>🩺</div>
+            <article className={styles.programCard}>
+              <div className={styles.programIcon}><Icon name="stethoscope" size={28} /></div>
               <h3>Inspiring Healers Program</h3>
-              <p>A hands-on mentorship and enrichment program for families and young people who dream of careers in medicine and health sciences.</p>
-              <Link href="/signup" className="btn btn-crimson btn-sm">Learn More</Link>
-            </div>
-            <div className={`${styles.programCard} ${styles.scholars}`}>
-              <div className={styles.programIcon}>🎓</div>
+              <p>Hands-on mentorship and enrichment for families and young people who dream of careers in medicine and the health sciences.</p>
+              <Link href="/signup" className="btn btn-crimson btn-sm">Learn more</Link>
+            </article>
+            <article className={`${styles.programCard} ${styles.programDark}`}>
+              <div className={styles.programIcon}><Icon name="cap" size={28} /></div>
               <h3>Arkcov Scholars Foundation</h3>
-              <p>A curated scholarship hub connecting aspiring healers with funding opportunities from high school through medical school.</p>
-              <Link href="/signup" className="btn btn-navy btn-sm">Explore Scholarships</Link>
+              <p>A curated hub connecting aspiring healers with scholarships and funding, from high school through medical school.</p>
+              <Link href="/signup" className="btn btn-gold btn-sm">Explore scholarships</Link>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      {/* ===== STORE ===== */}
+      <section className={`${styles.section} ${styles.sectionWhite}`} id="store" aria-labelledby="store-title">
+        <div className={styles.container}>
+          <div className={styles.head}>
+            <p className={styles.eyebrow}>Cadet gear</p>
+            <h2 id="store-title" className={styles.sectionTitle}>The Academy store</h2>
+            <p className={styles.sectionSub}>Tools and gear for the journey. Members save on every order.</p>
+          </div>
+          <div className={styles.gearGrid}>
+            {GEAR.map((g) => (
+              <article key={g.title} className={styles.gearCard}>
+                <div className={styles.gearIcon}><Icon name={g.icon} size={30} /></div>
+                <span className={g.href ? styles.badgeLive : styles.badgeSoon}>{g.status}</span>
+                <h3>{g.title}</h3>
+                <p>{g.text}</p>
+                {g.href ? (
+                  <a href={g.href} className={styles.gearLink} target="_blank" rel="noopener noreferrer">Visit playwarriorsthrive.com <Icon name="arrow" size={16} /></a>
+                ) : (
+                  <Link href="/signup" className={styles.gearLink}>Get notified <Icon name="arrow" size={16} /></Link>
+                )}
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ===== ABOUT ===== */}
+      <section className={`${styles.section} ${styles.sectionParchment}`} id="about" aria-labelledby="about-title">
+        <div className={styles.container}>
+          <div className={styles.aboutGrid}>
+            <div className={styles.aboutPortrait}>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/images/dr_hills.png" alt="Dr. Gerard D. Hills, founder of Arkcov" />
+            </div>
+            <div>
+              <p className={styles.eyebrow}>A house of Arkcov Enterprises</p>
+              <h2 id="about-title" className={styles.sectionTitle}>Fearfully and wonderfully made</h2>
+              <p className={styles.aboutText}>
+                Arkcov takes its name from the Ark of the Covenant, the sign that God keeps His promises. Arkcov Academy
+                exists to help every learner see the glory in their own human design, by re-presenting medicine as art
+                through powerful stories and experiences.
+              </p>
+              <p className={styles.aboutText}>
+                The Academy was founded by Dr. Gerard D. Hills, a pediatric hematologist/oncologist and clinical
+                informaticist, to build the most diverse generation of healers, especially young people who rarely see
+                themselves in medicine.
+              </p>
+              <blockquote className={styles.verse}>
+                “I will praise thee; for I am fearfully and wonderfully made.”
+                <cite>Psalm 139:14</cite>
+              </blockquote>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Join / Pricing */}
-      <section className={styles.section} id="join" style={{ background: 'var(--warm-white)' }}>
+      {/* ===== MEMBERSHIP ===== */}
+      <section className={styles.section} id="join" aria-labelledby="join-title">
         <div className={styles.container}>
-          <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
-            <div className={styles.sectionEyebrow} style={{ justifyContent: 'center' }}>🔑 Membership</div>
-            <h2 className={styles.sectionTitle} style={{ textAlign: 'center' }}>Join Arkcov Academy</h2>
+          <div className={`${styles.head} ${styles.center}`}>
+            <p className={styles.eyebrow}>Membership</p>
+            <h2 id="join-title" className={styles.sectionTitle}>Join Arkcov Academy</h2>
+            <p className={styles.sectionSub}>Start free. Upgrade any time for the full library, games and certificates.</p>
           </div>
           <div className={styles.tiersGrid}>
-            <div className={styles.tierCard}>
-              <div className={styles.tierName}>Free</div>
-              <div className={styles.tierPrice}>$0</div>
-              <div className={styles.tierDesc}>Explore and get started</div>
-              <Link href="/signup" className="btn btn-outline btn-full">Sign Up Free</Link>
-            </div>
-            <div className={`${styles.tierCard} ${styles.featured}`}>
-              <div className={styles.tierBadge}>Most Popular</div>
-              <div className={styles.tierName}>Member</div>
-              <div className={styles.tierPrice}>$9 <span>/mo</span></div>
-              <div className={styles.tierDesc}>Full access to everything</div>
-              <Link href="/signup" className="btn btn-crimson btn-full">Join Now</Link>
-            </div>
-            <div className={styles.tierCard}>
-              <div className={styles.tierName}>Family</div>
-              <div className={styles.tierPrice}>$14 <span>/mo</span></div>
-              <div className={styles.tierDesc}>For families learning together</div>
-              <Link href="/signup" className="btn btn-navy btn-full">Start Family Plan</Link>
-            </div>
+            {TIERS.map((t) => (
+              <article key={t.name} className={`${styles.tierCard} ${t.featured ? styles.featured : ''}`}>
+                {t.featured && <div className={styles.tierBadge}>Most popular</div>}
+                <h3 className={styles.tierName}>{t.name}</h3>
+                <div className={styles.tierPrice}>{t.price}{t.per && <span>{t.per}</span>}</div>
+                <p className={styles.tierDesc}>{t.desc}</p>
+                <ul className={styles.tierFeatures}>
+                  {t.features.map((f) => <li key={f}><Icon name="check" size={16} /> {f}</li>)}
+                </ul>
+                <Link href="/signup" className={`btn ${t.btn} btn-full`}>{t.cta}</Link>
+              </article>
+            ))}
           </div>
+          <p className={styles.compare}><Link href="/pricing">Compare plans in detail</Link></p>
         </div>
       </section>
 
-      {/* Footer */}
+      {/* ===== FOOTER ===== */}
       <footer className={styles.footer}>
         <div className={styles.container}>
           <div className={styles.footerGrid}>
             <div>
-              <img src="/images/logo_new.png" alt="Arkcov Academy" style={{ height: '45px', marginBottom: '1rem' }} />
-              <p style={{ fontSize: '0.9rem', color: 'rgba(255,255,255,0.5)', lineHeight: 1.7, maxWidth: '280px' }}>
-                Merging medicine, entertainment, and education to build the most diverse generation of healers.
-              </p>
+              <ArkcovLockup size={44} onDark />
+              <p className={styles.footerTag}>Medicine, re-presented as art. Building the most diverse generation of healers.</p>
             </div>
-            <div className={styles.footerCol}>
-              <h4>Platform</h4>
-              <Link href="/explore">Explore</Link>
-              <Link href="/signup">Membership</Link>
-              <Link href="#store">Store</Link>
-            </div>
-            <div className={styles.footerCol}>
+            <nav className={styles.footerCol} aria-label="Learn">
+              <h4>Learn</h4>
+              <Link href="/explore">Library</Link>
+              <Link href="#training">Cadet training</Link>
+              <Link href="#join">Membership</Link>
+            </nav>
+            <nav className={styles.footerCol} aria-label="Programs">
               <h4>Programs</h4>
               <Link href="#programs">Inspiring Healers</Link>
               <Link href="#programs">Scholars Foundation</Link>
-            </div>
-            <div className={styles.footerCol}>
-              <h4>Company</h4>
+              <Link href="#store">Store</Link>
+            </nav>
+            <nav className={styles.footerCol} aria-label="Arkcov">
+              <h4>Arkcov</h4>
               <Link href="#about">About</Link>
-              <Link href="#">Contact</Link>
-              <Link href="#">Press</Link>
-            </div>
+              <a href="https://playwarriorsthrive.com" target="_blank" rel="noopener noreferrer">Warriors Thrive</a>
+              <Link href="/login">Cadet log in</Link>
+            </nav>
           </div>
           <div className={styles.footerBottom}>
-            <p>© 2025 Arkcov Enterprises. All rights reserved. Created by Dr. Gerard D. Hills, M.D.</p>
+            <ArkcovMark size={22} tone="gold" title="" />
+            <p>© {year} Arkcov Enterprises, LLC. All rights reserved. Created by Dr. Gerard D. Hills, M.D.</p>
           </div>
         </div>
       </footer>
-    </div>
+    </main>
   );
 }

@@ -6,7 +6,7 @@
 .container { max-width: 1100px; margin: 0 auto; padding: 4rem 2rem; position: relative; z-index: 1; }
 
 .header { text-align: center; margin-bottom: 3rem; }
-.eyebrow { display: inline-flex; align-items: center; gap: 0.5rem; font-family: 'Space Mono', monospace; font-size: 0.75rem; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: var(--crimson); margin-bottom: 0.8rem; }
+.eyebrow { display: inline-flex; align-items: center; gap: 0.5rem; font-family: var(--font-brand); font-size: 0.75rem; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: var(--crimson); margin-bottom: 0.8rem; }
 .header h1 { font-size: clamp(2rem, 4vw, 3rem); color: var(--navy); margin-bottom: 0.5rem; }
 .header p { color: var(--text-muted); font-size: 1.1rem; font-weight: 600; }
 
@@ -66,9 +66,9 @@
   white-space: nowrap;
 }
 
-.planName { font-family: 'Sora', sans-serif; font-size: 1.3rem; font-weight: 800; color: var(--navy); margin-bottom: 0.5rem; }
-.planPrice { font-family: 'Sora', sans-serif; font-size: 3rem; font-weight: 800; color: var(--navy); margin-bottom: 0.2rem; }
-.planPrice span { font-size: 1rem; font-weight: 500; color: var(--text-light); font-family: 'Nunito', sans-serif; }
+.planName { font-family: var(--font-display); font-size: 1.3rem; font-weight: 800; color: var(--navy); margin-bottom: 0.5rem; }
+.planPrice { font-family: var(--font-display); font-size: 3rem; font-weight: 800; color: var(--navy); margin-bottom: 0.2rem; }
+.planPrice span { font-size: 1rem; font-weight: 500; color: var(--text-light); font-family: var(--font-body); }
 .planDesc { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 2rem; }
 
 .features { text-align: left; display: flex; flex-direction: column; gap: 0.7rem; margin-bottom: 2rem; }

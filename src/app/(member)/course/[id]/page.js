@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef, useCallback } from 'react';
+import { ArkcovCrest } from '@/components/BrandMark';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '@/components/AuthProvider';
@@ -132,7 +133,7 @@ export default function CourseViewerPage() {
             />
           ) : (
             <div className={styles.noVideo}>
-              <span>📚</span>
+              <span aria-hidden="true">◆</span>
               <p>Video content coming soon</p>
             </div>
           )}
@@ -175,7 +176,7 @@ export default function CourseViewerPage() {
 
         {isCompleted && (
           <div className={styles.completedBanner}>
-            <span className={styles.completedIcon}>🎉</span>
+            <span className={styles.completedIcon}><ArkcovCrest size={56} title="Course complete" /></span>
             <div>
               <h3>Course Completed!</h3>
               <p>Great work, warrior! You've finished this course.</p>

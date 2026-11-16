@@ -5,7 +5,7 @@
 
 .statsGrid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 2rem; }
 .statCard { background: white; border-radius: 16px; padding: 1.3rem; text-align: center; box-shadow: var(--shadow-soft); }
-.statValue { font-family: 'Sora', sans-serif; font-size: 2rem; font-weight: 800; color: var(--navy); }
+.statValue { font-family: var(--font-display); font-size: 2rem; font-weight: 800; color: var(--navy); }
 .statLabel { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--text-light); margin-top: 0.2rem; }
 
 .table { background: white; border-radius: 20px; box-shadow: var(--shadow-soft); overflow: hidden; }
@@ -23,7 +23,7 @@
 .free { background: rgba(24,181,160,0.08); color: var(--accent-teal); }
 .member { background: var(--crimson-soft); color: var(--crimson); }
 .family { background: rgba(74,124,255,0.08); color: var(--accent-blue); }
-.admin { background: rgba(212,168,67,0.1); color: var(--gold); }
+.admin { background: rgba(201,151,63,0.1); color: var(--gold); }
 
 @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 @media (max-width: 768px) { .statsGrid { grid-template-columns: repeat(2, 1fr); } .tableHeader { display: none; } .tableRow { grid-template-columns: 1fr; gap: 0.3rem; } }

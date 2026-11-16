@@ -1,19 +1,20 @@
 'use client';
 
 import { useState, useEffect, useCallback, useRef, Suspense } from 'react';
+import Icon from '@/components/Icon';
 import { useSearchParams } from 'next/navigation';
 import { useAuth } from '@/components/AuthProvider';
 import { isYouTubeUrl, getYouTubeEmbedUrl, getYouTubeThumbnail } from '@/lib/youtube';
 import styles from './explore.module.css';
 
 const contentTypes = [
-  { key: 'all', label: 'All', icon: '📋' },
-  { key: 'course', label: 'Courses', icon: '📚' },
-  { key: 'podcast', label: 'Podcasts', icon: '🎙️' },
-  { key: 'movie', label: 'Movies', icon: '🎬' },
-  { key: 'tv_show', label: 'TV Shows', icon: '📺' },
-  { key: 'animated_short', label: 'Animated Shorts', icon: '✨' },
-  { key: 'interactive_game', label: 'Games', icon: '🎮' },
+  { key: 'all', label: 'All', icon: 'compass' },
+  { key: 'course', label: 'Courses', icon: 'book' },
+  { key: 'podcast', label: 'Podcasts', icon: 'mic' },
+  { key: 'movie', label: 'Movies', icon: 'film' },
+  { key: 'tv_show', label: 'TV Shows', icon: 'tv' },
+  { key: 'animated_short', label: 'Animated Shorts', icon: 'sparkle' },
+  { key: 'interactive_game', label: 'Games', icon: 'game' },
 ];
 
 function ExploreContent() {
@@ -75,7 +76,7 @@ function ExploreContent() {
             className={`${styles.chip} ${activeType === type.key ? styles.active : ''}`}
             onClick={() => setActiveType(type.key)}
           >
-            {type.icon} {type.label}
+            <Icon name={type.icon} size={16} /> {type.label}
           </button>
         ))}
       </div>
@@ -87,7 +88,7 @@ function ExploreContent() {
         </div>
       ) : content.length === 0 ? (
         <div className={styles.emptyState}>
-          <div className={styles.emptyIcon}>🎬</div>
+          <div className={styles.emptyIcon}><Icon name="film" size={40} /></div>
           <h3>Content Coming Soon</h3>
           <p>New content is being added to the library. Check back soon!</p>
           {user?.role === 'admin' && (
@@ -111,7 +112,7 @@ function ExploreContent() {
                 <div className={styles.heroTag}>
                   {heroItem.featured && <span className={styles.heroFeatured}>★ Featured</span>}
                   <span className={styles.heroType}>
-                    {contentTypes.find(t => t.key === heroItem.type)?.icon} {contentTypes.find(t => t.key === heroItem.type)?.label}
+                    {contentTypes.find(t => t.key === heroItem.type)?.label}
                   </span>
                 </div>
                 <h1 className={styles.heroTitle}>{heroItem.title}</h1>
@@ -265,7 +266,7 @@ function ContentCard({ item, onSelect, size }) {
         ) : thumbUrl ? (
           <img src={thumbUrl} alt={item.title} />
         ) : (
-          <div className={styles.thumbPlaceholder}>{typeInfo?.icon || '🎬'}</div>
+          <div className={styles.thumbPlaceholder}><Icon name={typeInfo?.icon || 'film'} size={36} /></div>
         )}
         <div className={`${styles.cardOverlay} ${hovered ? styles.cardOverlayVisible : ''}`}>
           <div className={styles.playBtn}>▶</div>
@@ -281,7 +282,7 @@ function ContentCard({ item, onSelect, size }) {
       <div className={styles.cardBody}>
         <h3>{item.title}</h3>
         <div className={styles.cardMeta}>
-          <span className={styles.cardType}>{typeInfo?.icon} {typeInfo?.label}</span>
+          <span className={styles.cardType}>{typeInfo?.label}</span>
           {item.rating && <span>{item.rating}</span>}
           {item.release_year && <span>{item.release_year}</span>}
         </div>
@@ -322,7 +323,7 @@ function DetailModal({ item, onClose }) {
           ) : item.thumbnail_url ? (
             <img src={item.thumbnail_url} alt={item.title} className={styles.modalThumb} />
           ) : (
-            <div className={styles.modalThumbFallback}>{typeInfo?.icon || '🎬'}</div>
+            <div className={styles.modalThumbFallback}><Icon name={typeInfo?.icon || 'film'} size={48} /></div>
           )}
         </div>
 
@@ -330,7 +331,7 @@ function DetailModal({ item, onClose }) {
         <div className={styles.modalInfo}>
           <div className={styles.modalTags}>
             {item.featured && <span className={styles.modalFeaturedTag}>★ Featured</span>}
-            <span className={styles.modalTypeTag}>{typeInfo?.icon} {typeInfo?.label}</span>
+            <span className={styles.modalTypeTag}>{typeInfo?.label}</span>
             {item.access_level !== 'free' && (
               <span className={styles.modalAccessTag}>{item.access_level}</span>
             )}

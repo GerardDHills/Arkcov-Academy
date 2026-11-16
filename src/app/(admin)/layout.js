@@ -10,7 +10,7 @@ export default function AdminLayout({ children }) {
       <Navbar />
       <div className={styles.layout}>
         <Sidebar />
-        <main className={styles.main}>
+        <main className={styles.main} id="main">
           {children}
         </main>
       </div>

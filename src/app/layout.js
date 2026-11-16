@@ -2,8 +2,12 @@ import './globals.css';
 import { AuthProvider } from '@/components/AuthProvider';
 
 export const metadata = {
-  title: 'Arkcov Academy — Medical Entertainment That Builds Health Literacy',
-  description: 'Streaming. Courses. Games. Mentorship. Scholarships. Arkcov Academy re-presents medicine as art — because it\'s cool to be smart.',
+  title: 'Arkcov Academy — Your Mission Begins Here',
+  description: 'Courses, films, games and mentorship that re-present medicine as art, for curious kids, families, students and future healers. A house of Arkcov Enterprises.',
+};
+
+export const viewport = {
+  themeColor: '#0E1A3A',
 };
 
 export default function RootLayout({ children }) {

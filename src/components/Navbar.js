@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { useAuth } from './AuthProvider';
 import styles from './Navbar.module.css';
+import { ArkcovLockup } from './BrandMark';
 
 export default function Navbar() {
   const { user, loading, logout } = useAuth();
@@ -11,15 +12,17 @@ export default function Navbar() {
   const [profileOpen, setProfileOpen] = useState(false);
 
   return (
-    <nav className={styles.nav}>
-      <Link href={user ? '/dashboard' : '/'} className={styles.logo}>
-        <img src="/images/logo_new.png" alt="Arkcov Academy" />
+    <nav className={styles.nav} aria-label="Main">
+      <a href="#main" className="skip-link">Skip to content</a>
+      <Link href={user ? '/dashboard' : '/'} className={styles.logo} aria-label="Arkcov Academy home">
+        <ArkcovLockup size={38} onDark />
       </Link>
 
       <ul className={`${styles.links} ${menuOpen ? styles.open : ''}`}>
         {!user ? (
           <>
-            <li><Link href="/#explore" onClick={() => setMenuOpen(false)}>Explore</Link></li>
+            <li><Link href="/#paths" onClick={() => setMenuOpen(false)}>Find your path</Link></li>
+            <li><Link href="/#explore" onClick={() => setMenuOpen(false)}>Library</Link></li>
             <li><Link href="/#programs" onClick={() => setMenuOpen(false)}>Programs</Link></li>
             <li><Link href="/#store" onClick={() => setMenuOpen(false)}>Store</Link></li>
             <li><Link href="/#about" onClick={() => setMenuOpen(false)}>About</Link></li>
@@ -37,12 +40,14 @@ export default function Navbar() {
               <button
                 className={styles.profileBtn}
                 onClick={() => setProfileOpen(!profileOpen)}
+                aria-expanded={profileOpen}
+                aria-haspopup="menu"
               >
                 <div className={styles.avatar}>
                   {user.name?.charAt(0).toUpperCase()}
                 </div>
                 <span className={styles.profileName}>{user.name?.split(' ')[0]}</span>
-                <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
                   <path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
                 </svg>
               </button>
@@ -55,7 +60,7 @@ export default function Navbar() {
                   </div>
                   <div className={styles.dropdownDivider} />
                   <Link href="/dashboard" className={styles.dropdownItem} onClick={() => setProfileOpen(false)}>Dashboard</Link>
-                  <Link href="/settings" className={styles.dropdownItem} onClick={() => setProfileOpen(false)}>Settings</Link>
+                  <Link href="/pricing" className={styles.dropdownItem} onClick={() => setProfileOpen(false)}>Membership &amp; billing</Link>
                   <div className={styles.dropdownDivider} />
                   <button className={styles.dropdownItem} onClick={() => { setProfileOpen(false); logout(); }}>
                     Log Out
@@ -67,7 +72,7 @@ export default function Navbar() {
         )}
       </ul>
 
-      <button className={styles.hamburger} onClick={() => setMenuOpen(!menuOpen)}>
+      <button className={styles.hamburger} onClick={() => setMenuOpen(!menuOpen)} aria-label={menuOpen ? 'Close menu' : 'Open menu'} aria-expanded={menuOpen}>
         <span /><span /><span />
       </button>
     </nav>

@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/components/AuthProvider';
 import styles from '../login/auth.module.css';
+import { ArkcovCrest } from '@/components/BrandMark';
 
 export default function SignupPage() {
   const [name, setName] = useState('');
@@ -48,17 +49,18 @@ export default function SignupPage() {
       </div>
       <div className={styles.authCard}>
         <Link href="/" className={styles.logoLink}>
-          <img src="/images/logo_new.png" alt="Arkcov Academy" className={styles.logo} />
+          <ArkcovCrest size={110} title="Arkcov Academy home" />
         </Link>
-        <h1 className={styles.title}>Join the Academy</h1>
-        <p className={styles.subtitle}>It&apos;s cool to be smart</p>
+        <h1 className={styles.title}>Enlist in the Academy</h1>
+        <p className={styles.subtitle}>Create your free cadet account. It&apos;s cool to be smart.</p>
 
         {error && <div className="message message-error">{error}</div>}
 
         <form onSubmit={handleSubmit} className={styles.form}>
           <div className="form-group">
-            <label className="form-label">Full Name</label>
+            <label className="form-label" htmlFor="full-name">Full Name</label>
             <input
+              id="full-name"
               type="text"
               className="form-input"
               placeholder="Your full name"
@@ -68,19 +70,22 @@ export default function SignupPage() {
             />
           </div>
           <div className="form-group">
-            <label className="form-label">Email</label>
+            <label className="form-label" htmlFor="email">Email</label>
             <input
+              id="email"
               type="email"
               className="form-input"
-              placeholder="warrior@arkcov.com"
+              placeholder="cadet@example.com"
+              autoComplete="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
             />
           </div>
           <div className="form-group">
-            <label className="form-label">Password</label>
+            <label className="form-label" htmlFor="password">Password</label>
             <input
+              id="password"
               type="password"
               className="form-input"
               placeholder="At least 8 characters"
@@ -91,8 +96,9 @@ export default function SignupPage() {
             />
           </div>
           <div className="form-group">
-            <label className="form-label">Confirm Password</label>
+            <label className="form-label" htmlFor="confirm-password">Confirm Password</label>
             <input
+              id="confirm-password"
               type="password"
               className="form-input"
               placeholder="Confirm your password"

@@ -19,6 +19,7 @@
 }
 
 @media (max-width: 768px) {
+  .layout { flex-direction: column; }
   .main {
     padding: 1.5rem 1rem;
   }
