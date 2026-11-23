@@ -47,7 +47,11 @@
   aspect-ratio: 4 / 5; overflow: hidden; border-radius: 220px 220px 12px 12px;
   box-shadow: 0 0 0 1px var(--gold), 0 0 0 10px rgba(201, 151, 63, 0.12), 0 40px 90px -30px rgba(0, 0, 0, 0.7);
 }
-.archFrame img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 40%; }
+.archFrame { position: relative; }
+.archFrame img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 30%; }
+.archFrame .archAlt { position: absolute; inset: 0; opacity: 0; animation: seasonSwap 16s ease-in-out infinite; }
+@keyframes seasonSwap { 0%, 38% { opacity: 0; } 50%, 88% { opacity: 1; } 100% { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .archFrame .archAlt { animation: none; display: none; } }
 .heroCrest { position: absolute; left: -48px; bottom: -36px; filter: drop-shadow(0 18px 30px rgba(0, 0, 0, 0.5)); animation: float 7s ease-in-out infinite; }
 @keyframes float { 50% { transform: translateY(-10px); } }
 

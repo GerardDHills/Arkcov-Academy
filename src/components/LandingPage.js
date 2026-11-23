@@ -113,7 +113,9 @@ export default function LandingPage() {
           <div className={styles.heroVisual}>
             <div className={styles.archFrame}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/images/students.png" alt="Four Arkcov Academy cadets in navy uniforms" />
+              <img src="/images/cadets_fall.jpg" alt="Arkcov Academy cadets in fall collegiate wear (crimson, navy and cream knits, blazers and tweeds with the Arkcov crest) on the Academy steps" />
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img className={styles.archAlt} src="/images/cadets_summer.jpg" alt="Arkcov Academy cadets in summer collegiate wear (cream linen, crimson and navy polos with the Arkcov crest) on the Academy steps" />
             </div>
             <div className={styles.heroCrest}><ArkcovCrest size={150} /></div>
           </div>
