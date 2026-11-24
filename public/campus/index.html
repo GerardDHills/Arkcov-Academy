@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Arkcov Academy Campus</title>
+<meta name="description" content="Explore the Arkcov Academy virtual campus at BodyWorld: virtual classrooms, study groups, labs and experiences for future healers.">
+<link rel="icon" href="/brand/mark.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Nunito+Sans:wght@400;700&display=swap" rel="stylesheet">
+<style>
+/* VOICE: ceremonial, warm, aspirational — an academy crest come to life
+   IDEA: a campus visitor's guide; the aerial masterplan IS the navigation
+   PICTURE: the painted aerial map with glowing building markers that open each hall
+   COLOUR and TYPE: the user's brand — navy ground, crimson, cream, gold; Cinzel (from the crest lettering) + Lato
+   LAYOUT: full-bleed hall hero, then the map, then Learn / Watch & Play, Corps, uniforms, residences, roadmap, join */
+:root{color-scheme:light dark;--navy:#0E1A3A;--navy2:#0b1124;--crim:#A8201A;--crim2:#c0332b;--cream:#F6EEDF;--gold:#C9973F;--gold2:#e3c788;
+--bg:light-dark(#f7f0e2,#0b1124);--card:light-dark(#fffaf0,#141d38);--ink:light-dark(#1a1d2b,#efe6d4);--mute:light-dark(#5a5560,#b5ad9e);--line:light-dark(#e2d4b8,#2a3558)}
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+html{scroll-behavior:smooth;scroll-padding-top:72px}
+body{margin:0;background:var(--bg);color:var(--ink);font:16.5px/1.6 'Nunito Sans',system-ui,sans-serif;overflow-x:clip}
+img{max-width:100%;display:block}
+h1,h2,h3{font-family:Cinzel,Georgia,serif;font-weight:600;line-height:1.08;text-wrap:balance;margin:0 0 .5em}
+h2{font-size:clamp(30px,4.2vw,46px)}h3{font-size:21px}
+p{margin:0 0 1em;max-width:66ch}
+a{color:inherit}
+.band{padding:clamp(48px,7vw,96px) max(5vw,16px)}
+.wrap{max-width:1240px;margin:0 auto}
+.lede{font-size:18px;color:var(--mute)}
+.dark{background:var(--navy);color:var(--cream)}.dark .lede{color:#cfc4ae}
+.crim{background:var(--crim);color:var(--cream)}
+/* nav */
+nav{position:sticky;top:0;z-index:20;background:rgba(11,17,36,.92);backdrop-filter:blur(8px);color:var(--cream);border-bottom:1px solid #c9a45c55}
+nav .wrap{display:flex;align-items:center;gap:18px;padding:10px max(5vw,16px);flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;font-family:Cinzel,serif;font-size:19px;letter-spacing:.04em}
+.brand svg{width:34px;height:34px}
+.links{display:flex;gap:4px;margin-left:auto;flex-wrap:wrap}
+.links a{text-decoration:none;padding:10px 12px;border-radius:8px;font-size:15px}
+.links a:hover,.links a:focus-visible{background:#ffffff14}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:46px;padding:0 22px;border-radius:999px;background:var(--gold);color:var(--navy2);font-weight:700;text-decoration:none;border:0;font:700 16px 'Nunito Sans',sans-serif;cursor:pointer}
+.btn:hover{background:var(--gold2)}.btn.ghost{background:transparent;color:inherit;border:1.5px solid currentColor}
+:focus-visible{outline:3px solid var(--gold2);outline-offset:2px}
+/* hero */
+.hero{position:relative;min-height:min(86vh,760px);display:grid;align-items:end;color:var(--cream);background:var(--navy2)}
+.hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 30%}
+.hero::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,#0b112400 30%,#0b1124d9 78%,#0b1124 100%)}
+.hero .in{position:relative;z-index:1;padding:0 max(5vw,16px) clamp(36px,6vw,72px);max-width:1240px;margin:0 auto;width:100%}
+.hero h1{font-size:clamp(40px,7vw,84px);margin-bottom:.25em}
+.hero h1 small{display:block;font-size:.36em;color:var(--gold2);margin-top:.3em}
+.hero p{font-size:19px;max-width:56ch;color:#efe4cf}
+.row{display:flex;gap:12px;flex-wrap:wrap}
+/* map */
+.mapgrid{display:grid;grid-template-columns:minmax(0,1.65fr) minmax(0,1fr);gap:24px;align-items:start;margin-top:28px}
+.map{position:relative;border-radius:16px;overflow:hidden;box-shadow:0 20px 50px #0008;border:1px solid #c9a45c66}
+.map img{width:100%}
+.pin{position:absolute;transform:translate(-50%,-50%);width:44px;height:44px;border-radius:50%;border:0;background:none;cursor:pointer;padding:0}
+.pin::before{content:"";position:absolute;inset:12px;border-radius:50%;background:var(--gold2);box-shadow:0 0 0 3px var(--crim),0 0 18px 4px #e3c788cc}
+.pin::after{content:"";position:absolute;inset:6px;border-radius:50%;border:2px solid var(--gold2);animation:pulse 2.2s infinite}
+.pin.on::before{background:#fff;box-shadow:0 0 0 4px var(--crim2),0 0 26px 8px #fff}
+@keyframes pulse{0%{transform:scale(.7);opacity:1}100%{transform:scale(1.6);opacity:0}}
+@media(prefers-reduced-motion:reduce){.pin::after{animation:none}html{scroll-behavior:auto}}
+.panel{background:var(--navy2);border:1px solid #c9a45c55;border-radius:16px;overflow:hidden;color:var(--cream)}
+.panel img{width:100%;aspect-ratio:16/10;object-fit:cover}
+.panel .pb{padding:20px 22px 24px}
+.kind{display:inline-block;font-size:13px;font-weight:700;color:var(--navy2);background:var(--gold);border-radius:999px;padding:3px 12px;margin-bottom:10px}
+.panel ul{list-style:none;padding:0;margin:0 0 18px}
+.panel li{display:flex;justify-content:space-between;gap:10px;padding:8px 0;border-bottom:1px solid #ffffff1a;font-size:15.5px}
+.tag{flex:none;font-size:13px;padding:1px 9px;border-radius:999px;border:1px solid #ffffff40;color:#d8cdb6;white-space:nowrap}
+.tag.live{background:#2f7a4e;border-color:#2f7a4e;color:#fff}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.chips button{min-height:44px;padding:0 14px;border-radius:999px;border:1px solid #c9a45c77;background:transparent;color:var(--cream);font:15px 'Nunito Sans',sans-serif;cursor:pointer}
+.chips button[aria-pressed=true]{background:var(--crim);border-color:var(--crim)}
+.note{font-size:13.5px;color:#b9b0a0;margin-top:12px}
+/* two paths */
+.two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px;margin-top:28px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;overflow:hidden}
+.card img{width:100%;aspect-ratio:16/9;object-fit:cover}
+.card .pb{padding:22px 24px 26px}
+.list{list-style:none;padding:0;margin:0}
+.list li{padding:12px 0;border-top:1px solid var(--line);display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 12px}
+.list b{font-weight:700}.list span{grid-column:1;color:var(--mute);font-size:15px}
+.list .tag{grid-column:2;grid-row:1;color:var(--mute);border-color:var(--line)}
+/* corps */
+.corps{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(24px,4vw,56px);align-items:center}
+.corps img{border-radius:16px}
+.tracks{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin:22px 0}
+.track{border:1px solid #c9a45c66;border-radius:14px;padding:18px}
+.track h3{color:var(--gold2);margin-bottom:.3em}.track p{font-size:15.5px;margin:0}
+/* uniforms scroller */
+.scroller{display:flex;gap:18px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:12px;margin-top:24px;scrollbar-color:var(--gold) transparent}
+.slide{flex:0 0 clamp(250px,30vw,340px);scroll-snap-align:start;margin:0}
+.slide img{border-radius:14px;aspect-ratio:4/5;object-fit:cover;width:100%}
+.slide.wide{flex-basis:clamp(300px,58vw,640px)}.slide.wide img{aspect-ratio:3/2}
+.slide figcaption{padding:10px 2px 0}.slide figcaption b{font-family:Cinzel,serif;display:block;font-size:17px}
+.slide figcaption span{color:var(--mute);font-size:14.5px}
+.ctrl{display:flex;gap:10px;justify-content:flex-end;margin-top:6px}
+.ctrl button{width:46px;height:46px;border-radius:50%;border:1.5px solid var(--gold);background:none;color:inherit;font-size:20px;cursor:pointer}
+/* residences */
+.res{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:24px;margin-top:26px}
+.res>img{border-radius:16px;width:100%;height:100%;object-fit:cover}
+.swap{margin:0;display:grid;gap:12px}.sw-img{position:relative;aspect-ratio:3/4;border-radius:16px;overflow:hidden}
+.sw-img img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .9s ease}.sw-img img.show{opacity:1}
+.sw-btns{display:flex;gap:8px;flex-wrap:wrap}.sw-btns button{min-height:44px;padding:0 16px;border-radius:999px;border:1px solid #c9a45c77;background:transparent;color:var(--cream);font:15px 'Nunito Sans',sans-serif;cursor:pointer}
+.sw-btns button[aria-pressed=true]{background:var(--crim);border-color:var(--crim)}
+@media(prefers-reduced-motion:reduce){.sw-img img{transition:none}}
+/* roadmap */
+.road{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0;margin-top:30px;counter-reset:p}
+.step{padding:22px 20px 6px;border-top:3px solid var(--gold);position:relative}
+.step::before{content:"";position:absolute;top:-9px;left:20px;width:15px;height:15px;border-radius:50%;background:var(--gold);box-shadow:0 0 0 4px var(--crim)}
+.step b{font-family:Cinzel,serif;font-size:14px;color:var(--gold2);display:block;margin-bottom:4px}
+.step h3{font-size:19px}.step p{font-size:15px;color:#efe0c9}
+/* join */
+.join{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(24px,4vw,56px);align-items:start}
+.joinbox{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:24px}
+form{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:24px;display:grid;gap:14px;color:var(--ink)}
+label{display:grid;gap:6px;font-weight:700;font-size:15px}
+input,select{font:16px 'Nunito Sans',sans-serif;min-height:46px;padding:0 12px;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--ink)}
+fieldset{border:0;padding:0;margin:0;display:flex;flex-wrap:wrap;gap:8px}
+legend{font-weight:700;font-size:15px;margin-bottom:6px}
+fieldset label{display:flex;align-items:center;gap:8px;font-weight:400;min-height:44px;padding:0 12px;border:1px solid var(--line);border-radius:999px}
+fieldset input{min-height:0;width:18px;height:18px;accent-color:var(--crim)}
+.hint{font-weight:400;color:var(--mute);font-size:13.5px}
+#ok{display:none;padding:14px;border-radius:10px;background:light-dark(#f1e3c4,#24304f);font-size:15px}
+.steps{counter-reset:s;list-style:none;padding:0;margin:20px 0}
+.steps li{counter-increment:s;display:grid;grid-template-columns:44px minmax(0,1fr);gap:12px;padding:12px 0;align-items:start}
+.steps li::before{content:counter(s);width:40px;height:40px;border-radius:50%;display:grid;place-items:center;background:var(--gold);color:var(--navy2);font:700 17px Cinzel,serif}
+.room{position:fixed;inset:0;z-index:40;overflow-y:auto;background:var(--navy2);color:var(--cream);display:none}.room.open{display:block}
+body.locked{overflow:hidden}
+.rhero{position:relative;min-height:min(52vh,480px);display:grid;align-items:end}
+.rhero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.rhero::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,#0b112455 0%,#0b112400 35%,#0b1124 100%)}
+.rhero .in{position:relative;z-index:1;padding:0 max(5vw,16px) 28px;max-width:1240px;margin:0 auto;width:100%}
+.rhero h2{font-size:clamp(34px,5.5vw,60px);margin-bottom:.2em}
+.back{position:fixed;top:14px;left:max(5vw,16px);z-index:41}
+.back .btn{box-shadow:0 6px 20px #0008}
+.rooms{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,260px),1fr));gap:16px;margin-top:20px}
+.rm{border:1px solid #c9a45c55;border-radius:14px;padding:18px 18px 16px;background:#141d38;display:grid;gap:6px;align-content:start}
+.rm .tag{justify-self:start}.rm h3{font-size:19px;margin:4px 0 0}.rm p{font-size:15.5px;color:#d8cdb6;margin:0}
+.rm button{margin-top:8px;min-height:44px;border-radius:999px;border:1px dashed #c9a45c88;background:none;color:#cfc4ae;font:15px 'Nunito Sans',sans-serif}
+.rfoot{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;margin-top:28px;padding-top:20px;border-top:1px solid #ffffff1a}
+footer{background:var(--navy2);color:#cfc4ae;font-size:14.5px}
+footer .wrap{display:flex;flex-wrap:wrap;gap:16px 32px;justify-content:space-between;align-items:center}
+@media(max-width:900px){.mapgrid,.corps,.join,.res{grid-template-columns:minmax(0,1fr)}.road{grid-template-columns:repeat(2,minmax(0,1fr));row-gap:20px}}
+@media(max-width:600px){.two,.tracks,.road{grid-template-columns:minmax(0,1fr)}.links{margin-left:0;width:100%}.links a{padding:10px 8px;font-size:14px}.pin{width:34px;height:34px}.pin::before{inset:9px}.hero p{font-size:17px}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><symbol id="arch" viewBox="0 0 64 64"><g fill="none" stroke="#c9a45c" stroke-width="4"><path d="M8 58V34a24 24 0 0 1 48 0v24"/><path d="M16 58V35a16 16 0 0 1 32 0v23"/><path d="M24 58V36a8 8 0 0 1 16 0v22"/></g><path d="M32 40c-3 5-5 8-5 11a5 5 0 0 0 10 0c0-3-2-6-5-11z" fill="#9b2437"/></symbol></defs></svg>
+
+<nav aria-label="Main"><div class="wrap">
+  <a class="brand" href="/"><img src="/brand/mark.svg" alt="" width="34" height="34">Arkcov Academy</a>
+  <div class="links"><a href="#campus">Campus map</a><a href="#learn">Learn</a><a href="#watch">Watch &amp; play</a><a href="#corps">Cadet Corps</a><a href="#vision">Vision</a><a href="#join">Join</a><a href="/">Academy home</a></div>
+</div></nav>
+
+<header class="hero" id="top">
+  <img src="/campus/img/learning-hall.jpg" alt="Concept rendering of the Arkcov Academy Main Learning Hall, a domed hall at the edge of the BodyWorld park">
+  <div class="in">
+    <h1>Arkcov Academy<small>Training tomorrow's healers, starting in middle school</small></h1>
+    <p>A cadet academy where young people learn medicine through story, science and service, with BodyWorld, a theme park of the human body, right outside the door. Step into the campus today as a virtual world. One day it will stand for real.</p>
+    <div class="row"><a class="btn" href="#join">Request your cadet invitation</a><a class="btn ghost" href="#campus">Explore the campus</a></div>
+  </div>
+</header>
+
+<section class="band dark" id="campus"><div class="wrap">
+  <h2>Explore the campus</h2>
+  <p class="lede">The Arkcov campus is a virtual world, and every building is a doorway. Tap a glowing marker to step inside and enter its virtual classroom or experience: study groups, labs, college prep and places to gather.</p>
+  <div class="mapgrid">
+    <div>
+      <div class="map" id="map"><img src="/campus/img/campus-map.jpg" alt="Aerial masterplan of the Arkcov Academy campus at BodyWorld"></div>
+      <div class="chips" id="chips" role="group" aria-label="Choose a building"></div>
+    </div>
+    <article class="panel" id="panel" aria-live="polite"></article>
+  </div>
+  <p class="note">Today the campus is a virtual world. Virtual classrooms are on the way, set inside these same halls, and one day the campus will be built for real. Items marked “Virtual campus” are coming there first.</p>
+</div></section>
+
+<section class="band" id="learn"><div class="wrap">
+  <h2>Two ways in: learn, then watch and play</h2>
+  <p class="lede">Arkcov Academy treats medicine as an art. Cadets study the body the way healers do, and see it come alive through shows, games and, one day, a whole park.</p>
+  <div class="two">
+    <article class="card"><img src="/campus/img/learning-hall.jpg" alt="Main Learning Hall"><div class="pb">
+      <h3>Learn in the Main Learning Hall</h3>
+      <ul class="list" id="learnList"></ul></div></article>
+    <article class="card" id="watch"><img src="/campus/img/bodyworld-plaza.jpg" alt="Cadets on the BodyWorld plaza"><div class="pb">
+      <h3>Watch and play in BodyWorld</h3>
+      <ul class="list" id="watchList"></ul></div></article>
+  </div>
+</div></section>
+
+<section class="band crim" id="corps"><div class="wrap corps">
+  <div>
+    <h2>The Cadet Corps</h2>
+    <p>Arkcov Academy is a real cadet program for students in middle school through high school. Every cadet starts with the Social Superpower Assessment, which reveals the strength they bring to medicine. Membership in the Academy unlocks how to use it.</p>
+    <div class="tracks">
+      <div class="track"><h3>Junior Cadets</h3><p>Grades 6–8. Body foundations, exploration of healthcare careers, wellness and teamwork.</p></div>
+      <div class="track"><h3>Senior Cadets</h3><p>Grades 9–12. Advanced science, research, leadership, service and college preparation.</p></div>
+    </div>
+    <a class="btn" href="#join">Become a cadet</a>
+  </div>
+  <img src="/campus/img/junior-2.jpg" alt="Junior cadets in Arkcov Academy uniforms on the academy steps">
+</div></section>
+
+<section class="band" id="uniforms"><div class="wrap">
+  <h2>Uniforms of the Corps</h2>
+  <p class="lede">Navy, crimson, cream and gold, from ceremony to the field.</p>
+  <div class="scroller" id="scroller" tabindex="0" aria-label="Uniform gallery"></div>
+  <div class="ctrl"><button id="prev" aria-label="Previous">‹</button><button id="next" aria-label="Next">›</button></div>
+</div></section>
+
+<section class="band dark" id="residences"><div class="wrap">
+  <h2>Four houses, one academy</h2>
+  <p class="lede">Junior Cadets live in the Boys' and Girls' Houses of the middle school quadrant; Senior Cadets in the Men's and Women's Houses. Each has hive-style sleep pods, study lounges and on-site academic and wellness support. Every house is single-sex.</p>
+  <div class="res"><img src="/campus/img/residences.jpg" alt="The four Arkcov cadet houses">
+    <figure class="swap" id="swap"><div class="sw-img"><img src="/campus/img/pods-women.jpg" alt="Inside the Senior Cadet Women's House: hexagonal sleep pods and a study lounge" class="show"><img src="/campus/img/pods-men.jpg" alt="Inside the Senior Cadet Men's House: hexagonal sleep pods and a study lounge"></div>
+      <figcaption class="sw-btns" role="group" aria-label="Choose a house"><button data-i="0" aria-pressed="true">Women's House</button><button data-i="1" aria-pressed="false">Men's House</button></figcaption></figure></div>
+</div></section>
+
+<section class="band crim" id="vision"><div class="wrap">
+  <h2>From screen to campus</h2>
+  <p>The campus begins as a virtual world, with virtual classrooms inside its halls. The goal is to make it real within the next 5 to 10 years: a place where young people train to become healthcare professionals.</p>
+  <div class="road" id="road"></div>
+  <p class="note" style="color:#e8cfc8">Draft roadmap.</p>
+</div></section>
+
+<section class="band" id="join"><div class="wrap join">
+  <div>
+    <h2>Request your cadet invitation</h2>
+    <p class="lede">Open to students in grades 6–12, and to the parents, teachers and mentors who back them.</p>
+    <ol class="steps">
+      <li><div><b>Request an invitation.</b> Tell us who you are and what you love.</div></li>
+      <li><div><b>Take the Social Superpower Assessment.</b> Discover your strength as a future healer.</div></li>
+      <li><div><b>Enter the Academy.</b> Join your track, start learning, and help build the campus.</div></li>
+    </ol>
+  </div>
+  <div class="joinbox">
+    <h3>Ready to begin?</h3>
+    <p>Create your free Arkcov Academy account to start learning today. Students under 13 should sign up with a parent or guardian.</p>
+    <div class="row"><a class="btn" href="/signup">Create your account</a><a class="btn ghost" href="/pricing">See membership plans</a></div>
+    <p class="hint" style="margin-top:14px">Already a cadet? <a href="/login">Log in</a></p>
+  </div>
+</div></section>
+
+<div class="room" id="room" role="region" aria-label="Virtual building"><div class="back"><a class="btn" href="#campus">‹ Back to campus map</a></div><div id="roomIn"></div></div>
+<footer class="band"><div class="wrap">
+  <a class="brand" href="/" style="color:var(--cream)"><img src="/brand/mark.svg" alt="" width="34" height="34">Arkcov Academy</a>
+  <span>An Arkcov Enterprises academy · Medicine as art, through story and experience</span>
+</div></footer>
+
+<script>
+{
+const B=[
+ {id:'gate',slug:'welcome-gate',mode:'Virtual experience',x:51,y:75,name:'Welcome Gate',kind:'Start here',img:'junior-1',text:'Every cadet journey begins at the gate: request an invitation, take the Social Superpower Assessment, and choose your track.',items:[['Cadet invitation','Open'],['Social Superpower Assessment','In development'],['Orientation for families','In development']],go:['#join','Request an invitation']},
+ {id:'hall',slug:'learning-hall',mode:'Virtual classroom',x:52,y:40,name:'Main Learning Hall',kind:'Learn',img:'learning-hall',text:'The academic heart of the Academy, where cadets study the human body and the art of caring for people.',items:[['Inspiring Healers Program','In development'],['Body systems courses','In development'],['Medicine bullet journal','In development'],['Clinical skills labs','Virtual campus']],go:['#learn','See learning content']},
+ {id:'conf',slug:'conference-hall',mode:'Virtual experience',x:51,y:18,name:'Conference Hall & Auditorium',kind:'Watch',img:'conference-hall',text:'Home of symposia, guest healers and cadet graduations, broadcast on the Arkcov Academy Channel.',items:[['Arkcov Academy Channel','In development'],['Guest healer talks','In development'],['Graduations and symposia','Virtual campus']],go:['#watch','See shows']},
+ {id:'bw',slug:'bodyworld',mode:'Virtual experience',x:64,y:11,name:'BodyWorld',kind:'Play',img:'bodyworld-plaza',text:'The human experience park beside campus: walk through the heart, explore the brain, and learn the body by living inside it.',items:[['Warriors Thrive game','Live'],['The Human Body Experience','Virtual campus'],['Heart & Circulation Dome','Virtual campus'],['Brain & Mind Pavilion','Virtual campus']],go:['#watch','See entertainment']},
+ {id:'sport',slug:'sports-complex',mode:'Virtual experience',x:15,y:27,name:'Sports Complex',kind:'Athletics',img:'athletics',text:'Stadium, track, arena and aquatic center. Cadets learn how the body performs, heals and recovers by training it.',items:[['Basketball, football, track','Virtual campus'],['Boxing, wrestling, gymnastics','Virtual campus'],['Sports medicine lessons','In development']],go:['#uniforms','See athletic kit']},
+ {id:'ms',slug:'middle-school',mode:'Virtual classroom',x:20,y:42,name:'Middle School Building',kind:'Junior Cadets',img:'junior-2',text:'Grades 6–8: core academics, exploration of healthcare careers, foundations and wellness.',items:[['Junior Cadet track','In development'],['Arkcov Academy Kids','In development']],go:['#corps','Meet the Corps']},
+ {id:'hs',slug:'high-school',mode:'Virtual classroom',x:80,y:42,name:'High School Building',kind:'Senior Cadets',img:'dress-f',text:'Grades 9–12: advanced academics, research, leadership and college preparation for future healthcare professionals.',items:[['Senior Cadet track','In development'],['Research mentorship','Virtual campus']],go:['#corps','Meet the Corps']},
+ {id:'jb',slug:'junior-boys-house',mode:'Virtual experience',x:12,y:60,name:"Junior Cadet Boys' House",kind:'Residence',img:'residences',text:'Middle school residence with hive-style sleep pods and study lounges.',items:[['House life','Virtual campus']],go:['#residences','Tour the houses']},
+ {id:'jg',slug:'junior-girls-house',mode:'Virtual experience',x:33,y:60,name:"Junior Cadet Girls' House",kind:'Residence',img:'residences',text:'Middle school residence with hive-style sleep pods and study lounges.',items:[['House life','Virtual campus']],go:['#residences','Tour the houses']},
+ {id:'sm',slug:'senior-mens-house',mode:'Virtual experience',x:69,y:60,name:"Senior Cadet Men's House",kind:'Residence',img:'pods-men',text:'High school residence with house commons, study lounges and on-site support.',items:[['House life','Virtual campus']],go:['#residences','Tour the houses']},
+ {id:'sw',slug:'senior-womens-house',mode:'Virtual experience',x:88,y:60,name:"Senior Cadet Women's House",kind:'Residence',img:'pods-women',text:'High school residence with house commons, study lounges and on-site support.',items:[['House life','Virtual campus']],go:['#residences','Tour the houses']}
+];
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const tag=t=>`<span class="tag${t==='Live'?' live':''}">${esc(t)}</span>`;
+const map=document.getElementById('map'),panel=document.getElementById('panel'),chips=document.getElementById('chips');
+map.insertAdjacentHTML('beforeend',B.map(b=>`<button class="pin" data-id="${b.id}" style="left:${b.x}%;top:${b.y}%" aria-label="${esc(b.name)}"></button>`).join(''));
+chips.innerHTML=B.map(b=>`<button data-id="${b.id}" aria-pressed="false">${esc(b.name)}</button>`).join('');
+function show(id){
+  const b=B.find(v=>v.id===id)||B[1];
+  panel.innerHTML=`<img src="/campus/img/${b.img}.jpg" alt=""><div class="pb"><span class="kind">${esc(b.kind)}</span><h3>${esc(b.name)}</h3><p>${esc(b.text)}</p><ul>${b.items.map(i=>`<li>${esc(i[0])}${tag(i[1])}</li>`).join('')}</ul><div class="row"><a class="btn" href="#${b.slug}">Enter the ${esc(b.mode.toLowerCase())}</a><a class="btn ghost" href="${b.go[0]}">${esc(b.go[1])}</a></div></div>`;
+  document.querySelectorAll('.pin').forEach(p=>p.classList.toggle('on',p.dataset.id===b.id));
+  chips.querySelectorAll('button').forEach(c=>c.setAttribute('aria-pressed',c.dataset.id===b.id));
+}
+map.addEventListener('click',e=>{const p=e.target.closest('.pin');if(p)show(p.dataset.id)});
+chips.addEventListener('click',e=>{const c=e.target.closest('button');if(c)show(c.dataset.id)});
+show('hall');
+const HOUSE=[['Social','House commons','Hang out with your housemates, play games and plan house events online.'],['Study','Study lounge','Quiet group study tables with shared notes and timers.'],['Mentoring','House mentor hours','Drop in with an upper-class cadet or healthcare mentor.'],['Wellness','Wellness corner','Check-ins, sleep and stress habits, and healthy routines.']];
+const ROOMS={
+gate:[['Start here','Orientation hall','A guided first walk through the campus for new cadets and families.'],['Assessment','Superpower studio','Take the Social Superpower Assessment and meet your strength.'],['Families','Family lounge','Information sessions and Q&A for parents and guardians.']],
+hall:[['Classroom','Lecture theater','Live and recorded lessons on the human body and the art of healing.'],['Lab','Anatomy and clinical skills lab','Hands-on virtual labs: explore organs, take vitals, practice cases.'],['Study','Study group tables','Join or start a study group by course or by grade.'],['Classroom','Inspiring Healers studio','Sessions from the Inspiring Healers Program.'],['Library','Healers library','Readings, videos and the medicine bullet journal.']],
+conf:[['Event','Main auditorium','Symposia, guest healer talks and cadet graduations.'],['Social','Town hall','Academy-wide gatherings and announcements.'],['Showcase','Cadet showcase','Cadets present projects and research to the Academy.']],
+bw:[['Experience','The Human Body Experience','Travel through the body at the scale of a cell.'],['Experience','Heart & Circulation Dome','Ride the bloodstream and watch the heart at work.'],['Experience','Brain & Mind Pavilion','Explore how we think, feel and learn.'],['Game','Warriors Thrive arcade','Play Warriors Thrive and other Arkcov games together.'],['Watch','Arkcov Academy Channel theater','Watch shows together with other cadets.']],
+sport:[['Training','Movement lab','Learn how muscles, bones and the heart respond to training.'],['Lab','Sports medicine clinic','Virtual cases: sprains, concussions, recovery and return to play.'],['Social','Team rooms','Meet up with teammates and form clubs.']],
+ms:[['Classroom','Junior Cadet classrooms','Grades 6–8: body foundations and careers in healthcare.'],['Lab','Discovery lab','First experiments, models and simulations.'],['Study','Homework hub','Study groups and peer help by subject.'],['Mentoring','Career explorers','Meet nurses, doctors, therapists, techs and more.']],
+hs:[['Classroom','Senior Cadet classrooms','Grades 9–12: advanced science and clinical reasoning.'],['Lab','Research lab','Real research projects with mentors.'],['College prep','College and career center','Applications, test prep, essays and pathways into healthcare.'],['Study','Study group tables','AP and course study groups.'],['Leadership','Leadership studio','Lead teams, plan service and mentor Junior Cadets.']],
+jb:HOUSE,jg:HOUSE,sm:HOUSE,sw:HOUSE};
+const roomEl=document.getElementById('room'),roomIn=document.getElementById('roomIn');
+function route(){
+  const h=location.hash.slice(1),b=B.find(v=>v.slug===h);
+  if(!b){if(roomEl.classList.contains('open')){roomEl.classList.remove('open');document.body.classList.remove('locked')}return}
+  show(b.id);
+  roomIn.innerHTML=`<div class="rhero"><img src="/campus/img/${b.img}.jpg" alt=""><div class="in"><span class="kind">${esc(b.mode)}</span><h2 tabindex="-1">${esc(b.name)}</h2><p>${esc(b.text)}</p></div></div>
+  <div class="band" style="padding-top:28px"><div class="wrap"><h3>Inside the ${esc(b.mode.toLowerCase())}</h3><p style="color:#cfc4ae">Rooms open as the virtual campus comes online.</p>
+  <div class="rooms">${ROOMS[b.id].map(r=>`<div class="rm"><span class="tag">${esc(r[0])}</span><h3>${esc(r[1])}</h3><p>${esc(r[2])}</p><button disabled>Opens soon</button></div>`).join('')}</div>
+  <div class="rfoot"><span>Want to be first through the door?</span><a class="btn" href="#join">Request your cadet invitation</a></div></div></div>`;
+  roomEl.classList.add('open');document.body.classList.add('locked');roomEl.scrollTop=0;roomIn.querySelector('h2').focus();
+}
+addEventListener('hashchange',route);
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&roomEl.classList.contains('open'))location.hash='campus'});
+route();
+
+const L=[['Inspiring Healers Program','Guided program that grows a student into a future healer.','In development'],['Social Superpower Assessment','Reveals each cadet’s strength in medicine.','In development'],['Body systems courses','The heart, lungs, blood, brain and more, taught through story.','In development'],['Medicine bullet journal','A cadet’s companion for learning and reflection.','In development']];
+const W=[['Warriors Thrive','A cooperative sickle cell disease adventure game. Play at playwarriorsthrive.com.','Live'],['Arkcov Academy Channel','Medical education entertainment and story-driven shows.','In development'],['Warriors Thrive, the show','A series on the Arkcov Academy Channel.','In development'],['BodyWorld park','Heart & Circulation Dome, Brain & Mind Pavilion, Longevity Lab and more.','Virtual campus']];
+const li=a=>a.map(r=>`<li><b>${esc(r[0])}</b>${tag(r[2])}<span>${esc(r[1])}</span></li>`).join('');
+document.getElementById('learnList').innerHTML=li(L);
+document.getElementById('watchList').innerHTML=li(W);
+
+const U=[['dress-m','Dress uniform','Navy tunic, cream trousers, crimson cord. For ceremonies.'],['dress-f','Dress uniform','Navy tunic, pleated cream skirt, crimson beret.'],['polo-m','Campus uniform','Cream knit polo and navy-and-crimson trousers.'],['polo-f','Campus uniform','Everyday wear for class and the quad.'],['field-f','Field uniform','Olive deployment wear for training and service.'],['field-m','Field uniform','Built for disaster-response drills and field days.'],['deploy-collection','Deployment collection','Navy, crimson and cream, with a modular vest system.',1],['athletics','Athletic collection','Kit for seven sports, from boxing to gymnastics.',1],['sportswear','Performance sportswear','Warm-ups, training tees and compression gear.',1]];
+const sc=document.getElementById('scroller');
+sc.innerHTML=U.map(u=>`<figure class="slide${u[3]?' wide':''}"><img src="/campus/img/${u[0]}.jpg" alt="${esc(u[1])}" loading="lazy"><figcaption><b>${esc(u[1])}</b><span>${esc(u[2])}</span></figcaption></figure>`).join('');
+const move=d=>sc.scrollBy({left:d*(sc.firstElementChild.offsetWidth+18),behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});
+document.getElementById('prev').onclick=()=>move(-1);document.getElementById('next').onclick=()=>move(1);
+sc.addEventListener('keydown',e=>{if(e.key==='ArrowRight')move(1);if(e.key==='ArrowLeft')move(-1)});
+
+const R=[['Phase 1','Digital academy','The Academy online: courses, the assessment and the Arkcov Academy Channel.'],['Phase 2','Virtual campus','Virtual classrooms inside the Learning Hall, houses and BodyWorld, where cadets learn together.'],['Phase 3','Cadet Corps in person','Cadets earn ranks, wear the uniform and attend intensives with hospitals and universities.'],['Phase 4','The real campus','The virtual world becomes a physical academy and BodyWorld park, within 5–10 years.']];
+document.getElementById('road').innerHTML=R.map(r=>`<div class="step"><b>${esc(r[0])}</b><h3>${esc(r[1])}</h3><p>${esc(r[2])}</p></div>`).join('');
+
+const sw=document.getElementById('swap'),si=sw.querySelectorAll('.sw-img img'),sb=sw.querySelectorAll('.sw-btns button');let cur=0,timer=null;
+const pick=i=>{cur=i;si.forEach((m,j)=>m.classList.toggle('show',j===i));sb.forEach((b,j)=>b.setAttribute('aria-pressed',j===i))};
+sb.forEach(b=>b.addEventListener('click',()=>{pick(+b.dataset.i);clearInterval(timer)}));
+if(!matchMedia('(prefers-reduced-motion: reduce)').matches)timer=setInterval(()=>pick(1-cur),5000);
+}
+</script>
+</body>
+</html>
