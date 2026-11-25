@@ -43,7 +43,11 @@ export default function Studio({ params }) {
   if (err) return <Scene image="/classroom/healers-studio.jpg" dim><div className={`${r.wrap} ${r.top}`}><p className={r.error}>{err}</p></div></Scene>;
   if (!d) return <Scene image="/classroom/healers-studio.jpg"><div className={`${r.wrap} ${r.top}`}><p className={r.eyebrow}>Opening the studio…</p></div></Scene>;
 
-  const { program, steps, progress, sessions, certificate, faculty, me } = d;
+  const { program, steps, progress, sessions, certificate, faculty, me, neighbors = [] } = d;
+  const art = program.art || '/classroom/healers-studio.jpg';
+  const isHealers = program.slug === 'inspiring-healers';
+  const words = (isHealers ? 'Inspiring Healers' : program.room).split(' ');
+  const empty = steps.length === 0;
   const units = [];
   steps.forEach((st) => {
     let u = units.find((x) => x.name === st.unit);
@@ -55,32 +59,41 @@ export default function Studio({ params }) {
   const pct = progress.total ? Math.round((progress.done / progress.total) * 100) : 0;
 
   return (
-    <Scene image="/classroom/healers-studio.jpg">
+    <Scene image={art}>
       <section className={`${r.wrap} ${s.hero}`}>
-        <p className={r.eyebrow}>{program.building} · {program.room}</p>
-        <h1 className={r.title}>Inspiring <em>Healers</em></h1>
+        <p className={r.eyebrow}>{program.building} · {isHealers ? program.room : program.kind || 'Room'}</p>
+        <h1 className={r.title}>{words.length > 1 ? <>{words.slice(0, -1).join(' ')} <em>{words[words.length - 1]}</em></> : <em>{words[0]}</em>}</h1>
         <p className={r.lede}>{program.description}</p>
         <div className={s.heroActions}>
           {live && <Link href={`/live/${live.id}`} className={r.btn}><span className={`${r.tag} ${r.live}`} style={{ padding: '2px 8px' }}>Live</span> Join the live class</Link>}
-          {d.enrolled ? (
+          {empty ? null : d.enrolled ? (
             nextStep && <Link href={`/classroom/${program.slug}/${nextStep.id}`} className={live ? r.btnGhost : r.btn}>{progress.done ? 'Continue the path' : 'Begin the path'} <Icon name="arrow" size={17} /></Link>
           ) : (
             <button type="button" className={live ? r.btnGhost : r.btn} onClick={enroll} disabled={busy}>Enroll in the program <Icon name="arrow" size={17} /></button>
           )}
-          {me.isStaff && <Link href="/teach" className={r.btnGhost}><Icon name="cap" size={17} /> Faculty Hall</Link>}
+          {me.canBuild && <Link href={`/teach/build/${program.slug}`} className={empty ? r.btn : r.btnGhost}><Icon name="pen" size={17} /> {empty ? 'Build this room’s curriculum' : 'Lesson Builder'}</Link>}
+          {me.isStaff && !me.canBuild && <Link href="/teach" className={r.btnGhost}><Icon name="cap" size={17} /> Faculty Hall</Link>}
         </div>
-        <div className={s.stats}>
+        {!empty && <div className={s.stats}>
           <div><strong>{progress.done}<small>/{progress.total}</small></strong><span>Lessons complete</span></div>
           <div><strong>{progress.score ?? '—'}</strong><span>Performance score</span></div>
           <div><strong>{units.length}</strong><span>Units</span></div>
           <div className={s.ring} style={{ '--p': pct }}><svg viewBox="0 0 36 36"><circle cx="18" cy="18" r="15.9" /><circle cx="18" cy="18" r="15.9" className={s.ringFill} /></svg><b>{pct}%</b></div>
-        </div>
+        </div>}
       </section>
 
       <section className={`${r.wrap} ${s.body}`}>
         <div className={s.main}>
           <div className={r.glass}>
             <div className={r.panelHead}><h2>The path</h2><span className={r.muted} style={{ fontSize: 13 }}>Self-paced between live classes</span></div>
+            {empty && (
+              <div className={s.emptyPath}>
+                <Icon name="sparkle" size={28} />
+                <b>Curriculum is being written for this room</b>
+                <span>{me.canBuild ? 'Add films, readings, activities, evaluations and simulations in the Lesson Builder. They appear here in the order you set.' : 'Lessons, live classes and activities will open here soon.'}</span>
+                {me.canBuild && <Link href={`/teach/build/${program.slug}`} className={`${r.btn} ${r.small}`}>Open the Lesson Builder</Link>}
+              </div>
+            )}
             <div className={s.units}>
               {units.map((u, ui) => (
                 <div key={u.name} className={s.unit} style={{ animationDelay: `${ui * 90}ms` }}>
@@ -102,20 +115,38 @@ export default function Studio({ params }) {
             </div>
           </div>
 
-          <h2 className={s.h2}>Inside the studio</h2>
-          <div className={s.spaces}>
-            {SPACES.map((sp) => (
-              <figure key={sp.name} className={s.space}>
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={sp.img} alt="" loading="lazy" />
-                <figcaption><b>{sp.name}</b><span>{sp.text}</span></figcaption>
-              </figure>
-            ))}
-          </div>
+          {isHealers && (
+            <>
+              <h2 className={s.h2}>Inside the studio</h2>
+              <div className={s.spaces}>
+                {SPACES.map((sp) => (
+                  <figure key={sp.name} className={s.space}>
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={sp.img} alt="" loading="lazy" />
+                    <figcaption><b>{sp.name}</b><span>{sp.text}</span></figcaption>
+                  </figure>
+                ))}
+              </div>
+            </>
+          )}
+          {neighbors.length > 0 && (
+            <>
+              <h2 className={s.h2}>More in the {program.building}</h2>
+              <div className={s.spaces}>
+                {neighbors.map((n) => (
+                  <Link key={n.slug} href={`/classroom/${n.slug}`} className={s.space}>
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={n.art || '/classroom/healers-studio.jpg'} alt="" loading="lazy" />
+                    <span className={s.cap}><b>{n.room}</b><span>{n.step_count ? `${n.step_count} lessons` : 'Curriculum in development'}</span></span>
+                  </Link>
+                ))}
+              </div>
+            </>
+          )}
         </div>
 
         <aside className={s.side}>
-          {certificate ? (
+          {empty ? null : certificate ? (
             <div className={`${r.glass} ${s.cert}`}>
               <Icon name="award" size={30} />
               <p className={r.eyebrow}>Certificate of Performance</p>

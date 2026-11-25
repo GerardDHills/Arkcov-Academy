@@ -151,3 +151,25 @@
 
 /* Headings inherit the room's light ink instead of the site's navy. */
 .scene :where(h1, h2, h3, h4) { color: inherit; }
+
+/* ---- Live class preview (demo) ---- */
+.demoCall { position: absolute; inset: 0; display: grid; grid-template-columns: 1fr 210px; grid-template-rows: 1fr auto; gap: 10px; padding: 10px; background: radial-gradient(120% 120% at 30% 0%, #13224a 0%, #050a1a 70%); }
+.demoMain { position: relative; border-radius: 14px; overflow: hidden; background: #0E1A3A; }
+.demoMain img, .demoTile img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.demoSpeaking { position: absolute; inset: 0; border-radius: 14px; box-shadow: inset 0 0 0 3px #C9973F; animation: speak 2.4s ease-in-out infinite; }
+@keyframes speak { 50% { box-shadow: inset 0 0 0 3px rgba(201, 151, 63, .35); } }
+.demoName { position: absolute; left: 10px; bottom: 10px; display: inline-flex; gap: 6px; align-items: center; font-size: 12.5px; font-weight: 700; padding: 5px 10px; border-radius: 999px; background: rgba(5, 10, 26, .72); color: #F6EEDF; backdrop-filter: blur(6px); }
+.demoTop { position: absolute; left: 10px; top: 10px; display: flex; gap: 6px; }
+.demoTop .tag { background: rgba(5, 10, 26, .7); }
+.demoSide { display: grid; grid-auto-rows: minmax(0, 1fr); gap: 8px; overflow: hidden; }
+.demoTile { position: relative; border-radius: 12px; overflow: hidden; background: #0E1A3A; min-height: 0; }
+.demoTile .demoName { font-size: 11px; padding: 3px 8px; left: 6px; bottom: 6px; }
+.demoOff { display: grid; place-items: center; border: 1px solid rgba(230, 194, 122, .14); }
+.demoAvatar { width: 38px; height: 38px; border-radius: 50%; display: grid; place-items: center; font-family: var(--font-brand); font-size: 12px; color: #E6C27A; border: 1px solid rgba(230, 194, 122, .5); margin-bottom: 14px; }
+.demoBar { grid-column: 1 / -1; display: flex; justify-content: center; gap: 10px; padding: 4px 0 2px; }
+@media (max-width: 700px) {
+  .demoCall { grid-template-columns: 1fr; grid-template-rows: 1fr auto auto; }
+  .demoSide { grid-auto-flow: column; grid-auto-columns: 84px; grid-auto-rows: auto; height: 64px; overflow-x: auto; }
+  .demoAvatar { margin-bottom: 10px; width: 30px; height: 30px; font-size: 10px; }
+  .demoTile .demoName { display: none; }
+}

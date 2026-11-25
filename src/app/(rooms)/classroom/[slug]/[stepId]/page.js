@@ -20,7 +20,7 @@ export default function Lesson({ params }) {
   }, [params.stepId]);
 
   const step = d?.step;
-  const art = ART[step?.kind] || '/classroom/healers-studio.jpg';
+  const art = (d?.program?.slug === 'inspiring-healers' && ART[step?.kind]) || d?.program?.art || '/classroom/healers-studio.jpg';
   const wide = step?.kind === 'simulation';
 
   return (

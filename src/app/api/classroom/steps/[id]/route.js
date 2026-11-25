@@ -20,7 +20,7 @@ export async function GET(_req, { params }) {
   const i = steps.findIndex((s) => s.id === step.id);
   const [mine] = await sql`SELECT completed, score, attempts, data FROM step_progress WHERE user_id = ${me.id} AND step_id = ${step.id}`;
   return json({
-    program: { slug: program.slug, title: program.title, room: program.room, theme: program.theme },
+    program: { slug: program.slug, title: program.title, room: program.room, theme: program.theme, art: program.art },
     step: publicStep(step, { reveal: me.isStaff }),
     index: i,
     count: steps.length,

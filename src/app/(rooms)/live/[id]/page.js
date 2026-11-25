@@ -11,7 +11,8 @@ import s from './live.module.css';
 
 const POLL_MS = 3000;
 
-export default function LiveRoom({ params }) {
+export default function LiveRoom({ params, searchParams }) {
+  const demo = searchParams?.demo === '1';
   const id = params.id;
   const [d, setD] = useState(null);
   const [err, setErr] = useState('');
@@ -75,7 +76,8 @@ export default function LiveRoom({ params }) {
   const ended = session.status === 'ended';
   const here = people.filter((p) => p.here);
   const inBreakout = Boolean(myBreakout);
-  const art = inBreakout ? '/classroom/healers-mentor.jpg' : active?.step?.kind === 'simulation' ? '/classroom/healers-simbay.jpg' : '/classroom/healers-studio.jpg';
+  const base = session.art || '/classroom/healers-studio.jpg';
+  const art = inBreakout ? '/classroom/healers-mentor.jpg' : active?.step?.kind === 'simulation' ? '/classroom/healers-simbay.jpg' : base;
 
   return (
     <Scene image={art} dim arches={false} motes={10}>
@@ -117,6 +119,7 @@ export default function LiveRoom({ params }) {
                 label={inBreakout ? 'One-on-one video' : isLive ? 'Class video' : 'Video opens when the session starts'}
                 recorded={inBreakout}
                 ready={isLive}
+                demo={demo && !ended}
                 getAccess={async () => {
                   const res = await fetch(`/api/live/${id}/video`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ breakoutId: myBreakout?.id }) });
                   const v = await res.json();

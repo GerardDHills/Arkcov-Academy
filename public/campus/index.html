@@ -292,8 +292,8 @@ function route(){
   if(!b){if(roomEl.classList.contains('open')){roomEl.classList.remove('open');document.body.classList.remove('locked')}return}
   show(b.id);
   roomIn.innerHTML=`<div class="rhero"><img src="/campus/img/${b.img}.jpg" alt=""><div class="in"><span class="kind">${esc(b.mode)}</span><h2 tabindex="-1">${esc(b.name)}</h2><p>${esc(b.text)}</p></div></div>
-  <div class="band" style="padding-top:28px"><div class="wrap"><h3>Inside the ${esc(b.mode.toLowerCase())}</h3><p style="color:#cfc4ae">Rooms open as the virtual campus comes online.</p>
-  <div class="rooms">${ROOMS[b.id].map(r=>`<div class="rm"><span class="tag">${esc(r[0])}</span><h3>${esc(r[1])}</h3><p>${esc(r[2])}</p>${r[3]?`<a class="btn" href="${r[3]}">Enter the room</a>`:'<button disabled>Opens soon</button>'}</div>`).join('')}</div>
+  <div class="band" style="padding-top:28px"><div class="wrap"><h3>Inside the ${esc(b.mode.toLowerCase())}</h3><p style="color:#cfc4ae">Every room is open in the virtual classrooms. Step inside.</p>
+  <div class="rooms">${ROOMS[b.id].map(r=>`<div class="rm"><span class="tag">${esc(r[0])}</span><h3>${esc(r[1])}</h3><p>${esc(r[2])}</p><a class="btn" href="${r[3]||'/classroom'}">Enter the room</a></div>`).join('')}</div>
   <div class="rfoot"><span>Want to be first through the door?</span><a class="btn" href="#join">Request your cadet invitation</a></div></div></div>`;
   roomEl.classList.add('open');document.body.classList.add('locked');roomEl.scrollTop=0;roomIn.querySelector('h2').focus();
 }

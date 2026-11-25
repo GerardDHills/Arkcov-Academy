@@ -4,6 +4,15 @@ import { useEffect, useState } from 'react';
 import Icon from '@/components/Icon';
 import StrokeSim from './StrokeSim';
 import { RichText } from './Scene';
+import { getYouTubeId } from '@/lib/youtube';
+
+function embedUrl(url) {
+  const yt = getYouTubeId(url);
+  if (yt) return `https://www.youtube-nocookie.com/embed/${yt}?rel=0&modestbranding=1`;
+  const vm = String(url || '').match(/vimeo\.com\/(?:video\/)?(\d+)/);
+  if (vm) return `https://player.vimeo.com/video/${vm[1]}`;
+  return null;
+}
 import r from './room.module.css';
 
 export const KIND = {
@@ -54,7 +63,11 @@ export default function StepView({ step, done = false, sessionId = null, onSaved
       {step.kind === 'video' && (
         <>
           <div className={r.videoFrame}>
-            <video src={step.media_url} controls playsInline preload="metadata" onEnded={() => !complete && save({})} />
+            {embedUrl(step.media_url) ? (
+              <iframe src={embedUrl(step.media_url)} title={step.title} allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowFullScreen style={{ width: '100%', height: '100%', border: 0 }} />
+            ) : (
+              <video src={step.media_url} poster={step.data?.poster || undefined} controls playsInline preload="metadata" onEnded={() => !complete && save({})} />
+            )}
           </div>
           {step.body && <div style={{ marginTop: 18 }}><RichText text={step.body} /></div>}
         </>

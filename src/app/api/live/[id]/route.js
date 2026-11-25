@@ -5,7 +5,7 @@ import { json, fail, publicStep } from '@/lib/classroomApi';
 export const dynamic = 'force-dynamic';
 
 async function loadSession(id) {
-  const [s] = await sql`SELECT ls.*, p.title AS program_title, p.slug, p.room, p.theme
+  const [s] = await sql`SELECT ls.*, p.title AS program_title, p.slug, p.room, p.theme, p.art
     FROM live_sessions ls JOIN programs p ON p.id = ls.program_id WHERE ls.id = ${Number(id)}`;
   return s || null;
 }
@@ -77,7 +77,7 @@ export async function GET(request, { params }) {
   return json({
     session: {
       id: s.id, title: s.title, status: s.status, starts_at: s.starts_at, minutes: s.minutes,
-      program_title: s.program_title, slug: s.slug, room: s.room, theme: s.theme,
+      program_title: s.program_title, slug: s.slug, room: s.room, theme: s.theme, art: s.art,
       breakouts_open: s.breakouts_open, host_id: s.host_id,
     },
     active,

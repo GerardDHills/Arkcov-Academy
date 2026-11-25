@@ -21,6 +21,7 @@ export default function FacultyHall() {
   const [me, setMe] = useState(null);
   const [live, setLive] = useState(null);
   const [roster, setRoster] = useState([]);
+  const [rooms, setRooms] = useState(null);
   const [form, setForm] = useState({ programId: '', title: '', startsAt: inAnHour(), minutes: 60 });
   const [apply, setApply] = useState({ staff_role: 'professor', staff_type: 'volunteer', staff_title: '' });
   const [msg, setMsg] = useState('');
@@ -31,7 +32,11 @@ export default function FacultyHall() {
     const l = await fetch('/api/live').then((x) => x.json());
     setLive(l);
     if (l.programs?.[0]) setForm((f) => ({ ...f, programId: f.programId || l.programs[0].id }));
-    if (l.me?.isStaff) setRoster((await fetch('/api/classroom/roster').then((x) => x.json())).roster || []);
+    if (l.me?.isStaff) {
+      setRoster((await fetch('/api/classroom/roster').then((x) => x.json())).roster || []);
+      const pr = await fetch('/api/classroom/programs').then((x) => x.json());
+      if (pr.me?.canBuild) setRooms(pr);
+    }
   }, []);
   useEffect(() => { load(); }, [load]);
 
@@ -103,11 +108,41 @@ export default function FacultyHall() {
                         <b>{x.title}</b>
                         <small>{x.program_title} · {x.host_name} ({x.host_label}) · {x.minutes} min</small>
                       </div>
-                      {x.status !== 'ended' && <Link href={`/live/${x.id}`} className={`${x.status === 'live' ? r.btn : r.btnGhost} ${r.small}`}>{x.status === 'live' ? 'Enter' : 'Open room'}</Link>}
+                      {x.status !== 'ended' && (
+                        <span style={{ display: 'flex', gap: 6 }}>
+                          <Link href={`/live/${x.id}?demo=1`} className={`${r.btnGhost} ${r.small}`}>Preview</Link>
+                          <Link href={`/live/${x.id}`} className={`${x.status === 'live' ? r.btn : r.btnGhost} ${r.small}`}>{x.status === 'live' ? 'Enter' : 'Open room'}</Link>
+                        </span>
+                      )}
                     </div>
                   ))}
                 </div>
               </div>
+
+              {rooms && (
+                <div className={r.glass}>
+                  <div className={r.panelHead}><h2>Lesson Builder</h2><Icon name="pen" size={18} /></div>
+                  <div className={s.buildGrid}>
+                    {rooms.buildings.map((b) => {
+                      const list = rooms.programs.filter((p) => p.building_slug === b.slug);
+                      if (!list.length) return null;
+                      return (
+                        <div key={b.slug} className={s.buildGroup}>
+                          <h3>{b.name}</h3>
+                          {list.map((p) => (
+                            <Link key={p.id} href={`/teach/build/${p.slug}`} className={s.buildRow}>
+                              {/* eslint-disable-next-line @next/next/no-img-element */}
+                              <img src={p.art} alt="" loading="lazy" />
+                              <span><b>{p.room}</b><small>{p.step_count ? `${p.step_count} lessons` : 'Empty, ready to build'}</small></span>
+                              <Icon name="arrow" size={15} />
+                            </Link>
+                          ))}
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
 
               <div className={r.glass}>
                 <div className={r.panelHead}><h2>Cadets</h2><Icon name="users" size={18} /></div>

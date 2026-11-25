@@ -43,6 +43,10 @@ export async function ensureClassroomTables() {
     published BOOLEAN DEFAULT true,
     created_at TIMESTAMP DEFAULT NOW()
   )`;
+  await vercelSql`ALTER TABLE programs ADD COLUMN IF NOT EXISTS art TEXT`;
+  await vercelSql`ALTER TABLE programs ADD COLUMN IF NOT EXISTS building_slug VARCHAR(80)`;
+  await vercelSql`ALTER TABLE programs ADD COLUMN IF NOT EXISTS kind VARCHAR(40)`;
+  await vercelSql`ALTER TABLE programs ADD COLUMN IF NOT EXISTS sort_order INTEGER DEFAULT 0`;
   await vercelSql`CREATE TABLE IF NOT EXISTS program_steps (
     id SERIAL PRIMARY KEY,
     program_id INTEGER REFERENCES programs(id) ON DELETE CASCADE,
@@ -228,6 +232,11 @@ export async function notify({ to, subject, body, kind, refId }) {
     await sql`UPDATE notifications SET error = ${String(e.message).slice(0, 500)} WHERE id = ${n.id}`;
     return { sent: false, error: e.message };
   }
+}
+
+// Faculty who can build curriculum: the Dean (admin) and approved professors.
+export function canBuild(me) {
+  return Boolean(me && (me.isAdmin || (me.staff_role === 'professor' && me.staff_status === 'approved')));
 }
 
 export function siteUrl() {

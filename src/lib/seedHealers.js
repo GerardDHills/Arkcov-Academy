@@ -1,5 +1,6 @@
 import { sql } from '@/lib/db';
 import { ensureClassroomTables } from '@/lib/classroom';
+import { ROOMS, BUILDINGS, buildingName, HEALERS_ART } from '@/lib/rooms';
 
 // Starter version of the Inspiring Healers Program, drawn from Dr. Hills'
 // IHP sketchbook (Identity, Social Superpowers, The Brain and the Body).
@@ -142,10 +143,31 @@ export const HEALERS = {
   ],
 };
 
+let roomsReady = false;
+async function ensureRooms() {
+  if (roomsReady) return;
+  const [{ n }] = await sql`SELECT COUNT(*)::int AS n FROM programs WHERE building_slug IS NOT NULL`;
+  if (n < ROOMS.length + 1) {
+    let i = 0;
+    for (const r of ROOMS) {
+      i += 1;
+      const order = BUILDINGS.findIndex((b) => b.slug === r.building) * 100 + i;
+      await sql`INSERT INTO programs (slug, title, subtitle, description, building, room, theme, art, building_slug, kind, sort_order)
+        VALUES (${r.slug}, ${r.room}, ${r.text}, ${r.text}, ${buildingName(r.building)}, ${r.room}, 'room', ${r.art}, ${r.building}, ${r.kind}, ${order})
+        ON CONFLICT (slug) DO UPDATE SET art = COALESCE(programs.art, EXCLUDED.art),
+          building_slug = COALESCE(programs.building_slug, EXCLUDED.building_slug),
+          kind = COALESCE(programs.kind, EXCLUDED.kind), sort_order = EXCLUDED.sort_order`;
+    }
+    await sql`UPDATE programs SET art = COALESCE(art, ${HEALERS_ART}), building_slug = 'learning-hall', kind = COALESCE(kind, 'Program'), sort_order = 101
+      WHERE slug = ${HEALERS.slug}`;
+  }
+  roomsReady = true;
+}
+
 export async function ensureSeed() {
   await ensureClassroomTables();
   const [have] = await sql`SELECT id FROM programs WHERE slug = ${HEALERS.slug}`;
-  if (have) return have.id;
+  if (have) { await ensureRooms(); return have.id; }
   const h = HEALERS;
   const [p] = await sql`INSERT INTO programs (slug, title, subtitle, description, building, room, theme, pass_score)
     VALUES (${h.slug}, ${h.title}, ${h.subtitle}, ${h.description}, ${h.building}, ${h.room}, ${h.theme}, ${h.pass_score})
@@ -157,5 +179,6 @@ export async function ensureSeed() {
       VALUES (${p.id}, ${i}, ${s.unit}, ${s.kind}, ${s.title}, ${s.summary || null}, ${s.body || null},
         ${s.media_url || null}, ${JSON.stringify(s.data || {})}::jsonb, ${s.minutes || null})`;
   }
+  await ensureRooms();
   return p.id;
 }
