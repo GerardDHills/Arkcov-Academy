@@ -208,3 +208,5 @@
   .heroCrest { left: -10px; bottom: -24px; }
   .stats { gap: 1.6rem; }
 }
+
+.cardLink{display:inline-block;margin-top:8px;font-weight:700;color:var(--crimson);text-decoration:underline;text-underline-offset:3px}

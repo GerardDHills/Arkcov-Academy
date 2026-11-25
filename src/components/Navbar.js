@@ -21,6 +21,7 @@ export default function Navbar() {
       <ul className={`${styles.links} ${menuOpen ? styles.open : ''}`}>
         {!user ? (
           <>
+            <li><a href="/campus" onClick={() => setMenuOpen(false)}>Campus</a></li>
             <li><Link href="/#paths" onClick={() => setMenuOpen(false)}>Find your path</Link></li>
             <li><Link href="/#explore" onClick={() => setMenuOpen(false)}>Library</Link></li>
             <li><Link href="/#programs" onClick={() => setMenuOpen(false)}>Programs</Link></li>
@@ -33,6 +34,7 @@ export default function Navbar() {
           <>
             <li><Link href="/dashboard" onClick={() => setMenuOpen(false)}>Dashboard</Link></li>
             <li><Link href="/explore" onClick={() => setMenuOpen(false)}>Explore</Link></li>
+            <li><a href="/campus" onClick={() => setMenuOpen(false)}>Campus</a></li>
             {user.role === 'admin' && (
               <li><Link href="/admin" onClick={() => setMenuOpen(false)}>Admin</Link></li>
             )}
