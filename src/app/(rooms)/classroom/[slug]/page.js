@@ -66,6 +66,7 @@ export default function Studio({ params }) {
         <h1 className={r.title}>{words.length > 1 ? <>{words.slice(0, -1).join(' ')} <em>{words[words.length - 1]}</em></> : <em>{words[0]}</em>}</h1>
         <p className={r.lede}>{program.description}</p>
         <div className={s.heroActions}>
+          {program.slug === 'superpower-studio' && <Link href="/superpower" className={r.btn}>Take the Social Superpower Assessment <Icon name="arrow" size={17} /></Link>}
           {live && <Link href={`/live/${live.id}`} className={r.btn}><span className={`${r.tag} ${r.live}`} style={{ padding: '2px 8px' }}>Live</span> Join the live class</Link>}
           {empty ? null : d.enrolled ? (
             nextStep && <Link href={`/classroom/${program.slug}/${nextStep.id}`} className={live ? r.btnGhost : r.btn}>{progress.done ? 'Continue the path' : 'Begin the path'} <Icon name="arrow" size={17} /></Link>
@@ -91,7 +92,8 @@ export default function Studio({ params }) {
             {empty && (
               <div className={s.emptyPath}>
                 <Icon name="sparkle" size={28} />
-                <b>Curriculum is being written for this room</b>
+                {program.slug === 'superpower-studio' && <Link href="/superpower" className={`${r.btn} ${r.small}`}>Start the assessment</Link>}
+                <b>{program.slug === 'superpower-studio' ? 'Start with the assessment above. More lessons are coming.' : 'Curriculum is being written for this room'}</b>
                 <span>{me.canBuild ? 'Add films, readings, activities, evaluations and simulations in the Lesson Builder. They appear here in the order you set.' : 'Lessons, live classes and activities will open here soon.'}</span>
                 {me.canBuild && <Link href={`/teach/build/${program.slug}`} className={`${r.btn} ${r.small}`}>Open the Lesson Builder</Link>}
               </div>

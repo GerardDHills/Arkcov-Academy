@@ -20,7 +20,7 @@ const PATHS = [
     title: 'Cadets',
     who: 'Middle and high school students',
     text: 'Structured courses, progress tracking and certificates for students who are curious about science and medicine.',
-    links: [{ label: 'Cadet training', href: '#training' }, { label: 'Inspiring Healers', href: '#programs' }],
+    links: [{ label: 'Discover your superpower', href: '/superpower' }, { label: 'Inspiring Healers', href: '/inspiring-healers' }],
   },
   {
     icon: 'stethoscope',
@@ -118,6 +118,30 @@ export default function LandingPage() {
               <img className={styles.archAlt} src="/images/cadets_summer.jpg" alt="Arkcov Academy cadets in summer collegiate wear (cream linen, crimson and navy polos with the Arkcov crest) on the Academy steps" />
             </div>
             <div className={styles.heroCrest}><ArkcovCrest size={150} /></div>
+          </div>
+        </div>
+      </section>
+
+      {/* ===== FEATURED COMMERCIAL ===== */}
+      <section className={styles.featureSection} id="watch" aria-labelledby="watch-title">
+        <div className={`${styles.container} ${styles.featureGrid}`}>
+          <div className={styles.featureVideo}>
+            <video src="/videos/cadets_commercial.mp4" poster="/images/posters/cadets-commercial.jpg" controls playsInline preload="metadata"
+              aria-describedby="watch-desc">
+              <track kind="captions" src="/videos/cadets_commercial.vtt" srcLang="en" label="English" />
+            </video>
+          </div>
+          <div>
+            <p className={styles.eyebrow}>Now enrolling · Middle and high school</p>
+            <h2 id="watch-title" className={styles.sectionTitle}>Cadets come here to study medicine</h2>
+            <p id="watch-desc" className={styles.sectionSub}>
+              Arkcov Academy is a channel, a brand and a real program. Cadets train in real medicine with physician mentors,
+              hands-on labs and stories that bring science to life.
+            </p>
+            <div className={styles.featureBtns}>
+              <Link href="/superpower" className="btn btn-crimson">Discover your superpower</Link>
+              <Link href="/inspiring-healers" className="btn btn-outline">Inspiring Healers Program</Link>
+            </div>
           </div>
         </div>
       </section>
@@ -226,8 +250,14 @@ export default function LandingPage() {
             <article className={styles.programCard}>
               <div className={styles.programIcon}><Icon name="stethoscope" size={28} /></div>
               <h3>Inspiring Healers Program</h3>
-              <p>Hands-on mentorship and enrichment for families and young people who dream of careers in medicine and the health sciences.</p>
-              <Link href="/signup" className="btn btn-crimson btn-sm">Learn more</Link>
+              <p>A four-week journey through every body system, CPR, growth mindset and the history of medicine, for middle and high school cadets who dream of healing.</p>
+              <Link href="/inspiring-healers" className="btn btn-crimson btn-sm">Explore the program</Link>
+            </article>
+            <article className={`${styles.programCard} ${styles.programGold}`}>
+              <div className={styles.programIcon}><Icon name="sparkle" size={28} /></div>
+              <h3>Social Superpower Assessment</h3>
+              <p>Every cadet starts here. Twenty-five questions reveal whether you are a Connector, Protector, Overcomer, Artisan, Vanguard, Innovator or Healer.</p>
+              <Link href="/superpower" className="btn btn-navy btn-sm">Discover your superpower</Link>
             </article>
             <article className={`${styles.programCard} ${styles.programDark}`}>
               <div className={styles.programIcon}><Icon name="cap" size={28} /></div>
@@ -341,7 +371,8 @@ export default function LandingPage() {
             </nav>
             <nav className={styles.footerCol} aria-label="Programs">
               <h4>Programs</h4>
-              <Link href="#programs">Inspiring Healers</Link>
+              <Link href="/inspiring-healers">Inspiring Healers</Link>
+              <Link href="/superpower">Social Superpower</Link>
               <Link href="#programs">Scholars Foundation</Link>
               <Link href="/store">Store</Link>
             </nav>
