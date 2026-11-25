@@ -108,7 +108,8 @@ export const CASE001 = {
   honor: 'Clinical Investigator',
   data: {
     code: 'CASE-001',
-    specialty: 'Hematology',
+    rev: 2,
+    specialty: 'Hematology · Gastroenterology',
     minutes: { junior: 15, senior: 30 },
     patient: {
       name: 'Isaiah Brooks', age: 13, interests: ['Basketball', 'Video games'], concern: 'Fatigue',
@@ -121,37 +122,41 @@ export const CASE001 = {
     },
     stages: [
       {
-        id: 'history', type: 'interview', title: 'Patient interview', min: 3,
-        prompt: 'Choose questions to ask Isaiah. Ask at least three.',
+        id: 'history', type: 'interview', title: 'Patient interview', min: 4,
+        prompt: 'Choose questions to ask Isaiah. Ask at least four. Good healers ask about the whole body, not only the symptom that brought someone in.',
         questions: [
-          { q: 'When did the tiredness begin?', a: 'About two months ago.', feedback: 'How long a symptom has lasted helps organize the investigation.' },
+          { q: 'When did the tiredness begin?', a: 'About three months ago. It keeps getting worse.', feedback: 'How long a symptom has lasted, and whether it is getting worse, helps organize the investigation.' },
           { q: 'Does anything make it worse?', a: 'Running and walking upstairs.', feedback: 'Tiredness with exertion suggests the body may not be meeting its oxygen needs.' },
-          { q: 'Have you felt dizzy?', a: 'Sometimes when I stand up.', feedback: 'Dizziness on standing can be a clue the body is working harder to deliver blood and oxygen.' },
-          { q: 'What kinds of foods do you eat?', a: 'I don’t eat a lot of meat or beans.', feedback: 'Diet is an important clue. Meat and beans are major sources of iron.' },
-          { q: 'Have you noticed any bleeding?', a: 'No.', feedback: 'Bleeding is one way the body loses iron, so it’s an important question even when the answer is no.' },
+          { q: 'What kinds of foods do you eat?', a: 'Pretty much everything. Chicken, burgers, rice and beans, cereal. My mom cooks a lot.', feedback: 'His diet includes iron-rich foods. That makes “not eating enough iron” an unlikely explanation, so the team has to look harder.' },
+          { q: 'How is your stomach feeling?', a: 'It hurts sometimes, down low on the right side, especially after I eat.', feedback: 'Belly pain is an important clue. The intestines are where the body absorbs iron.' },
+          { q: 'How often are you going to the bathroom?', a: 'A lot more than before. Sometimes four or five times a day, and it’s loose.', feedback: 'Frequent, loose stools over weeks are not normal and point toward the digestive system.' },
+          { q: 'Have you noticed any blood, like in the toilet?', a: 'Um… a few times there was some red. I didn’t want to say anything.', feedback: 'A key finding. Blood loss from the intestines is one of the main ways the body loses iron. Asking calmly and privately helps patients share hard things.' },
+          { q: 'Has your weight changed?', a: 'My basketball shorts are loose now. I don’t really feel hungry.', feedback: 'Weight loss and low appetite in a growing teenager are warning signs that something is wrong.' },
           { q: 'How are you sleeping?', a: 'Pretty normal. I go to bed around ten.', feedback: 'Normal sleep makes simple sleepiness less likely as the full explanation.' },
         ],
-        wrap: 'The history gives us clues, but it doesn’t give us a diagnosis yet.',
+        wrap: 'The history gives us clues from the blood and from the belly. It doesn’t give us a diagnosis yet.',
       },
       {
         id: 'exam', type: 'observe', title: 'Examination',
-        text: 'The clinician examines Isaiah while you observe.',
+        text: 'The clinician examines Isaiah while you observe, and pulls up his growth chart.',
         findings: [
           { label: 'Skin and inner eyelids', value: 'Mildly pale', flag: 'abnormal' },
           { label: 'Heart rate at rest', value: '105 beats per minute', flag: 'high' },
+          { label: 'Growth chart', value: 'Weight fell from the 50th to the 25th percentile in six months', flag: 'abnormal' },
+          { label: 'Abdomen', value: 'Tender in the lower right side', flag: 'abnormal' },
+          { label: 'Neurological exam', value: 'Normal', flag: 'normal' },
           { label: 'Breathing', value: 'Normal, clear lungs', flag: 'normal' },
-          { label: 'Temperature', value: '98.4 °F', flag: 'normal' },
         ],
         modes: {
-          junior: { prompt: 'Which body system is most likely involved?', choices: [
-            { label: 'The blood, which carries oxygen', preferred: true, feedback: 'Yes. Paleness and a fast heart rate suggest the blood may not be carrying enough oxygen.' },
-            { label: 'The bones', feedback: 'Bones don’t explain paleness and a fast heart rate. Think about what carries oxygen.' },
-            { label: 'The skin only', feedback: 'The paleness shows up in the skin, but the cause is likely in what flows beneath it.' },
+          junior: { prompt: 'Which body systems should the team investigate?', choices: [
+            { label: 'The blood and the digestive system', preferred: true, feedback: 'Yes. Paleness and a fast heart rate point to the blood. Belly pain, weight loss and blood in the toilet point to the digestive system. The two may be connected.' },
+            { label: 'The bones', feedback: 'Bones don’t explain paleness, belly pain and weight loss. Think about what carries oxygen, and where iron is absorbed.' },
+            { label: 'Only the lungs', feedback: 'His lungs sound clear. Look at the other clues: the belly and the growth chart.' },
           ] },
-          senior: { prompt: 'What would help most to evaluate his fatigue next?', choices: [
-            { label: 'A complete blood count and iron studies', preferred: true, feedback: 'Right. Pallor and a fast resting heart rate point toward anemia, and a CBC with iron studies tests that directly.' },
-            { label: 'A chest X-ray', feedback: 'His lungs sound clear and his breathing is normal. Blood tests are the more direct next step.' },
-            { label: 'Tell him to rest more and recheck in a year', feedback: 'Two months of fatigue with pallor and tachycardia deserves evaluation now.' },
+          senior: { prompt: 'What would help most to evaluate him next?', choices: [
+            { label: 'A CBC, iron studies, inflammatory markers and a stool test for intestinal inflammation', preferred: true, feedback: 'Right. Pallor and tachycardia point to anemia, and the GI symptoms with weight loss call for looking for inflammation in the gut at the same time.' },
+            { label: 'Start an iron supplement and recheck in three months', feedback: 'Iron alone would skip the most important question: why he is losing iron. Weight loss and blood in the stool need a workup now.' },
+            { label: 'A chest X-ray', feedback: 'His lungs are clear. The history and exam point to the blood and the gut.' },
           ] },
         },
       },
@@ -162,27 +167,33 @@ export const CASE001 = {
           { test: 'Hemoglobin', value: '8.9', unit: 'g/dL', ref: '12.5–16.0', flag: 'low' },
           { test: 'MCV (red cell size)', value: '66', unit: 'fL', ref: '78–95', flag: 'low' },
           { test: 'RDW (variation in size)', value: '19', unit: '%', ref: '11.5–14.5', flag: 'high' },
+          { test: 'Platelets', value: '520', unit: 'K/µL', ref: '150–450', flag: 'high' },
           { test: 'Ferritin (iron stores)', value: '5', unit: 'ng/mL', ref: '15–150', flag: 'low' },
           { test: 'Reticulocytes (new red cells)', value: '0.8', unit: '%', ref: '0.5–2.5', flag: 'note', note: 'Not appropriately raised for this degree of anemia' },
+          { test: 'CRP (inflammation)', value: '4.1', unit: 'mg/dL', ref: '< 0.5', flag: 'high' },
+          { test: 'ESR (inflammation)', value: '46', unit: 'mm/hr', ref: '0–20', flag: 'high' },
+          { test: 'Albumin', value: '3.1', unit: 'g/dL', ref: '3.5–5.0', flag: 'low' },
+          { test: 'Fecal calprotectin (gut inflammation)', value: '820', unit: 'µg/g', ref: '< 50', flag: 'high' },
+          { test: 'Celiac screen (tTG-IgA)', value: 'Negative', unit: '', ref: 'Negative', flag: 'normal' },
         ],
       },
       {
         id: 'decision', type: 'decision', title: 'What explains the evidence?',
         modes: {
-          junior: { prompt: 'Isaiah’s blood has less hemoglobin, the part of red blood cells that carries oxygen. He doesn’t eat many iron-rich foods. Which explanation fits best?', choices: [
-            { label: 'His body doesn’t have enough iron to make hemoglobin', preferred: true, feedback: 'Exactly. Iron is needed to build hemoglobin. Without enough, red blood cells carry less oxygen, and he gets tired faster.' },
-            { label: 'He has a broken bone', feedback: 'A fracture wouldn’t cause paleness and tiredness for two months.' },
-            { label: 'He just has a cold', feedback: 'A cold doesn’t last two months or cause low hemoglobin.' },
+          junior: { prompt: 'Isaiah’s blood has less hemoglobin, the part of red blood cells that carries oxygen, because he is low on iron. He eats plenty of iron-rich foods. Which explanation fits best?', choices: [
+            { label: 'Something in his digestive system is losing blood or not absorbing iron', preferred: true, feedback: 'Exactly. His belly pain, weight loss and the blood he noticed suggest his intestines are inflamed. That can leak blood and keep iron from being absorbed, so his body can’t make enough hemoglobin.' },
+            { label: 'He isn’t eating enough iron', feedback: 'He eats chicken, burgers and beans. For a teenage boy, diet alone rarely explains this much iron loss, so healers look for where the iron is going.' },
+            { label: 'He just has a cold', feedback: 'A cold doesn’t last three months or cause weight loss and low hemoglobin.' },
             { label: 'He isn’t trying hard enough', feedback: 'His tiredness is biological, not a lack of effort. That’s an important lesson for every healer.' },
           ] },
           senior: { prompt: 'Which explanation is best supported by the available evidence?', choices: [
-            { label: 'Iron deficiency anemia', preferred: true, feedback: 'Correct. Low hemoglobin, small cells (low MCV), varied cell sizes (high RDW) and very low ferritin together support iron deficiency.' },
-            { label: 'Thalassemia trait', feedback: 'Thalassemia trait also causes small red cells, but iron stores (ferritin) are usually normal and RDW is often normal. His very low ferritin points to iron deficiency.' },
-            { label: 'Anemia of inflammation', feedback: 'In anemia of inflammation, ferritin is typically normal or high. His ferritin is very low.' },
-            { label: 'Acute asthma exacerbation', feedback: 'Asthma wouldn’t explain these laboratory findings, and his lungs are clear.' },
+            { label: 'Iron deficiency anemia from intestinal blood loss and inflammation, concerning for inflammatory bowel disease such as Crohn’s disease', preferred: true, feedback: 'Correct. Small cells, high RDW and very low ferritin show iron deficiency. High CRP, ESR, platelets and calprotectin, low albumin, weight loss and right-sided pain point to inflamed bowel. Diagnosis is confirmed by a pediatric gastroenterologist with endoscopy and colonoscopy.' },
+            { label: 'Dietary iron deficiency', feedback: 'His diet includes iron-rich foods, and in an adolescent boy with normal development diet alone is an uncommon cause. The inflammation and GI symptoms need an explanation.' },
+            { label: 'Thalassemia trait', feedback: 'Thalassemia trait causes small red cells, but ferritin is usually normal and it doesn’t cause weight loss, abdominal pain or inflammation.' },
+            { label: 'Anemia of inflammation alone', feedback: 'Inflammation is clearly present, but in anemia of inflammation alone ferritin is usually normal or high. A ferritin of 5 means true iron deficiency too.' },
           ] },
         },
-        wrap: 'The findings support iron deficiency anemia. The supervising physician explains that finding the underlying cause and making a treatment plan still require further clinical evaluation.',
+        wrap: 'The findings support iron deficiency anemia caused by a problem in the gut. The supervising physician refers Isaiah to pediatric gastroenterology, where a scope of his intestines can confirm the diagnosis and guide treatment.',
       },
       {
         id: 'bodyworld', type: 'oxygen', title: 'Into the bloodstream',
@@ -191,15 +202,16 @@ export const CASE001 = {
       },
     ],
     debrief: {
-      science: 'Hemoglobin carries oxygen in red blood cells, and the body needs iron to make it. With less hemoglobin, Isaiah’s blood carries less oxygen to working muscles, so his heart beats faster and he tires more easily.',
-      uncertainty: 'The clinical team still needs to find out why Isaiah is low on iron and create a management plan with him and his family.',
-      human: 'Fatigue should never be dismissed as a lack of effort.',
+      science: 'Hemoglobin carries oxygen in red blood cells, and the body needs iron to make it. Isaiah’s inflamed intestines were losing small amounts of blood and absorbing iron poorly, so he couldn’t make enough hemoglobin. Less oxygen reached his working muscles, his heart beat faster and he tired easily.',
+      pearl: 'Low iron is a clue, not a final answer. Healers always ask why. In a teenage boy who eats a normal diet, iron deficiency often means blood loss or poor absorption in the gut, such as inflammatory bowel disease. In a teenage girl, heavy menstrual periods that begin at puberty are a common cause. In very young children, drinking too much cow’s milk is a frequent reason.',
+      uncertainty: 'A pediatric gastroenterologist will confirm the diagnosis with endoscopy and colonoscopy, then build a treatment plan with Isaiah and his family to calm the inflammation and restore his iron.',
+      human: 'Isaiah almost didn’t mention the blood because he was embarrassed. Fatigue should never be dismissed as a lack of effort, and a calm, private question can uncover the most important clue.',
       closing: 'Isaiah’s fatigue was not a failure of determination. His body was experiencing a biological problem. Understanding that difference helps us care for people with compassion.',
     },
     journal: { prompt: 'What did Isaiah’s story teach you about listening to someone who says they’re tired?' },
-    discussion: ['What did Isaiah’s story teach us about listening?', 'What additional information might a clinician need?'],
+    discussion: ['Why didn’t Isaiah mention the blood at first? How could a healer make it easier to share?', 'How might the cause of iron deficiency be different for a teenage girl, or a toddler?'],
   },
-  founder_notes: 'Talk about the importance of taking children’s symptoms seriously, especially when they aren’t visible to others. A hematology story about a child whose fatigue was dismissed works well here.',
+  founder_notes: 'Talk about the importance of taking children’s symptoms seriously, especially when they aren’t visible to others. Teaching point: in an adolescent boy with a normal diet and normal development, iron deficiency is rarely dietary; look for GI causes such as IBD or Crohn’s disease. In adolescent girls, consider menstrual losses after menarche. A story about a teen whose GI symptoms surfaced only after a careful history works well here.',
 };
 
 const SUPERPOWER_BODY = P(
@@ -234,7 +246,15 @@ export async function ensureSeasonOne() {
     const [p] = await sql`SELECT id FROM programs WHERE slug = ${item.room}`;
     if (!p) continue;
     const [have] = await sql`SELECT id FROM program_steps WHERE program_id = ${p.id} AND code = ${item.code}`;
-    if (have) continue;
+    if (have) {
+      // Refresh an unapproved draft when the seeded content has been revised.
+      if (item.data.rev) {
+        await sql`UPDATE program_steps SET data = ${JSON.stringify(item.data)}::jsonb, summary = ${item.summary},
+            founder_notes = ${item.founder_notes}, title = ${item.title}
+          WHERE id = ${have.id} AND reviewed = false AND COALESCE((data->>'rev')::int, 1) < ${item.data.rev}`;
+      }
+      continue;
+    }
     await sql`UPDATE program_steps SET sort_order = sort_order + 1 WHERE program_id = ${p.id}`;
     await sql`INSERT INTO program_steps (program_id, sort_order, unit, kind, title, summary, body, data, minutes, reviewed, founder_notes, code, honor)
       VALUES (${p.id}, 1, ${item.unit}, ${item.kind}, ${item.title}, ${item.summary}, null, ${JSON.stringify(item.data)}::jsonb,

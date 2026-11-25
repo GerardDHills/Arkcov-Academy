@@ -200,7 +200,8 @@ export default function CaseView({ step, track = 'junior', sessionId = null, onS
             <div className={r.scoreDial}><strong>{score}</strong><span>Clinical decisions made well on the first try.</span></div>
             <div className={s.debrief}>
               <div><b>The science</b><p>{d.debrief?.science}</p></div>
-              <div><b>What’s still unknown</b><p>{d.debrief?.uncertainty}</p></div>
+              {d.debrief?.pearl && <div><b>Thinking like a clinician</b><p>{d.debrief.pearl}</p></div>}
+              <div><b>What’s next</b><p>{d.debrief?.uncertainty}</p></div>
               <div><b>The human lesson</b><p>{d.debrief?.human}</p></div>
             </div>
             <p className={s.closing}>{d.debrief?.closing}</p>
