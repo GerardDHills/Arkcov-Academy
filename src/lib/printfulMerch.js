@@ -151,6 +151,7 @@ export const MERCH = [
 
 // Fit a design file inside a Printful print area
 export function place(file, area) {
+  if (!area) area = file.type === 'embroidery_front' ? { width: 1500, height: 525 } : { width: 1800, height: 1800 };
   const name = file.url.split('/').pop();
   const [iw, ih] = FILE_SIZES[name] || [1000, 1000];
   const aw = area.width;

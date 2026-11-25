@@ -32,7 +32,7 @@ export async function GET(request) {
   const placements = pfs.json.result.variant_printfiles.find((v) => v.variant_id === sample[0].variant_id)?.placements || {};
   const files = item.files.map((f) => {
     const area = printfiles[placements[f.type]];
-    return { placement: f.type, image_url: f.url, position: area ? place(f, area) : undefined };
+    return { placement: f.type, image_url: f.url, position: place(f, area) };
   });
 
   const task = await pf(`/mockup-generator/create-task/${item.productId}`, {
