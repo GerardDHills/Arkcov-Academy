@@ -50,7 +50,7 @@ const CONTENT_TYPES = [
 const VIDEOS = [
   { src: '/videos/arkcov_welcome.mp4', poster: '/images/posters/arkcov-welcome.jpg', tag: 'Featured', title: 'Welcome to Arkcov Academy', text: 'Where young minds discover the art of medicine, and curiosity becomes a calling.' },
   { src: '/videos/arkcov_bodyworld.mp4', poster: '/images/posters/arkcov-bodyworld.jpg', tag: 'Virtual campus', title: 'BodyWorld: Your Virtual Campus', text: 'Explore real medicine from inside the human body. Study together, run labs and prepare for college.', href: '/campus' },
-  { src: '/videos/characters_glow.mp4', poster: '/images/posters/characters-glow.jpg', tag: 'Animated short', title: 'Characters Come to Life', text: 'The Warriors Thrive characters leap off the board into a world of adventure and healing.' },
+  { image: '/images/posters/warriors-thrive-series.jpg', soon: true, tag: 'Animated series', title: 'Warriors Thrive: The Series', text: 'Dr. Amos and the Warriors step out of the game and into their own animated series about the science of sickle cell disease.' },
 ];
 
 const PILLARS = [
@@ -165,7 +165,13 @@ export default function LandingPage() {
             {VIDEOS.map((v) => (
               <article key={v.title} className={styles.contentCard}>
                 <div className={styles.cardMedia}>
-                  <video src={v.src} poster={v.poster} controls playsInline preload="metadata" aria-label={`${v.title} trailer`} />
+                  {v.image ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img src={v.image} alt={`${v.title} artwork`} loading="lazy" />
+                  ) : (
+                    <video src={v.src} poster={v.poster} controls playsInline preload="metadata" aria-label={`${v.title} trailer`} />
+                  )}
+                  {v.soon && <span className={styles.soonBadge}>Coming soon</span>}
                 </div>
                 <div className={styles.cardBody}>
                   <span className={styles.cardTag}>{v.tag}</span>

@@ -95,8 +95,10 @@
 .typeChips a:hover { border-color: var(--crimson); color: var(--crimson); }
 .contentGrid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.5rem; }
 .contentCard { background: white; border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow-soft); border: 1px solid rgba(201, 151, 63, 0.2); }
-.cardMedia { aspect-ratio: 16 / 9; background: var(--navy); }
+.cardMedia { aspect-ratio: 16 / 9; background: var(--navy); position: relative; }
+.cardMedia img,
 .cardMedia video { width: 100%; height: 100%; object-fit: cover; display: block; }
+.soonBadge { position: absolute; top: 12px; left: 12px; background: var(--navy); color: var(--gold, #c9a227); border: 1px solid rgba(201, 162, 39, 0.6); font-family: var(--font-brand); font-size: 0.7rem; letter-spacing: 0.18em; text-transform: uppercase; padding: 6px 12px; border-radius: 999px; }
 .cardBody { padding: 1.3rem 1.4rem 1.5rem; }
 .cardTag { display: inline-block; font-family: var(--font-brand); font-size: 0.68rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--crimson); margin-bottom: 0.4rem; }
 .cardBody h3 { font-size: 1.12rem; margin-bottom: 0.4rem; }
