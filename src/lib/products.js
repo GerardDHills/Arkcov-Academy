@@ -93,6 +93,28 @@ export const PRODUCTS = [
     blurb: 'The ROUNDS Journal as a printed, bound edition.',
     details: ['Printed edition coming soon'],
   },
+  {
+    slug: 'rounds-planner-print',
+    name: 'ROUNDS Planner 2026–2027 (Printed Edition)',
+    category: 'Printed editions',
+    kind: 'physical',
+    status: 'coming_soon',
+    price: 3999,
+    image: '/images/store/rounds-planner.jpg',
+    blurb: 'The full-year ROUNDS Planner as a printed, coil-bound executive edition.',
+    details: ['Printed edition coming soon'],
+  },
+  {
+    slug: 'rounds-planner-represented-print',
+    name: 'ROUNDS Planner 2026–2027: Represented Edition (Printed)',
+    category: 'Printed editions',
+    kind: 'physical',
+    status: 'coming_soon',
+    price: 3999,
+    image: '/images/store/rounds-planner-represented.jpg',
+    blurb: 'The Represented Edition of the ROUNDS Planner as a printed, coil-bound executive edition.',
+    details: ['Printed edition coming soon'],
+  },
   // Printful merch is added below once the products exist in the Printful store.
 ];
 
