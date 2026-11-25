@@ -1,11 +1,12 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/components/AuthProvider';
 import styles from '../login/auth.module.css';
 import { ArkcovCrest } from '@/components/BrandMark';
+import { SUPERPOWERS } from '@/lib/superpowers';
 
 export default function SignupPage() {
   const [name, setName] = useState('');
@@ -14,7 +15,17 @@ export default function SignupPage() {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [superpower, setSuperpower] = useState(null);
   const { signup } = useAuth();
+
+  // Show the cadet's Social Superpower if they took the assessment first.
+  useEffect(() => {
+    let key = new URLSearchParams(window.location.search).get('superpower');
+    if (!key) {
+      try { key = JSON.parse(window.localStorage.getItem('arkcov-ssa-v1'))?.result?.primary?.[0]?.key; } catch { key = null; }
+    }
+    if (key && SUPERPOWERS[key]) setSuperpower(SUPERPOWERS[key]);
+  }, []);
   const router = useRouter();
 
   const handleSubmit = async (e) => {
@@ -53,6 +64,14 @@ export default function SignupPage() {
         </Link>
         <h1 className={styles.title}>Enlist in the Academy</h1>
         <p className={styles.subtitle}>Create your free cadet account. It&apos;s cool to be smart.</p>
+
+        {superpower ? (
+          <div className="message message-success" role="status">
+            Welcome, <strong>{superpower.identity}</strong>. Enlist to unlock training on how to use your {superpower.name} as a healer.
+          </div>
+        ) : (
+          <p className={styles.subtitle}><Link href="/superpower">New here? Discover your Social Superpower first.</Link></p>
+        )}
 
         {error && <div className="message message-error">{error}</div>}
 

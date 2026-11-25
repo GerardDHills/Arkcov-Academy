@@ -120,7 +120,7 @@
 .pillar p { color: rgba(246, 238, 223, 0.78); font-size: 0.95rem; line-height: 1.6; }
 
 /* ===== Programs ===== */
-.programsGrid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+.programsGrid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.5rem; }
 .programCard {
   padding: 2.6rem 2.4rem; border-radius: var(--radius-xl); background: white; box-shadow: var(--shadow-soft);
   border: 1px solid rgba(201, 151, 63, 0.25); display: flex; flex-direction: column; align-items: flex-start; gap: 0.9rem;
@@ -128,6 +128,14 @@
 .programCard h3 { font-family: var(--font-display); font-size: 1.9rem; font-weight: 700; }
 .programCard p { color: var(--text-body); line-height: 1.7; margin-bottom: 0.6rem; }
 .programIcon { width: 58px; height: 58px; border-radius: 50%; display: grid; place-items: center; color: var(--crimson); background: var(--crimson-soft); }
+.programGold { background: linear-gradient(160deg, #F3E3BF, var(--cream-dark)); border-color: var(--gold); }
+.programGold .programIcon { color: var(--navy); background: rgba(201, 151, 63, 0.3); }
+/* Featured commercial */
+.featureSection { padding: 6rem 0; background: var(--warm-white); }
+.featureGrid { display: grid; grid-template-columns: 1.35fr 1fr; gap: 3rem; align-items: center; }
+.featureVideo { border-radius: 18px; overflow: hidden; background: #000; box-shadow: 0 0 0 1px var(--gold), 0 0 0 8px rgba(201, 151, 63, 0.12), 0 40px 80px -40px rgba(14, 26, 58, 0.7); }
+.featureVideo video { display: block; width: 100%; aspect-ratio: 16 / 9; }
+.featureBtns { display: flex; gap: 0.8rem; flex-wrap: wrap; margin-top: 1.6rem; }
 .programDark { background: linear-gradient(160deg, var(--navy-light), var(--navy)); border-color: rgba(201, 151, 63, 0.4); }
 .programDark h3 { color: var(--cream); }
 .programDark p { color: rgba(246, 238, 223, 0.8); }
@@ -196,7 +204,7 @@
   .heroCrest { left: -24px; }
 }
 @media (max-width: 860px) {
-  .contentGrid, .gearGrid, .tiersGrid, .programsGrid { grid-template-columns: 1fr; }
+  .contentGrid, .gearGrid, .tiersGrid, .programsGrid, .featureGrid { grid-template-columns: 1fr; }
   .aboutGrid { grid-template-columns: 1fr; gap: 2.5rem; }
   .aboutPortrait { width: min(280px, 70vw); }
   .footerGrid { grid-template-columns: 1fr 1fr; }
