@@ -67,9 +67,9 @@ const STEPS = [
 ];
 
 const GEAR = [
-  { icon: 'journal', title: 'Medicine Bullet Journal', text: "The cadet's field journal for learning, reflection and rounds.", status: 'Coming soon' },
-  { icon: 'game', title: 'Warriors Thrive', text: 'The cooperative sickle cell board game for 2 to 8 Warriors, ages 7 and up.', status: 'Available now', href: 'https://playwarriorsthrive.com' },
-  { icon: 'shield', title: 'Cadet apparel & patches', text: 'Crest patches, jackets and gear for Academy cadets.', status: 'Coming soon' },
+  { icon: 'journal', title: 'Medicine Bullet Journal', text: "The cadet's field journal for learning, reflection and rounds. Digital PDF available now; printed edition coming soon.", status: 'Available now', href: '/store', cta: 'Shop the journal' },
+  { icon: 'game', title: 'Warriors Thrive', text: 'The cooperative sickle cell board game for 2 to 8 Warriors, ages 7 and up.', status: 'Available now', href: 'https://playwarriorsthrive.com', external: true, cta: 'Visit playwarriorsthrive.com' },
+  { icon: 'shield', title: 'Cadet apparel & accessories', text: 'Hoodies, tees, hats, sneakers and bags with the Academy crest.', status: 'Available now', href: '/store', cta: 'Shop cadet gear' },
 ];
 
 const TIERS = [
@@ -249,7 +249,11 @@ export default function LandingPage() {
                 <h3>{g.title}</h3>
                 <p>{g.text}</p>
                 {g.href ? (
-                  <a href={g.href} className={styles.gearLink} target="_blank" rel="noopener noreferrer">Visit playwarriorsthrive.com <Icon name="arrow" size={16} /></a>
+                  g.external ? (
+                    <a href={g.href} className={styles.gearLink} target="_blank" rel="noopener noreferrer">{g.cta} <Icon name="arrow" size={16} /></a>
+                  ) : (
+                    <Link href={g.href} className={styles.gearLink}>{g.cta} <Icon name="arrow" size={16} /></Link>
+                  )
                 ) : (
                   <Link href="/signup" className={styles.gearLink}>Get notified <Icon name="arrow" size={16} /></Link>
                 )}
@@ -333,7 +337,7 @@ export default function LandingPage() {
               <h4>Programs</h4>
               <Link href="#programs">Inspiring Healers</Link>
               <Link href="#programs">Scholars Foundation</Link>
-              <Link href="#store">Store</Link>
+              <Link href="/store">Store</Link>
             </nav>
             <nav className={styles.footerCol} aria-label="Arkcov">
               <h4>Arkcov</h4>

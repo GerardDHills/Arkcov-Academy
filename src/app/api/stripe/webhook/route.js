@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { getStripe, subscriptionStatusToRole } from '@/lib/stripe';
 import { sql } from '@/lib/db';
+import { recordStoreOrder } from '@/lib/store';
 
 export const dynamic = 'force-dynamic';
 
@@ -31,6 +32,11 @@ export async function POST(request) {
     switch (type) {
       case 'checkout.session.completed': {
         const session = data.object;
+        if (session.metadata?.kind === 'store') {
+          // Store purchase: re-read the session from Stripe, record it, send merch to Printful
+          await recordStoreOrder(session.id);
+          break;
+        }
         const userId = session.metadata?.userId;
         const subscriptionId = session.subscription;
 
