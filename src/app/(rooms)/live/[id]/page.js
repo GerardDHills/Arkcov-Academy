@@ -29,8 +29,11 @@ export default function LiveRoom({ params }) {
       if (!res.ok) { setErr(v.error || 'Could not load the session.'); return; }
       setD(v);
       if (v.messages.length) {
-        lastId.current = v.messages[v.messages.length - 1].id;
-        setMsgs((m) => [...m, ...v.messages].slice(-200));
+        lastId.current = Math.max(lastId.current, ...v.messages.map((x) => x.id));
+        setMsgs((m) => {
+          const seen = new Set(m.map((x) => x.id));
+          return [...m, ...v.messages.filter((x) => !seen.has(x.id))].slice(-200);
+        });
       }
     } catch { /* keep trying */ }
   }, [id]);
@@ -40,7 +43,8 @@ export default function LiveRoom({ params }) {
     const t = setInterval(poll, POLL_MS);
     return () => clearInterval(t);
   }, [poll]);
-  useEffect(() => { chatEnd.current?.scrollIntoView({ block: 'nearest' }); }, [msgs.length]);
+  // Scroll only the chat list, never the page.
+  useEffect(() => { const ol = chatEnd.current?.parentElement; if (ol) ol.scrollTop = ol.scrollHeight; }, [msgs.length]);
 
   // Reset chat when moving between the class and a breakout.
   const channel = d?.myBreakout?.id || 0;

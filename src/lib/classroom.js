@@ -198,7 +198,7 @@ export async function progressSummary(userId, programId) {
     total: steps.length,
     done,
     complete: steps.length > 0 && done === steps.length,
-    score: scores.length ? Math.round(scores.reduce((a, b) => a + b, 0) / graded.length) : null,
+    score: scores.length ? Math.round(scores.reduce((a, b) => a + b, 0) / scores.length) : null,
     byStep,
   };
 }

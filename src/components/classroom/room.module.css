@@ -148,3 +148,6 @@
 /* ---- Video ---- */
 .videoFrame { border-radius: 16px; overflow: hidden; border: 1px solid var(--line); background: #000; aspect-ratio: 16/9; }
 .videoFrame video { width: 100%; height: 100%; display: block; object-fit: cover; }
+
+/* Headings inherit the room's light ink instead of the site's navy. */
+.scene :where(h1, h2, h3, h4) { color: inherit; }

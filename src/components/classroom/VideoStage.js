@@ -51,7 +51,7 @@ export default function VideoStage({ getAccess, label = 'Class video', recorded 
   };
 
   return (
-    <div style={{ position: 'relative', aspectRatio: '16 / 10', width: '100%', borderRadius: 16, overflow: 'hidden', border: '1px solid rgba(230,194,122,.26)', background: 'radial-gradient(120% 120% at 50% 0%, #13224a 0%, #050a1a 70%)' }}>
+    <div style={{ position: 'relative', aspectRatio: '16 / 9', maxHeight: '54vh', minHeight: 260, width: '100%', borderRadius: 16, overflow: 'hidden', border: '1px solid rgba(230,194,122,.26)', background: 'radial-gradient(120% 120% at 50% 0%, #13224a 0%, #050a1a 70%)' }}>
       <div ref={box} style={{ position: 'absolute', inset: 0, display: state === 'joined' || state === 'joining' ? 'block' : 'none' }} />
       {state !== 'joined' && (
         <div style={{ position: 'absolute', inset: 0, display: 'grid', placeItems: 'center', textAlign: 'center', padding: 24 }}>
