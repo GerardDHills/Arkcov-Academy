@@ -26,6 +26,11 @@ export function middleware(request) {
   const isPublic = publicRoutes.some(route => pathname === route) || 
                    publicPrefixes.some(prefix => pathname.startsWith(prefix));
 
+  // One-time Printful setup calls carry a key the route checks itself
+  if (pathname.startsWith('/api/admin/printful/') && request.headers.get('x-setup-key')) {
+    return NextResponse.next();
+  }
+
   if (isPublic) {
     // Redirect logged-in users away from login/signup
     if (token && (pathname === '/login' || pathname === '/signup')) {
