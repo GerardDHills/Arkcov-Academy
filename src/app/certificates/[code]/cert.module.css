@@ -1,0 +1,34 @@
+.page { min-height: 100vh; background: radial-gradient(120% 90% at 50% 0%, #1B2D5E 0%, #081027 70%); padding: 32px 16px 60px; display: grid; justify-items: center; align-content: start; gap: 18px; }
+.tools { width: min(1000px, 100%); display: flex; justify-content: flex-end; }
+.cert {
+  position: relative; width: min(1000px, 100%); aspect-ratio: 11 / 8.5; background: #FBF7EF; color: #1D1A24;
+  border-radius: 6px; box-shadow: 0 40px 100px rgba(0, 0, 0, 0.5); overflow: hidden;
+  outline: 2px solid #C9973F; outline-offset: -18px;
+}
+.cert::before { content: ''; position: absolute; inset: 26px; border: 1px solid rgba(168, 32, 26, 0.45); pointer-events: none; }
+.arches { position: absolute; left: 50%; bottom: 0; width: 92%; transform: translateX(-50%); opacity: .12; }
+.arches path { fill: none; stroke: #A8782C; stroke-width: 2; }
+.inner { position: relative; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 6% 10%; gap: .6%; }
+.academy { font-family: var(--font-brand); letter-spacing: .4em; text-transform: uppercase; font-size: clamp(10px, 1.4vw, 14px); color: #A8201A; margin: 10px 0 0; }
+.kind { font-family: var(--font-display); font-weight: 600; font-size: clamp(22px, 4.2vw, 46px); color: #0E1A3A; margin: 2px 0 6px; }
+.pre { font-style: italic; font-family: var(--font-display); font-size: clamp(13px, 1.8vw, 19px); color: #63584E; margin: 0; }
+.name { font-family: var(--font-display); font-style: italic; font-weight: 600; font-size: clamp(28px, 5.4vw, 60px); color: #0E1A3A; margin: 2px 0; border-bottom: 1px solid #C9973F; padding: 0 24px 4px; }
+.body { max-width: 640px; font-size: clamp(11px, 1.5vw, 16px); line-height: 1.6; color: #3A3340; margin: 8px 0 6px; }
+.score { display: flex; align-items: baseline; gap: 12px; margin: 6px 0 10px; }
+.score span { font-family: var(--font-brand); font-size: clamp(9px, 1.1vw, 12px); letter-spacing: .2em; text-transform: uppercase; color: #63584E; }
+.score strong { font-family: var(--font-display); font-size: clamp(24px, 4vw, 44px); color: #A8782C; line-height: 1; }
+.score em { font-family: var(--font-brand); font-style: normal; font-size: clamp(9px, 1.1vw, 12px); letter-spacing: .16em; text-transform: uppercase; color: #A8201A; border: 1px solid rgba(168, 32, 26, .4); padding: 3px 10px; border-radius: 999px; }
+.sign { width: 100%; display: flex; justify-content: space-between; gap: 40px; margin-top: 2%; }
+.sign div { display: grid; justify-items: center; flex: 1; max-width: 300px; }
+.line { width: 100%; height: 1px; background: #1D1A24; margin: 6px 0; }
+.sign b { font-size: clamp(11px, 1.4vw, 15px); }
+.sign small { font-size: clamp(9px, 1.1vw, 12px); color: #63584E; }
+.dateText { font-family: var(--font-display); font-style: italic; font-size: clamp(13px, 1.7vw, 18px); }
+.verify { position: absolute; bottom: 4.2%; font-size: clamp(8px, 1vw, 11px); color: #8A7E73; letter-spacing: .04em; }
+.missing { color: #F6EEDF; text-align: center; padding-top: 20vh; }
+@media print {
+  @page { size: letter landscape; margin: 0; }
+  .page { background: none; padding: 0; }
+  .tools { display: none; }
+  .cert { width: 100vw; height: 100vh; aspect-ratio: auto; box-shadow: none; border-radius: 0; }
+}
