@@ -1,0 +1,20 @@
+.grid { display: grid; gap: 20px; }
+.feature { position: relative; display: block; min-height: 380px; border-radius: 22px; overflow: hidden; border: 1px solid rgba(230, 194, 122, 0.35); color: #F6EEDF; text-decoration: none; box-shadow: 0 30px 80px rgba(0, 0, 0, 0.45); }
+.feature img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform 1.2s ease; }
+.feature:hover img { transform: scale(1.04); }
+.feature::after { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(7, 13, 34, 0.94) 0%, rgba(7, 13, 34, 0.7) 45%, rgba(7, 13, 34, 0.05) 100%); }
+.featureIn { position: relative; z-index: 1; padding: 40px; max-width: 560px; display: grid; gap: 12px; }
+.featureIn h2 { font-family: var(--font-display); font-weight: 600; font-size: clamp(2rem, 4vw, 3rem); line-height: 1.05; margin: 4px 0 0; }
+.featureIn p { color: rgba(246, 238, 223, 0.8); line-height: 1.65; margin: 0; }
+.featureIn > span { justify-self: start; }
+.meta { display: flex; gap: 16px; flex-wrap: wrap; font-size: 14px; color: rgba(246, 238, 223, 0.75); }
+.meta span { display: inline-flex; align-items: center; gap: 6px; }
+.loading { padding: 40px; text-align: center; }
+.h2 { font-family: var(--font-brand); font-size: 13px; letter-spacing: .24em; text-transform: uppercase; color: #E6C27A; margin: 48px 0 16px; font-weight: 600; }
+.coming { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr)); gap: 14px; }
+.card { display: grid; grid-template-columns: 110px 1fr; gap: 14px; align-items: center; padding: 10px; border-radius: 16px; background: rgba(10, 18, 42, 0.6); border: 1px solid rgba(230, 194, 122, 0.2); backdrop-filter: blur(12px); }
+.card img { width: 110px; height: 76px; object-fit: cover; border-radius: 10px; filter: saturate(.8) brightness(.8); }
+.card small { display: block; font-size: 11.5px; letter-spacing: .12em; text-transform: uppercase; color: rgba(246, 238, 223, 0.55); }
+.card strong { display: block; font-size: 15.5px; margin: 2px 0 6px; }
+.soon { display: inline-flex; gap: 6px; align-items: center; font-size: 12.5px; color: #E6C27A; }
+@media (max-width: 640px) { .featureIn { padding: 26px; } .feature::after { background: linear-gradient(180deg, rgba(7, 13, 34, 0.5), rgba(7, 13, 34, 0.95)); } }

@@ -12,6 +12,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@daily-co/daily-js": "^0.95.0",
     "@vercel/blob": "^0.27.3",
     "@vercel/postgres": "^0.10.0",
     "bcryptjs": "^3.0.3",

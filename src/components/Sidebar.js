@@ -10,6 +10,8 @@ import Icon from './Icon';
 const memberLinks = [
   { href: '/dashboard', label: 'Dashboard', icon: 'home' },
   { href: '/explore', label: 'Explore', icon: 'compass' },
+  { href: '/classroom', label: 'Virtual Classrooms', icon: 'door' },
+  { href: '/teach', label: 'Faculty Hall', icon: 'cap' },
   { href: '/explore?type=course', label: 'Courses', icon: 'book' },
   { href: '/explore?type=podcast', label: 'Podcasts', icon: 'mic' },
   { href: '/explore?type=movie', label: 'Movies', icon: 'film' },
@@ -23,6 +25,7 @@ const adminLinks = [
   { href: '/admin/content', label: 'Content Manager', icon: 'folder' },
   { href: '/admin/users', label: 'Users', icon: 'users' },
   { href: '/admin/store', label: 'Store Files', icon: 'folder' },
+  { href: '/admin/staff', label: 'Faculty & Safety', icon: 'shield' },
 ];
 
 export default function Sidebar() {
