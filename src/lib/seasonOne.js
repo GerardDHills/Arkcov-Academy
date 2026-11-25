@@ -103,14 +103,14 @@ export const CASE001 = {
   unit: 'Clinical Cases',
   kind: 'case',
   title: 'A Mystery in the Blood',
-  summary: 'Why is Isaiah so tired? Interview, examine and investigate with the clinic team.',
-  minutes: 15,
+  summary: 'Why is Isaiah so tired? Interview, examine, build a model and a differential, then investigate.',
+  minutes: 20,
   honor: 'Clinical Investigator',
   data: {
     code: 'CASE-001',
-    rev: 2,
+    rev: 3,
     specialty: 'Hematology · Gastroenterology',
-    minutes: { junior: 15, senior: 30 },
+    minutes: { junior: 20, senior: 35 },
     patient: {
       name: 'Isaiah Brooks', age: 13, interests: ['Basketball', 'Video games'], concern: 'Fatigue',
       portrait: '/classroom/cases/isaiah-portrait.jpg', scene: '/classroom/cases/isaiah-gym.jpg',
@@ -161,6 +161,85 @@ export const CASE001 = {
         },
       },
       {
+        id: 'model', type: 'model', title: 'Build the mental model',
+        modes: {
+          junior: {
+            prompt: 'Build a model of what might be happening inside Isaiah. Tap a clue, then tap the link in the chain it is evidence for. Read the chain from top to bottom: each link leads to the next.',
+            layers: [
+              { id: 'gut', label: 'It starts in the belly', hint: 'Something is irritating his intestines.' },
+              { id: 'iron', label: 'His body loses iron', hint: 'Blood leaks out, and iron isn’t absorbed well.' },
+              { id: 'blood', label: 'His blood can’t make enough hemoglobin', hint: 'Fewer oxygen carriers in each drop of blood.' },
+              { id: 'body', label: 'His muscles get less oxygen', hint: 'His body works harder to keep up.' },
+            ],
+            clues: [
+              { id: 'pain', label: 'Belly pain after eating', layer: 'gut', feedback: 'Pain after eating points to the intestines.' },
+              { id: 'stool', label: 'Loose stools many times a day', layer: 'gut', feedback: 'Irritated intestines move food through too fast.' },
+              { id: 'weight', label: 'Losing weight, not hungry', layer: 'gut', feedback: 'When the intestines are inflamed, the body can’t take in enough food and energy.' },
+              { id: 'blood', label: 'Blood in the toilet', layer: 'iron', feedback: 'Every bit of blood that leaves the body takes iron with it.' },
+              { id: 'pale', label: 'Pale skin and eyelids', layer: 'blood', feedback: 'Hemoglobin gives blood its red color. Less of it makes skin look pale.' },
+              { id: 'tired', label: 'Tired when running', layer: 'body', feedback: 'Working muscles need oxygen. With less oxygen, they tire quickly.' },
+              { id: 'heart', label: 'Fast heartbeat at rest', layer: 'body', feedback: 'His heart pumps faster to move the oxygen he does have.' },
+            ],
+            wrap: 'You just built a mental model: a chain that connects what we see to what might be causing it. Healers use models like this to decide what could be wrong and what to test next.',
+          },
+          senior: {
+            prompt: 'Build a causal model before ordering more tests. Assign each finding to the link in the chain it is best evidence for. The chain runs from root process to the consequences you can observe.',
+            layers: [
+              { id: 'root', label: 'Root process: intestinal inflammation', hint: 'Mucosal injury in the bowel.' },
+              { id: 'mech', label: 'Mechanism: iron loss and malabsorption', hint: 'Chronic blood loss plus impaired iron uptake.' },
+              { id: 'phys', label: 'Pathophysiology: iron-deficient erythropoiesis and anemia', hint: 'Too little iron to build hemoglobin.' },
+              { id: 'comp', label: 'Consequence: reduced oxygen delivery and compensation', hint: 'Cardiac output rises to protect tissues.' },
+            ],
+            clues: [
+              { id: 'rlq', label: 'Right lower quadrant tenderness', layer: 'root', feedback: 'The terminal ileum sits in the right lower quadrant and is commonly involved in Crohn’s disease.' },
+              { id: 'diarrhea', label: 'Diarrhea four to five times daily', layer: 'root', feedback: 'Chronic diarrhea reflects inflamed bowel that absorbs poorly and moves contents quickly.' },
+              { id: 'growth', label: 'Weight fell two percentile lines', layer: 'root', feedback: 'Growth deceleration is a classic clue to pediatric IBD: inflammation raises energy needs and lowers appetite and absorption.' },
+              { id: 'heme', label: 'Blood in the stool', layer: 'mech', feedback: 'Visible or occult GI blood loss steadily drains iron stores.' },
+              { id: 'gradual', label: 'Fatigue building gradually over three months', layer: 'phys', feedback: 'A slow fall in hemoglobin lets the body adapt, so anemia can become significant before symptoms are obvious.' },
+              { id: 'pallor', label: 'Conjunctival pallor', layer: 'phys', feedback: 'Pallor reflects a lower hemoglobin concentration.' },
+              { id: 'hr', label: 'Resting heart rate 105', layer: 'comp', feedback: 'Tachycardia raises cardiac output to maintain oxygen delivery.' },
+              { id: 'exert', label: 'Exertional fatigue', layer: 'comp', feedback: 'Oxygen demand during exercise outstrips what anemic blood can carry.' },
+            ],
+            wrap: 'A good model is a hypothesis you can test. Yours predicts the labs should show low hemoglobin with small, iron-poor red cells, low ferritin and markers of inflammation.',
+          },
+        },
+      },
+      {
+        id: 'ddx', type: 'differential', title: 'Build a differential diagnosis',
+        modes: {
+          junior: {
+            prompt: 'Healers never stop at the first idea. List the possible causes: choose at least three that could explain Isaiah’s story, then move the one you think is most likely to the top.',
+            min: 3, max: 5,
+            options: [
+              { id: 'ibd', label: 'Swelling and sores in the intestines (like Crohn’s disease)', fit: 'leading', why: 'Fits the belly pain, loose stools, blood, weight loss and low iron. This is the top suspect.' },
+              { id: 'celiac', label: 'Trouble absorbing food (like celiac disease)', fit: 'possible', why: 'Can cause belly pain, weight loss and low iron. Worth testing, though it doesn’t usually cause visible blood.' },
+              { id: 'infection', label: 'A stomach bug (infection)', fit: 'possible', why: 'Infections can cause diarrhea and even blood, but they usually get better in a week or two. Isaiah has been sick for three months.' },
+              { id: 'ulcer', label: 'A sore in the stomach (an ulcer)', fit: 'possible', why: 'Ulcers can bleed and hurt, but the pain is usually higher up and they rarely cause diarrhea and weight loss in kids.' },
+              { id: 'diet', label: 'Not eating enough iron', fit: 'unlikely', why: 'Isaiah eats chicken, burgers and beans. Diet doesn’t explain his belly pain or the blood.' },
+              { id: 'asthma', label: 'Asthma', fit: 'unlikely', why: 'His lungs are clear, and asthma doesn’t cause low iron or belly symptoms.' },
+              { id: 'shape', label: 'He’s just out of shape', fit: 'unlikely', why: 'That isn’t a diagnosis. It ignores the clues his body is giving us.' },
+            ],
+            wrap: 'A list of possible causes, ranked from most to least likely, is called a differential diagnosis. Tests help the team move ideas up or down the list.',
+          },
+          senior: {
+            prompt: 'Build your differential diagnosis before the labs return. Choose four to six diagnoses, then rank them from most to least likely. Include anything dangerous you cannot afford to miss.',
+            min: 4, max: 6,
+            options: [
+              { id: 'crohn', label: 'Crohn’s disease', fit: 'leading', why: 'Right lower quadrant pain, chronic diarrhea, blood in the stool, growth deceleration and iron deficiency form the classic pediatric picture. Terminal ileal disease fits the right-sided pain.' },
+              { id: 'uc', label: 'Ulcerative colitis', fit: 'possible', why: 'Also causes bloody diarrhea and iron deficiency. Right-sided pain and growth failure fit Crohn’s better, but only endoscopy with biopsy can tell them apart.' },
+              { id: 'celiac', label: 'Celiac disease', fit: 'possible', why: 'Impairs iron absorption and causes diarrhea and poor weight gain. Visible blood is unusual. A tTG-IgA screen is a simple first test.' },
+              { id: 'infect', label: 'Infectious colitis (bacterial or parasitic)', fit: 'possible', why: 'Can cause bloody diarrhea. A three-month course makes most bacterial infections less likely, but stool studies are still part of the workup.' },
+              { id: 'leuk', label: 'Leukemia', fit: 'cantmiss', why: 'Fatigue, pallor and weight loss in a child should always bring it to mind. A CBC with smear checks the other cell lines quickly. It would not explain the GI bleeding.' },
+              { id: 'meckel', label: 'Meckel’s diverticulum', fit: 'possible', why: 'A pediatric cause of GI bleeding and iron deficiency, but usually painless and without diarrhea or weight loss.' },
+              { id: 'diet', label: 'Dietary iron deficiency', fit: 'unlikely', why: 'His diet is adequate, and in an adolescent boy diet alone rarely explains iron deficiency. Anchoring here would miss the GI disease.' },
+              { id: 'thal', label: 'Thalassemia trait', fit: 'unlikely', why: 'Can cause small red cells, but not GI symptoms, weight loss or blood loss.' },
+              { id: 'decond', label: 'Deconditioning', fit: 'unlikely', why: 'Doesn’t explain pallor, tachycardia at rest, GI bleeding or weight loss.' },
+            ],
+            wrap: 'Now test your differential. The labs should help you move diagnoses up or down the list.',
+          },
+        },
+      },
+      {
         id: 'labs', type: 'labs', title: 'Virtual laboratory', modes_only: ['senior'],
         intro: 'The lab returns Isaiah’s results. Reference ranges are illustrative for a teenager and vary by laboratory.',
         results: [
@@ -180,13 +259,13 @@ export const CASE001 = {
       {
         id: 'decision', type: 'decision', title: 'What explains the evidence?',
         modes: {
-          junior: { prompt: 'Isaiah’s blood has less hemoglobin, the part of red blood cells that carries oxygen, because he is low on iron. He eats plenty of iron-rich foods. Which explanation fits best?', choices: [
+          junior: { prompt: 'Look back at your differential. Isaiah’s blood has less hemoglobin because he is low on iron, and he eats plenty of iron-rich foods. Which explanation fits best?', choices: [
             { label: 'Something in his digestive system is losing blood or not absorbing iron', preferred: true, feedback: 'Exactly. His belly pain, weight loss and the blood he noticed suggest his intestines are inflamed. That can leak blood and keep iron from being absorbed, so his body can’t make enough hemoglobin.' },
             { label: 'He isn’t eating enough iron', feedback: 'He eats chicken, burgers and beans. For a teenage boy, diet alone rarely explains this much iron loss, so healers look for where the iron is going.' },
             { label: 'He just has a cold', feedback: 'A cold doesn’t last three months or cause weight loss and low hemoglobin.' },
             { label: 'He isn’t trying hard enough', feedback: 'His tiredness is biological, not a lack of effort. That’s an important lesson for every healer.' },
           ] },
-          senior: { prompt: 'Which explanation is best supported by the available evidence?', choices: [
+          senior: { prompt: 'Look back at your differential. With the labs in hand, which explanation is now best supported?', choices: [
             { label: 'Iron deficiency anemia from intestinal blood loss and inflammation, concerning for inflammatory bowel disease such as Crohn’s disease', preferred: true, feedback: 'Correct. Small cells, high RDW and very low ferritin show iron deficiency. High CRP, ESR, platelets and calprotectin, low albumin, weight loss and right-sided pain point to inflamed bowel. Diagnosis is confirmed by a pediatric gastroenterologist with endoscopy and colonoscopy.' },
             { label: 'Dietary iron deficiency', feedback: 'His diet includes iron-rich foods, and in an adolescent boy with normal development diet alone is an uncommon cause. The inflammation and GI symptoms need an explanation.' },
             { label: 'Thalassemia trait', feedback: 'Thalassemia trait causes small red cells, but ferritin is usually normal and it doesn’t cause weight loss, abdominal pain or inflammation.' },
@@ -250,7 +329,7 @@ export async function ensureSeasonOne() {
       // Refresh an unapproved draft when the seeded content has been revised.
       if (item.data.rev) {
         await sql`UPDATE program_steps SET data = ${JSON.stringify(item.data)}::jsonb, summary = ${item.summary},
-            founder_notes = ${item.founder_notes}, title = ${item.title}
+            founder_notes = ${item.founder_notes}, title = ${item.title}, minutes = ${item.minutes}
           WHERE id = ${have.id} AND reviewed = false AND COALESCE((data->>'rev')::int, 1) < ${item.data.rev}`;
       }
       continue;

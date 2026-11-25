@@ -128,12 +128,24 @@ const CASE_TEMPLATE = {
   opening: { scene: 'What we see first.', dialogue: 'What the patient says.', narrator: 'What the attending tells the cadets.' },
   stages: [
     { id: 'history', type: 'interview', title: 'Patient interview', min: 2, prompt: 'Ask at least two questions.', questions: [{ q: 'Question?', a: 'Answer.', feedback: 'Why it matters.' }] },
+    { id: 'model', type: 'model', title: 'Build the mental model', prompt: 'Tap a clue, then the link it is evidence for.',
+      layers: [{ id: 'cause', label: 'Root cause', hint: 'Where it starts' }, { id: 'effect', label: 'What we see', hint: 'Signs and symptoms' }],
+      clues: [{ id: 'c1', label: 'A clue', layer: 'cause', feedback: 'Why it belongs here.' }, { id: 'c2', label: 'Another clue', layer: 'effect', feedback: 'Why.' }],
+      wrap: 'What the finished model shows.' },
+    { id: 'ddx', type: 'differential', title: 'Build a differential diagnosis', prompt: 'Choose at least three, most likely at the top.', min: 3, max: 5,
+      options: [
+        { id: 'd1', label: 'Leading diagnosis', fit: 'leading', why: 'Why it fits best.' },
+        { id: 'd2', label: 'Reasonable alternative', fit: 'possible', why: 'For and against.' },
+        { id: 'd3', label: 'Dangerous, must consider', fit: 'cantmiss', why: 'Why it can’t be missed.' },
+        { id: 'd4', label: 'Distractor', fit: 'unlikely', why: 'Why it doesn’t fit.' },
+      ],
+      wrap: 'What a differential is for.' },
     { id: 'decision', type: 'decision', title: 'What explains the evidence?', modes: {
       junior: { prompt: 'Junior question', choices: [{ label: 'Best answer', preferred: true, feedback: 'Why.' }, { label: 'Other answer', feedback: 'Why not.' }] },
       senior: { prompt: 'Senior question', choices: [{ label: 'Best answer', preferred: true, feedback: 'Why.' }, { label: 'Other answer', feedback: 'Why not.' }] },
     } },
   ],
-  debrief: { science: '', uncertainty: '', human: '', closing: '' },
+  debrief: { science: '', pearl: '', uncertainty: '', human: '', closing: '' },
   journal: { prompt: 'Reflection prompt' },
 };
 

@@ -4,12 +4,15 @@ import { useMemo, useState } from 'react';
 import Link from 'next/link';
 import Icon from '@/components/Icon';
 import OxygenTransit from './OxygenTransit';
+import { ModelStage, DifferentialStage } from './CaseReasoning';
 import r from './room.module.css';
 import s from './case.module.css';
 
 // Reusable patient-case engine. A case is content: patient, opening scene and
-// a list of stages (interview, observe, labs, decision, oxygen) with junior and
-// senior variants. Score = decisions answered well on the first try.
+// a list of stages (interview, observe, model, differential, labs, decision,
+// oxygen) with junior and senior variants. Score averages the graded stages:
+// a choice counts if right on the first try; model and differential stages
+// give partial credit.
 
 function Choices({ id, prompt, choices, picked, onPick, disabled }) {
   const pick = picked[id];
@@ -39,6 +42,7 @@ export default function CaseView({ step, track = 'junior', sessionId = null, onS
   const [asked, setAsked] = useState({});
   const [picked, setPicked] = useState({});
   const [first, setFirst] = useState({});
+  const [credit, setCredit] = useState({});
   const [log, setLog] = useState([]);
   const [journal, setJournal] = useState('');
   const [saved, setSaved] = useState(null);
@@ -46,8 +50,15 @@ export default function CaseView({ step, track = 'junior', sessionId = null, onS
 
   const st = stages[i];
   const variant = st?.modes ? st.modes[track] || st.modes.junior : st;
-  const graded = stages.filter((x) => (x.modes ? (x.modes[track] || x.modes.junior)?.choices : x.choices));
-  const score = graded.length ? Math.round((graded.filter((x) => first[x.id]).length / graded.length) * 100) : 100;
+  const isReasoning = (x) => x.type === 'model' || x.type === 'differential';
+  const graded = stages.filter((x) => isReasoning(x) || (x.modes ? (x.modes[track] || x.modes.junior)?.choices : x.choices));
+  const score = graded.length
+    ? Math.round((graded.reduce((a, x) => a + (isReasoning(x) ? credit[x.id] || 0 : first[x.id] ? 1 : 0), 0) / graded.length) * 100)
+    : 100;
+  const reason = (id) => (fraction, entry) => {
+    setCredit((c) => (c[id] === undefined ? { ...c, [id]: fraction } : c));
+    setLog((l) => [...l, { stage: id, ...entry, credit: Math.round(fraction * 100) }]);
+  };
   const finished = i >= stages.length;
 
   const onPick = (id, idx, c) => {
@@ -61,6 +72,7 @@ export default function CaseView({ step, track = 'junior', sessionId = null, onS
   const canNext = (() => {
     if (!st) return true;
     if (st.type === 'interview') return Object.keys(asked).length >= (st.min || 1);
+    if (isReasoning(st)) return credit[st.id] !== undefined;
     if (variant?.choices) return variant.choices[picked[st.id]]?.preferred;
     return true;
   })();
@@ -155,6 +167,9 @@ export default function CaseView({ step, track = 'junior', sessionId = null, onS
               </>
             )}
 
+            {st.type === 'model' && variant && <ModelStage v={variant} onDone={reason(st.id)} />}
+            {st.type === 'differential' && variant && <DifferentialStage v={variant} onDone={reason(st.id)} />}
+
             {st.type === 'labs' && (
               <>
                 <p className={s.sceneText}>{st.intro}</p>
@@ -197,7 +212,7 @@ export default function CaseView({ step, track = 'junior', sessionId = null, onS
           <div className={s.card}>
             <p className={r.eyebrow}>Debrief</p>
             <h3 className={s.h}>What we learned</h3>
-            <div className={r.scoreDial}><strong>{score}</strong><span>Clinical decisions made well on the first try.</span></div>
+            <div className={r.scoreDial}><strong>{score}</strong><span>Clinical reasoning score: your model, your differential and your decisions.</span></div>
             <div className={s.debrief}>
               <div><b>The science</b><p>{d.debrief?.science}</p></div>
               {d.debrief?.pearl && <div><b>Thinking like a clinician</b><p>{d.debrief.pearl}</p></div>}
