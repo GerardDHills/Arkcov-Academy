@@ -13,6 +13,14 @@
 
 import { MERCH_PRODUCTS } from './merchCatalog';
 
+// Store checkout is open on previews always, and in production only when
+// NEXT_PUBLIC_STORE_OPEN=true is set in Vercel (then redeploy).
+export function isStoreOpen() {
+  if (process.env.NEXT_PUBLIC_STORE_OPEN === 'true') return true;
+  const env = process.env.NEXT_PUBLIC_VERCEL_ENV || process.env.VERCEL_ENV;
+  return env !== 'production';
+}
+
 export const MEMBER_DISCOUNT = 0.1; // members and family plans save 10%
 
 export const PRODUCTS = [

@@ -3,8 +3,10 @@
 import { useState } from 'react';
 import Navbar from '@/components/Navbar';
 import { useAuth } from '@/components/AuthProvider';
-import { PRODUCTS, priceFor, formatPrice, MEMBER_DISCOUNT } from '@/lib/products';
+import { PRODUCTS, isStoreOpen, priceFor, formatPrice, MEMBER_DISCOUNT } from '@/lib/products';
 import styles from './store.module.css';
+
+const STORE_OPEN = isStoreOpen();
 
 const CATEGORIES = ['All', ...Array.from(new Set(PRODUCTS.map((p) => p.category)))];
 
@@ -68,8 +70,8 @@ function ProductCard({ product, role }) {
           <p className={styles.price}>
             {yours < base && <s>{formatPrice(base)}</s>} {formatPrice(yours)}
           </p>
-          <button className="btn btn-crimson" onClick={buy} disabled={soon || busy}>
-            {soon ? 'Coming soon' : busy ? 'Opening checkout…' : product.kind === 'digital' ? 'Buy and download' : 'Buy now'}
+          <button className="btn btn-crimson" onClick={buy} disabled={soon || busy || !STORE_OPEN}>
+            {soon ? 'Coming soon' : !STORE_OPEN ? 'Opening soon' : busy ? 'Opening checkout…' : product.kind === 'digital' ? 'Buy and download' : 'Buy now'}
           </button>
         </div>
         {error && <p className={styles.error} role="alert">{error}</p>}
@@ -94,6 +96,9 @@ export default function StorePage() {
           <p>Tools and gear for the journey to medicine.{' '}
             {member ? `Your member price is already applied: ${Math.round(MEMBER_DISCOUNT * 100)}% off.` : `Members save ${Math.round(MEMBER_DISCOUNT * 100)}% on every order.`}
           </p>
+          {!STORE_OPEN && (
+            <p className={styles.opening} role="status">The store opens soon. Browse the collection now, and check back shortly to order.</p>
+          )}
         </header>
         {CATEGORIES.length > 2 && (
           <div className={styles.tabs} role="group" aria-label="Filter by category">

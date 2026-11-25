@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { getStripe } from '@/lib/stripe';
 import { getCurrentUser } from '@/lib/auth';
-import { getProduct, priceFor } from '@/lib/products';
+import { getProduct, isStoreOpen, priceFor } from '@/lib/products';
 
 export const dynamic = 'force-dynamic';
 
@@ -10,6 +10,9 @@ export const dynamic = 'force-dynamic';
 export async function POST(request) {
   try {
     const { slug, variantId, quantity } = await request.json();
+    if (!isStoreOpen()) {
+      return NextResponse.json({ error: 'The store opens soon.' }, { status: 403 });
+    }
     const product = getProduct(slug);
     if (!product || product.status !== 'available') {
       return NextResponse.json({ error: 'This item is not available yet.' }, { status: 400 });
