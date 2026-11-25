@@ -20,11 +20,16 @@ export function middleware(request) {
   const { pathname } = request.nextUrl;
 
   // Public routes — always accessible
-  const publicRoutes = ['/', '/login', '/signup', '/pricing', '/api/auth/login', '/api/auth/signup', '/api/stripe/webhook'];
-  const publicPrefixes = ['/pricing/', '/api/auth/'];
+  const publicRoutes = ['/', '/login', '/signup', '/pricing', '/api/auth/login', '/api/auth/signup', '/api/stripe/webhook', '/store'];
+  const publicPrefixes = ['/pricing/', '/api/auth/', '/store/', '/api/store/'];
   
   const isPublic = publicRoutes.some(route => pathname === route) || 
                    publicPrefixes.some(prefix => pathname.startsWith(prefix));
+
+  // One-time Printful setup calls carry a key the route checks itself
+  if (pathname.startsWith('/api/admin/printful/') && request.headers.get('x-setup-key')) {
+    return NextResponse.next();
+  }
 
   if (isPublic) {
     // Redirect logged-in users away from login/signup

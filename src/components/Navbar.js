@@ -25,7 +25,7 @@ export default function Navbar() {
             <li><Link href="/#paths" onClick={() => setMenuOpen(false)}>Find your path</Link></li>
             <li><Link href="/#explore" onClick={() => setMenuOpen(false)}>Library</Link></li>
             <li><Link href="/#programs" onClick={() => setMenuOpen(false)}>Programs</Link></li>
-            <li><Link href="/#store" onClick={() => setMenuOpen(false)}>Store</Link></li>
+            <li><Link href="/store" onClick={() => setMenuOpen(false)}>Store</Link></li>
             <li><Link href="/#about" onClick={() => setMenuOpen(false)}>About</Link></li>
             <li><Link href="/login" onClick={() => setMenuOpen(false)}>Log In</Link></li>
             <li><Link href="/signup" className={styles.cta} onClick={() => setMenuOpen(false)}>Join Now</Link></li>
@@ -35,6 +35,7 @@ export default function Navbar() {
             <li><Link href="/dashboard" onClick={() => setMenuOpen(false)}>Dashboard</Link></li>
             <li><Link href="/explore" onClick={() => setMenuOpen(false)}>Explore</Link></li>
             <li><a href="/campus" onClick={() => setMenuOpen(false)}>Campus</a></li>
+            <li><Link href="/store" onClick={() => setMenuOpen(false)}>Store</Link></li>
             {user.role === 'admin' && (
               <li><Link href="/admin" onClick={() => setMenuOpen(false)}>Admin</Link></li>
             )}

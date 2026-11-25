@@ -22,6 +22,7 @@ const adminLinks = [
   { href: '/admin', label: 'Admin Home', icon: 'bolt' },
   { href: '/admin/content', label: 'Content Manager', icon: 'folder' },
   { href: '/admin/users', label: 'Users', icon: 'users' },
+  { href: '/admin/store', label: 'Store Files', icon: 'folder' },
 ];
 
 export default function Sidebar() {
