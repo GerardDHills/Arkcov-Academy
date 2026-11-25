@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="theme-color" content="#1b0b24">
+<title>Health Crystal Run · Warriors Thrive</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lilita+One&family=Atkinson+Hyperlegible:wght@400;700&display=swap">
+<link rel="preload" as="image" href="bg/lab.webp">
+<style>
+:root{--gold:#ffc23d;--ink:#fff7ef;--magenta:#d6246e;--night:#1b0b24;--ok:#57d68d;--bad:#ff6b6b;--cyan:#5ee7ff;--crys:#5dffa0;--plum:#2a1236;--plum-2:#3a1a4a;--plum-3:#4c2460;--violet:#7b4dff;
+--display:"Lilita One","Arial Rounded MT Bold","Trebuchet MS",system-ui,sans-serif;--body:"Atkinson Hyperlegible",system-ui,-apple-system,"Segoe UI",sans-serif}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;height:100%;background:var(--night);color:var(--ink);font-family:var(--body);overflow:hidden;overscroll-behavior:none;touch-action:none;-webkit-user-select:none;user-select:none}
+canvas#c{position:fixed;inset:0;width:100%;height:100%;display:block}
+button{font:inherit;color:inherit;cursor:pointer;border:0;background:none}
+.hide{display:none!important}
+.layer{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:calc(16px + env(safe-area-inset-top)) 16px calc(16px + env(safe-area-inset-bottom));z-index:5}
+.dim{background:rgba(20,6,30,.66);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px)}
+.panel{width:100%;max-width:440px;background:linear-gradient(160deg,rgba(84,40,120,.97),rgba(42,18,54,.97));border:2px solid rgba(255,194,61,.35);border-radius:26px;padding:20px;box-shadow:0 20px 60px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.15);max-height:100%;overflow:auto;touch-action:pan-y}
+h1,h2,h3{font-family:var(--display);font-weight:400;margin:0;letter-spacing:.01em}
+h2{font-size:26px;line-height:1.1}
+.sub{opacity:.88;font-size:15px;line-height:1.45}
+.cta{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;min-height:58px;border-radius:999px;background:linear-gradient(180deg,#ffd76a,#ffb21a);color:#3a1a00;font-family:var(--display);font-size:24px;box-shadow:0 5px 0 #b97f0a,0 10px 24px rgba(255,178,26,.35);margin-top:14px}
+.cta:active{transform:translateY(3px);box-shadow:0 2px 0 #b97f0a}
+.cta.alt{background:linear-gradient(180deg,#9b78ff,#7b4dff);color:#fff;box-shadow:0 5px 0 #4b2bb3}
+.link{display:block;margin:12px auto 0;text-decoration:underline;opacity:.88;font-size:15px;padding:6px}
+#select{justify-content:flex-start;overflow:auto;touch-action:pan-y;background:linear-gradient(180deg,rgba(27,11,36,.15) 0%,rgba(27,11,36,.55) 38%,rgba(27,11,36,.92) 62%,#1b0b24 100%),url(bg/city.webp) center top/cover no-repeat}
+.wtlogo{width:min(150px,40vw);display:block;margin:0 auto;filter:drop-shadow(0 4px 10px rgba(0,0,0,.5))}
+.titleimg{width:min(360px,88vw);display:block;margin:2px auto 0;filter:drop-shadow(0 6px 18px rgba(0,0,0,.55));animation:bob 2.6s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(-4px) scale(1.01)}}
+.tag-line{text-align:center;font-weight:700;font-size:15px;text-shadow:0 2px 6px rgba(0,0,0,.8);margin:2px 0 0}
+.stage{position:relative;height:170px;width:100%;max-width:440px;display:flex;align-items:flex-end;justify-content:center;margin:2px 0}
+.stage canvas{height:165px;width:auto}
+.stage .glow{position:absolute;bottom:0;left:50%;width:170px;height:28px;transform:translateX(-50%);border-radius:50%;background:radial-gradient(closest-side,rgba(93,255,160,.6),transparent)}
+.who{text-align:center;margin-bottom:8px}
+.who b{font-family:var(--display);font-size:26px;display:block;text-shadow:0 2px 0 rgba(0,0,0,.4)}
+.who small{opacity:.85}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;width:100%;max-width:440px}
+.pick{border-radius:18px;padding:4px;background:rgba(255,255,255,.09);border:3px solid transparent;display:flex;flex-direction:column;align-items:center;gap:2px;transition:transform .15s}
+.pick img{width:100%;aspect-ratio:1;border-radius:14px;object-fit:cover;display:block}
+.pick span{font-size:12px;font-weight:700;white-space:nowrap}
+.pick.on{border-color:var(--gold);background:rgba(255,194,61,.2);transform:translateY(-3px);box-shadow:0 6px 16px rgba(255,194,61,.25)}
+.wrapw{width:100%;max-width:440px}
+.best{text-align:center;font-size:13px;opacity:.8;margin-top:6px}
+.exit{position:absolute;top:calc(10px + env(safe-area-inset-top));left:12px;padding:8px 14px;border-radius:999px;background:rgba(20,6,30,.55);border:1px solid rgba(255,255,255,.2);font-weight:700;font-size:15px;z-index:2}
+body.embed #select{padding-top:calc(54px + env(safe-area-inset-top))}
+#hud{position:fixed;left:0;right:0;top:0;padding:calc(10px + env(safe-area-inset-top)) 12px 0;z-index:3;pointer-events:none}
+.hrow{display:flex;align-items:center;gap:8px}
+.pill{display:flex;align-items:center;gap:6px;background:rgba(27,8,44,.72);border:2px solid rgba(255,194,61,.45);border-radius:999px;padding:4px 14px 4px 5px;font-family:var(--display);font-size:22px;line-height:1;box-shadow:0 4px 12px rgba(0,0,0,.35)}
+.pill.cr{border-color:rgba(93,255,160,.55)}
+.pill img{width:30px;height:30px}
+.sp{flex:1}
+.pbtn{pointer-events:auto;width:46px;height:46px;border-radius:50%;background:rgba(27,8,44,.72);border:2px solid rgba(255,255,255,.3);font-size:17px;display:grid;place-items:center;font-family:var(--display)}
+.prog{position:relative;height:12px;border-radius:99px;margin:14px 22px 0 8px;background:rgba(27,8,44,.75);border:2px solid rgba(255,255,255,.18);box-shadow:0 0 10px rgba(123,77,255,.5)}
+.prog .z{position:absolute;top:0;bottom:0;border-radius:99px;opacity:.35}
+.prog i{position:absolute;left:0;top:0;bottom:0;border-radius:99px;background:linear-gradient(90deg,var(--cyan),var(--gold));box-shadow:0 0 10px var(--gold)}
+.prog b{position:absolute;top:50%;width:16px;height:16px;margin:-8px 0 0 -8px;border-radius:50%;background:#2a1236;border:3px solid #fff}
+.prog b.done{background:var(--gold);border-color:#fff}
+.prog .me{position:absolute;top:50%;width:30px;height:30px;margin:-15px 0 0 -15px;border-radius:50%;border:2px solid var(--gold);background:#2a1236 center/cover;box-shadow:0 0 10px var(--gold);z-index:2}
+.prog em{position:absolute;right:-20px;top:50%;transform:translateY(-50%);font-style:normal;font-size:22px}
+.bonusChip{display:inline-flex;align-items:center;gap:8px;margin:12px 0 0 8px;background:rgba(27,8,44,.72);border-radius:999px;padding:4px 12px 4px 6px;font-size:13px;font-weight:700;border:1px solid rgba(255,194,61,.35)}
+.bonusChip .bar{width:70px;height:6px;border-radius:9px;background:rgba(255,255,255,.18);overflow:hidden}
+.bonusChip .bar i{display:block;height:100%;background:var(--gold);box-shadow:0 0 6px var(--gold)}
+#zoneBanner{position:fixed;left:50%;top:27%;background:radial-gradient(closest-side,rgba(27,8,44,.75),rgba(27,8,44,.45) 70%,transparent);padding:18px 40px;border-radius:40px;transform:translate(-50%,-50%) scale(.9);z-index:4;text-align:center;pointer-events:none;opacity:0;transition:opacity .4s,transform .4s}
+#zoneBanner.on{opacity:1;transform:translate(-50%,-50%) scale(1)}
+#zoneBanner small{display:block;font-weight:700;letter-spacing:.2em;text-transform:uppercase;font-size:13px;color:var(--cyan);text-shadow:0 2px 6px rgba(0,0,0,.9)}
+#zoneBanner b{display:block;font-family:var(--display);font-weight:400;font-size:clamp(28px,9vw,40px);line-height:1;color:var(--gold);text-shadow:0 4px 0 #6a2a00,0 0 24px rgba(255,194,61,.5);white-space:nowrap}
+#toast{position:fixed;left:50%;top:24%;transform:translate(-50%,-50%);z-index:6;font-family:var(--display);font-size:30px;text-align:center;text-shadow:0 3px 0 rgba(0,0,0,.5);pointer-events:none;transition:opacity .3s;max-width:90vw;line-height:1.15;opacity:0}
+#toast small{display:block;font-family:var(--body);font-size:16px;font-weight:700;text-shadow:0 2px 4px rgba(0,0,0,.8);margin-top:4px}
+#habit{position:fixed;left:12px;right:12px;bottom:calc(16px + env(safe-area-inset-bottom));z-index:4;display:flex;gap:12px;align-items:center;max-width:440px;margin:0 auto;background:rgba(27,8,44,.88);border:2px solid var(--crys);border-radius:20px;padding:10px 14px;box-shadow:0 0 24px rgba(93,255,160,.35);pointer-events:none;transform:translateY(150%);transition:transform .35s cubic-bezier(.2,1.4,.4,1)}
+#habit.on{transform:none}
+#habit .ic{font-size:30px;flex:none;width:48px;height:48px;border-radius:14px;display:grid;place-items:center;background:radial-gradient(circle,rgba(93,255,160,.45),rgba(93,255,160,.08))}
+#habit b{font-family:var(--display);font-weight:400;font-size:19px;color:var(--crys);display:block}
+#habit span{font-size:14px;line-height:1.35}
+#hint{position:fixed;left:50%;bottom:calc(110px + env(safe-area-inset-bottom));transform:translateX(-50%);z-index:4;background:rgba(27,8,44,.88);border:2px solid var(--gold);border-radius:999px;padding:10px 18px;font-weight:700;white-space:nowrap;pointer-events:none;animation:pulse 1s ease-in-out infinite;font-size:16px}
+@keyframes pulse{50%{transform:translateX(-50%) scale(1.06)}}
+.card-h{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.card-h img{width:58px;height:58px;flex:none;object-fit:contain}
+.tag{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:3px 10px;border-radius:99px;background:rgba(255,255,255,.14);margin-bottom:4px}
+.tag.bonus{background:var(--gold);color:#3a1a00}
+.myth{background:rgba(0,0,0,.28);border-left:4px solid var(--magenta);border-radius:10px;padding:10px 12px;margin:0 0 12px;font-size:15px;line-height:1.4}
+.myth b{font-family:var(--display);font-weight:400;font-size:18px;display:block;color:#ffb3cf}
+.q{font-size:19px;font-weight:700;line-height:1.35;margin:4px 0 12px}
+.ans{display:flex;flex-direction:column;gap:8px}
+.ans button{text-align:left;min-height:54px;padding:12px 14px;border-radius:14px;background:rgba(255,255,255,.1);border:2px solid rgba(255,255,255,.16);font-size:16px;line-height:1.3;font-weight:700}
+.ans button:active{background:rgba(255,255,255,.2)}
+.ans button.right{background:rgba(87,214,141,.28);border-color:var(--ok)}
+.ans button.wrong{background:rgba(255,107,107,.25);border-color:var(--bad)}
+.ans button:disabled{opacity:1}
+.res{margin-top:12px;padding:12px;border-radius:14px;font-size:16px;line-height:1.4}
+.res.good{background:rgba(87,214,141,.18)}
+.res.bad{background:rgba(255,107,107,.15)}
+.res b.h{font-family:var(--display);font-weight:400;font-size:22px;display:block}
+.truth{display:block;margin-top:8px}
+.truth i{font-style:normal;font-weight:700;color:var(--crys)}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:14px 0 4px;text-align:center}
+.stats div{background:rgba(0,0,0,.25);border-radius:14px;padding:10px 4px}
+.stats b{font-family:var(--display);font-size:26px;display:block;color:var(--gold)}
+.stats small{font-size:12px;opacity:.85}
+.habits{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:12px 0 0;text-align:left}
+.habits div{display:flex;align-items:center;gap:8px;background:rgba(0,0,0,.22);border-radius:12px;padding:7px 9px;font-size:14px;font-weight:700}
+.habits div span{font-size:20px}
+.habits div.miss{opacity:.45}
+.habits div.got{background:rgba(93,255,160,.14);box-shadow:inset 0 0 0 1px rgba(93,255,160,.4)}
+.ctl{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin:12px 0 0;font-size:14px}
+.ctl div{background:rgba(0,0,0,.22);border-radius:12px;padding:8px 10px}
+.ctl b{display:block;font-size:15px}
+.storyCrys{display:flex;gap:10px;align-items:center;background:rgba(93,255,160,.1);border:1px solid rgba(93,255,160,.35);border-radius:16px;padding:10px 12px;margin:12px 0 0}
+.storyCrys img{width:44px;height:44px;flex:none}
+.lvls{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;width:100%;max-width:440px;margin:10px 0 0}
+.lvl{border-radius:16px;padding:8px 10px;background:rgba(255,255,255,.09);border:3px solid transparent;text-align:left;line-height:1.2}
+.lvl b{font-family:var(--display);font-weight:400;font-size:17px;display:block}.lvl span{font-size:12px;font-weight:700;opacity:.9}
+.lvl.on{border-color:var(--gold);background:rgba(255,194,61,.2)}.lvl.lock{opacity:.55}
+.lvl .new{font-style:normal;font-size:11px;background:var(--magenta);border-radius:99px;padding:1px 7px;vertical-align:middle;font-family:var(--body);font-weight:700}
+#introL{background:#000;z-index:8;padding:0}#introL video{width:100%;height:100%;object-fit:cover}
+#introL .skip{position:absolute;right:16px;bottom:calc(16px + env(safe-area-inset-bottom));padding:10px 18px;border-radius:99px;background:rgba(255,255,255,.18);border:2px solid rgba(255,255,255,.5);font-weight:700;font-size:16px}
+#count{font-family:var(--display);font-size:110px;color:var(--gold);text-shadow:0 6px 0 #8a3b00,0 0 30px rgba(255,194,61,.5);pointer-events:none}
+#loading{position:fixed;inset:0;z-index:9;display:grid;place-items:center;background:var(--night);font-family:var(--display);font-size:22px;color:var(--gold)}
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<div id="loading">Loading…</div>
+
+<div id="hud" class="hide">
+  <div class="hrow">
+    <div class="pill"><img src="img/coin.webp" alt=""><span id="hCoins">0</span></div>
+    <div class="pill cr"><img src="img/crystal.webp" alt=""><span id="hCrys">0/7</span></div>
+    <div class="sp"></div>
+    <button class="pbtn" id="pauseBtn" aria-label="Pause">❚❚</button>
+  </div>
+  <div class="prog" id="prog"><i id="progFill"></i><span class="me" id="progMe"></span><em>🏥</em></div>
+  <div class="bonusChip"><img src="img/coin.webp" alt="" style="width:20px;height:20px"><span id="bonusTxt">Bonus question in 45</span><span class="bar"><i id="bonusBar" style="width:0"></i></span></div>
+</div>
+<div id="zoneBanner"><small id="zbS">Zone 1</small><b id="zbB">Amos Research Lab</b></div>
+<div id="toast"></div>
+<div id="habit"><div class="ic" id="habIc">💧</div><div><b id="habB">Water Crystal!</b><span id="habS"></span></div></div>
+<div id="hint" class="hide"></div>
+<div id="countL" class="layer hide" style="pointer-events:none"><div id="count">3</div></div>
+
+<div id="select" class="layer hide">
+  <button class="exit hide" id="exitBtn">← Gaming Hall</button>
+  <img class="wtlogo" src="img/logo.webp" alt="Warriors Thrive">
+  <img class="titleimg" src="obj/title.webp" alt="Health Crystal Run">
+  <p class="tag-line">Race healthy-habit crystals from the lab to the hospital!</p>
+  <div class="stage"><div class="glow"></div><canvas id="prev" width="300" height="360"></canvas></div>
+  <div class="who"><b id="whoName">Malcolm</b><small id="whoAbil"></small></div>
+  <div class="grid" id="grid"></div>
+  <div class="lvls" id="lvls">
+    <button class="lvl on" data-l="1"><b>Level 1</b><span>Lab → City → Hospital</span></button>
+    <button class="lvl" data-l="2"><b>Level 2</b><span>Acute Chest Rescue 🫁</span></button>
+    <button class="lvl" data-l="3"><b>Level 3 <i class="new">NEW</i></b><span>Stroke Shield 🧠</span></button>
+  </div>
+  <div class="wrapw">
+    <button class="cta" id="goBtn">Run! ▶</button>
+    <div class="best" id="bestTxt"></div>
+    <button class="link" id="howBtn">How to play</button>
+  </div>
+</div>
+
+<div id="story" class="layer dim hide">
+  <div class="panel">
+    <span class="tag">Lab → City → Hospital</span>
+    <h2 style="margin:6px 0 8px">Power up the hospital!</h2>
+    <p class="sub" style="margin:0">Start at the <b>Amos Research Lab</b>, race through <b>Warrior City</b>, and reach the <b>hospital</b>. <b>The Society</b> will try to stop you with myths and roadblocks.</p>
+    <div class="storyCrys"><img src="img/crystal.webp" alt=""><div class="sub" style="font-size:14px"><b>Each Health Crystal is a healthy habit:</b> water, hydroxyurea, rest, staying warm, healthy food, checkups, and a fever plan. Collect all 7 to power the hospital's treatments, just like healthy habits power your body.</div></div>
+    <div class="ctl">
+      <div><b>⬅ ➡ Swipe</b>change lanes</div>
+      <div><b>⬆ Swipe up</b>jump barricades and gaps</div>
+      <div><b>⬇ Swipe down</b>slide under Red Tape</div>
+      <div><b>🪙 40–50 coins</b>Warrior Bonus question</div>
+    </div>
+    <p class="sub" style="margin:12px 0 0;font-size:14px">Get caught? Answer a <b>Warrior Card</b>. Right: keep running. Wrong: learn the answer and restart from your last checkpoint.</p>
+    <button class="cta" id="storyGo">Let's go!</button>
+  </div>
+</div>
+
+<div id="introL" class="layer hide"><video id="introV" playsinline preload="none"></video><button class="skip" id="introSkip">Skip ▶</button></div>
+<div id="story2" class="layer dim hide">
+  <div class="panel">
+    <span class="tag">IV Bag → Bloodstream → Lungs</span>
+    <h2 style="margin:6px 0 8px">Acute Chest Rescue!</h2>
+    <p class="sub" style="margin:0">Darius has <b>acute chest syndrome</b>, a serious lung problem in sickle cell. Dr. Amos shrinks you down to ride his IV antibiotics through the <b>bloodstream</b> and into his <b>lungs</b>. You'll run faster this time!</p>
+    <div class="storyCrys"><img src="img/crystal.webp" alt=""><div class="sub" style="font-size:14px"><b>Each crystal is a treatment:</b> IV antibiotics (ceftriaxone or ampicillin-sulbactam), azithromycin, a transfusion, oxygen, pain control, the incentive spirometer, and hydroxyurea. Deliver all 7 to the inflamed part of the lung!</div></div>
+    <p class="sub" style="margin:12px 0 0;font-size:14px">The Society blocks the way with acute chest myths. Get caught? Answer a <b>Warrior Card</b> to break free.</p>
+    <button class="cta" id="story2Go">Let's go!</button>
+  </div>
+</div>
+
+<div id="story3" class="layer dim hide">
+  <div class="panel">
+    <span class="tag">TCD Probe → Brain Artery → Brain</span>
+    <h2 style="margin:6px 0 8px">Stroke Shield!</h2>
+    <p class="sub" style="margin:0">Mateo's yearly <b>TCD</b> showed his blood racing too fast, and his MRI found a <b>silent stroke</b>. Ride the sound waves out of the TCD probe, through a <b>twisty brain artery</b>, and into his <b>brain</b>. Watch out: the blood rushes faster near the end!</p>
+    <div class="storyCrys"><img src="img/crystal.webp" alt=""><div class="sub" style="font-size:14px"><b>Each crystal fights stroke:</b> TCD screening, brain MRI, MRA, chronic transfusions, hydroxyurea, thinking tests, and the stroke warning signs. Deliver all 7 to the part of the brain that needs help!</div></div>
+    <p class="sub" style="margin:12px 0 0;font-size:14px">The Society blocks the way with stroke myths. Get caught? Answer a <b>Warrior Card</b> to break free.</p>
+    <button class="cta" id="story3Go">Let's go!</button>
+  </div>
+</div>
+
+<div id="cardL" class="layer dim hide"><div class="panel" id="cardP"></div></div>
+
+<div id="pauseL" class="layer dim hide">
+  <div class="panel" style="text-align:center">
+    <h2>Paused</h2>
+    <p class="sub">Take a breath, warrior.</p>
+    <button class="cta" id="resumeBtn">Keep running</button>
+    <button class="cta alt" id="musicBtn">Music: on</button>
+    <button class="link" id="quitBtn">Choose another warrior</button>
+    <button class="link exitL hide" id="exitBtn2">Back to the Gaming Hall</button>
+  </div>
+</div>
+
+<div id="winL" class="layer dim hide">
+  <div class="panel" style="text-align:center">
+    <img src="img/crystal.webp" alt="" style="width:80px;height:80px;display:block;margin:0 auto;filter:drop-shadow(0 0 16px rgba(93,255,160,.7))">
+    <h2 id="winT">Crystals delivered!</h2>
+    <p class="sub" id="winS" style="margin:6px 0 0"></p>
+    <div class="habits" id="wHabits"></div>
+    <div class="stats">
+      <div><b id="wCrys">0</b><small>crystals</small></div>
+      <div><b id="wCoins">0</b><small>coins</small></div>
+      <div><b id="wScore">0</b><small>score</small></div>
+    </div>
+    <p class="sub" id="wBest" style="margin:6px 0 0"></p>
+    <p class="sub" id="wApp" style="color:var(--gold);font-weight:700;margin:4px 0 0"></p>
+    <button class="cta" id="againBtn">Run again</button>
+    <button class="link" id="charBtn">Choose another warrior</button>
+    <button class="link exitL hide" id="exitBtn3">Back to the Gaming Hall</button>
+  </div>
+</div>
+
+<audio id="music" src="theme.mp3" loop preload="none"></audio>
+
+<script>
+"use strict";
+/* ================= data ================= */
+const CHARS=[
+ {id:"malcolm",name:"Malcolm",w:191,color:"#1f9d6b",abil:"Helps everyone heal from crisis"},
+ {id:"tasha",name:"Tasha",w:201,color:"#f08c1a",abil:"Can heal from two crises"},
+ {id:"theo",name:"Theo",w:198,color:"#2f7cf6",abil:"Unlocks doors"},
+ {id:"luciana",name:"Luciana",w:240,color:"#d6246e",abil:"Breaks barriers"},
+ {id:"ritika",name:"Ritika",w:192,color:"#7b6bff",abil:"Gets everyone a health crystal"},
+ {id:"krystal",name:"Krystal",w:205,color:"#e0407e",abil:"Teleports health crystals"},
+ {id:"amos",name:"Dr. Amos",w:208,color:"#19b3ad",abil:"Stops disease progression"},
+ {id:"kim",name:"Dr. Kim",w:171,color:"#a46bff",abil:"Keeps warriors out of crisis"}];
+const SPR_H=480;
+let HABITS=[
+ {icon:"💊",name:"Hydroxyurea Crystal",short:"Hydroxyurea",fact:"Taking hydroxyurea every day helps prevent pain crises."},
+ {icon:"🥗",name:"Healthy Food Crystal",short:"Healthy food",fact:"Healthy food and folic acid help your body make new red blood cells."},
+ {icon:"💧",name:"Water Crystal",short:"Water",fact:"Drinking lots of water helps keep your blood flowing smoothly."},
+ {icon:"🧥",name:"Stay Warm Crystal",short:"Stay warm",fact:"Staying warm and avoiding sudden cold can help prevent a crisis."},
+ {icon:"😴",name:"Rest Crystal",short:"Rest",fact:"Good sleep and rest help your body heal and recharge."},
+ {icon:"🩺",name:"Checkup Crystal",short:"Checkups",fact:"Hematology checkups catch problems early, even when you feel well."},
+ {icon:"🌡️",name:"Fever Plan Crystal",short:"Fever plan",fact:"With sickle cell, a fever can be an emergency. Tell a grown-up and call your care team right away."}];
+let MYTHS={
+ "IT'S ALL IN YOUR HEAD":"Sickle cell pain is real. Sickled cells block blood flow, and that hurts.",
+ "JUST TRY HARDER":"A pain crisis isn't about trying harder. Warriors deserve care, not blame.",
+ "YOU'RE FAKING IT":"Pain can be invisible and still be real. Believe warriors.",
+ "IT'S CONTAGIOUS":"You can't catch sickle cell. It's passed down from parents.",
+ "YOU CAN'T PLAY SPORTS":"Many warriors play sports with water breaks, rest, and a plan with their care team.",
+ "SKIP YOUR MEDS":"Taking medicines like hydroxyurea every day helps prevent crises.",
+ "LONG WAIT":"In a pain crisis, warriors should get pain medicine fast. Bring your pain plan.",
+ "NO RIDE":"Ask your care team about help getting to appointments.",
+ "NOT COVERED":"Social workers can help families with insurance and costs.",
+ "NO ONE LISTENS":"Speak up and bring a grown-up. You know your body best.",
+ "NO FUNDING":"Research needs support. Funding helps scientists find better treatments and cures.",
+ "DETOUR":"Some days have detours. Keep going, and ask for help when you need it.",
+ "RED TAPE":"Paperwork can slow down care. Your care team and social worker can help cut through it.",
+ "GAP IN CARE":"Keep going to your hematology checkups, even when you feel well."};
+let WALLS=["IT'S ALL IN YOUR HEAD","JUST TRY HARDER","YOU'RE FAKING IT","IT'S CONTAGIOUS","YOU CAN'T PLAY SPORTS","SKIP YOUR MEDS"];
+let BLOCKS=["LONG WAIT","NO RIDE","NOT COVERED","NO ONE LISTENS"];
+let END=2800;
+let ZONES=[
+ {id:"lab",z0:0,z1:850,name:"Amos Research Lab",img:"bg/lab.webp",vpy:.285,road:[136,42,236],road2:[120,36,214],zoom:.42},
+ {id:"city",z0:850,z1:2100,name:"Warrior City",img:"bg/city.webp",vpy:.268,road:[112,30,178],road2:[100,26,162],zoom:.45},
+ {id:"hosp",z0:2100,z1:END,name:"The Hospital",img:"bg/hosp.webp",vpy:.282,road:[128,34,212],road2:[116,30,196],zoom:1.25}];
+let CPS=[{z:0,name:"Amos Research Lab"},{z:850,name:"Warrior City"},{z:1475,name:"City Center"},{z:2100,name:"Hospital Gardens"}];
+let CRYSTAL_Z=[300,640,1060,1460,1860,2300,2590];
+/* ---- levels: level 1 is the original Lab → City → Hospital run; level 2 is the Acute Chest Rescue inside the body ---- */
+const LVL1={n:1,HABITS,MYTHS,WALLS,BLOCKS,END,ZONES,CPS,CRYSTAL_Z,speed:10,goal:"🏥",props:["lab","city","hosp"],
+ OBJ:{crates:"crates",cone:"cone"},TX:{crates:"NO FUNDING",cone:"DETOUR",tape:"RED TAPE",gap:"GAP IN CARE"},best:"wt-runner-best"};
+const LVL2={n:2,topic:"acs",speed:13,goal:"🫁",props:["iv","vessel","lung"],best:"wt-runner-best2",
+ OBJ:{crates:"germs",cone:"mucus"},TX:{crates:"GERMS",cone:"MUCUS",tape:"SHALLOW BREATHING",gap:"MISSED DOSE"},
+ END:2800,
+ ZONES:[{id:"iv",z0:0,z1:800,name:"The IV Antibiotic Bag",img:"bg/iv.webp",vpy:.265,road:[70,150,214],road2:[60,134,198],zoom:.42},
+  {id:"vessel",z0:800,z1:2000,name:"The Bloodstream",img:"bg/vessel.webp",vpy:.235,road:[150,32,62],road2:[132,26,52],zoom:.45},
+  {id:"lung",z0:2000,z1:2800,name:"Darius's Lungs",img:"bg/lung.webp",vpy:.31,road:[214,92,132],road2:[196,80,118],zoom:1.25}],
+ CPS:[{z:0,name:"IV Bag"},{z:800,name:"Bloodstream"},{z:1400,name:"Heart Express"},{z:2000,name:"Lung Airway"}],
+ CRYSTAL_Z:[260,560,1000,1350,1750,2250,2560],
+ HABITS:[
+  {icon:"💉",name:"IV Antibiotic Crystal",short:"IV antibiotics",fact:"In the hospital, IV antibiotics like ceftriaxone or ampicillin-sulbactam fight bacteria that can cause acute chest. Later you may switch to pills like amoxicillin-clavulanate (Augmentin)."},
+  {icon:"🦠",name:"Azithromycin Crystal",short:"Azithromycin",fact:"Azithromycin fights 'atypical' germs like mycoplasma, a common cause of acute chest."},
+  {icon:"🩸",name:"Transfusion Crystal",short:"Transfusion",fact:"When acute chest is serious, a blood transfusion adds healthy red cells that carry oxygen."},
+  {icon:"🫧",name:"Oxygen Crystal",short:"Oxygen",fact:"If your oxygen level is low, extra oxygen helps your body while your lungs heal."},
+  {icon:"🩹",name:"Pain Control Crystal",short:"Pain control",fact:"Treating pain lets you take deep breaths, and deep breaths help your lungs heal."},
+  {icon:"🌬️",name:"Spirometer Crystal",short:"Spirometer",fact:"Use your incentive spirometer about every hour while you're awake to keep your lungs open."},
+  {icon:"🛡️",name:"Hydroxyurea Crystal",short:"Hydroxyurea",fact:"Taking hydroxyurea every day helps prevent acute chest from coming back."}],
+ MYTHS:{
+  "IT'S JUST A COLD":"With sickle cell, chest pain, fever, cough or fast breathing can be acute chest syndrome. Get checked right away.",
+  "SLEEP OFF CHEST PAIN":"Chest pain with sickle cell is an emergency. Go to the ER or call your care team.",
+  "FEVER CAN WAIT":"A fever with sickle cell needs care right away. Call your care team.",
+  "SKIP THE SPIROMETER":"Using your incentive spirometer about every hour while awake keeps your lungs open.",
+  "STOP ANTIBIOTICS EARLY":"Finish every dose of your antibiotics, even when you start to feel better.",
+  "DON'T BREATHE DEEP":"Pain medicine helps you breathe deep, and deep breaths help your lungs heal.",
+  "WAIT AND SEE":"Acute chest can get worse fast. Getting care early helps.",
+  "NO X-RAY NEEDED":"A chest X-ray helps your care team see what's happening in your lungs.",
+  "STAY IN BED ALL DAY":"Sitting up and walking when you can helps open up your lungs.",
+  "SKIP THE TRANSFUSION":"When acute chest is serious, a blood transfusion can help your body get more oxygen.",
+  "GERMS":"Antibiotics like ceftriaxone, ampicillin-sulbactam and azithromycin fight the germs that can cause acute chest.",
+  "MUCUS":"Deep breaths, coughing and your spirometer help clear mucus out of your lungs.",
+  "SHALLOW BREATHING":"Small, shallow breaths let parts of the lungs close up. Deep breaths and good pain control help.",
+  "MISSED DOSE":"Take every dose of your medicines on time. Your care team can help you make a plan."},
+ WALLS:["IT'S JUST A COLD","SLEEP OFF CHEST PAIN","FEVER CAN WAIT","SKIP THE SPIROMETER","STOP ANTIBIOTICS EARLY","DON'T BREATHE DEEP"],
+ BLOCKS:["WAIT AND SEE","NO X-RAY NEEDED","STAY IN BED ALL DAY","SKIP THE TRANSFUSION"]};
+/* level 3: stroke. The middle zone is a tortuous artery: the road snakes left and right (curve) and blood rushes faster near its end (rush), like the high velocities a TCD picks up */
+const LVL3={n:3,topic:"stroke",speed:14,goal:"🧠",props:["probe","artery","brain"],best:"wt-runner-best3",kid:"Mateo",
+ OBJ:{crates:"sickleclump",cone:"clot"},TX:{crates:"CLUMPED CELLS",cone:"BLOCKAGE",tape:"NARROWED VESSEL",gap:"MISSED SCREENING"},
+ END:2800,rush:[1720,2000,9],
+ curve(z){const a=smooth(800,900,z)*(1-smooth(1900,2000,z));return a*(2.6*Math.sin(z/19)+1.3*Math.sin(z/7.3+1))},
+ ZONES:[{id:"probe",z0:0,z1:800,name:"Inside the TCD Probe",img:"bg/probe.webp",vpy:.33,road:[24,92,110],road2:[20,80,98],zoom:.42},
+  {id:"artery",z0:800,z1:2000,name:"The Twisty Brain Artery",img:"bg/artery.webp",vpy:.33,road:[140,22,60],road2:[122,18,50],zoom:.45},
+  {id:"brain",z0:2000,z1:2800,name:"Mateo's Brain",img:"bg/brain.webp",vpy:.31,road:[150,110,210],road2:[134,96,194],zoom:1.25}],
+ CPS:[{z:0,name:"TCD Probe"},{z:800,name:"Brain Artery"},{z:1400,name:"Artery Bend"},{z:2000,name:"Brain"}],
+ CRYSTAL_Z:[260,560,1000,1350,1650,2250,2560],
+ HABITS:[
+  {icon:"🔊",name:"TCD Screening Crystal",short:"TCD screening",fact:"A painless TCD ultrasound every year, from about age 2 to 16, checks how fast blood flows in the brain."},
+  {icon:"🧲",name:"Brain MRI Crystal",short:"Brain MRI",fact:"An MRI takes detailed pictures of the brain and can find silent strokes."},
+  {icon:"🔍",name:"MRA Crystal",short:"MRA",fact:"An MRA shows the brain's blood vessels and can find narrow or twisty arteries."},
+  {icon:"🩸",name:"Chronic Transfusion Crystal",short:"Transfusions",fact:"Regular blood transfusions, about every 3 to 4 weeks, lower sickle cells and help prevent stroke."},
+  {icon:"💊",name:"Hydroxyurea Crystal",short:"Hydroxyurea",fact:"For some kids, hydroxyurea can help keep stroke risk low. Your care team decides what's right for you."},
+  {icon:"🧠",name:"Neurocognitive Testing Crystal",short:"Thinking tests",fact:"Memory and thinking tests show how a silent stroke affects learning, so kids get the right school support."},
+  {icon:"🚨",name:"Warning Signs Crystal",short:"Warning signs",fact:"Face drooping, arm or leg weakness, trouble talking or seeing, or a sudden bad headache: call 911 right away!"}],
+ MYTHS:{
+  "KIDS DON'T GET STROKES":"Children with sickle cell can have strokes. Screening and treatment help prevent them.",
+  "SKIP THE TCD":"A yearly TCD from about age 2 to 16 finds high stroke risk early.",
+  "SILENT STROKES DON'T MATTER":"Silent strokes can affect memory, attention and learning. An MRI can find them.",
+  "IT'S JUST A HEADACHE":"A sudden, severe headache can be a stroke warning sign. Call 911.",
+  "STOP TRANSFUSIONS EARLY":"Stopping regular transfusions on your own can raise stroke risk. Talk with your care team first.",
+  "WAIT IT OUT":"With stroke signs, every minute counts. Call 911 right away.",
+  "NO MRI NEEDED":"An MRI can show silent strokes that don't cause obvious symptoms.",
+  "JUST BAD AT SCHOOL":"School struggles can be a sign of a silent stroke. Neurocognitive testing can get kids the support they need.",
+  "SKIP TRANSFUSION DAY":"Keeping every transfusion appointment keeps sickle cells low and helps protect the brain.",
+  "DON'T CALL 911":"Face drooping, weakness, or trouble talking? Call 911 right away.",
+  "CLUMPED CELLS":"Sickled cells can clump and block brain blood vessels. Transfusions lower the number of sickle cells.",
+  "BLOCKAGE":"When a brain blood vessel is blocked, part of the brain doesn't get enough oxygen. That's a stroke.",
+  "NARROWED VESSEL":"Narrowed brain arteries make blood rush faster. TCD and MRA can find them.",
+  "MISSED SCREENING":"Yearly TCD screening helps find stroke risk early, before a stroke happens."},
+ WALLS:["KIDS DON'T GET STROKES","SKIP THE TCD","SILENT STROKES DON'T MATTER","IT'S JUST A HEADACHE","STOP TRANSFUSIONS EARLY","WAIT IT OUT"],
+ BLOCKS:["NO MRI NEEDED","JUST BAD AT SCHOOL","SKIP TRANSFUSION DAY","DON'T CALL 911"]};
+const LEVELS={1:LVL1,2:LVL2,3:LVL3};let LV=LVL1;
+function setLevel(n){LV=LEVELS[n]||LVL1;({HABITS,MYTHS,WALLS,BLOCKS,END,ZONES,CPS,CRYSTAL_Z}=LV);
+ document.querySelector("#prog em").textContent=LV.goal;resize()}
+
+/* ================= helpers ================= */
+const $=id=>document.getElementById(id);
+const store={get(k,d){try{const v=localStorage.getItem(k);return v==null?d:JSON.parse(v)}catch{return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch{}}};
+const EMBED=window.parent!==window;
+const app=store.get("wt-state-v1",null);
+const prof=(app&&app.profile)||{};
+function ageYears(){if(prof.birthday){const b=new Date(prof.birthday+"T12:00"),n=new Date();let a=n.getFullYear()-b.getFullYear();if(n<new Date(n.getFullYear(),b.getMonth(),b.getDate()))a--;return a}return{"5-7":6,"8-12":10,"13-17":15,"18-22":20}[prof.ageGroup]??null}
+const AGE=ageYears();
+function rng(seed){return()=>{seed|=0;seed=seed+0x6D2B79F5|0;let t=Math.imul(seed^seed>>>15,1|seed);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+const shuffle=(a,r=Math.random)=>{for(let i=a.length-1;i>0;i--){const j=Math.floor(r()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+const smooth=(a,b,v)=>{const t=clamp((v-a)/(b-a),0,1);return t*t*(3-2*t)};
+const lerp=(a,b,t)=>a+(b-a)*t;
+const imgs={};function img(src){if(!imgs[src]){const i=new Image();i.decoding="async";i.src=src;imgs[src]=i}return imgs[src]}
+const ready=i=>i&&i.complete&&i.naturalWidth>0;
+const ASSETS=["bg/lab.webp","bg/city.webp","bg/hosp.webp","bg/iv.webp","bg/vessel.webp","bg/lung.webp","bg/probe.webp","bg/artery.webp","bg/brain.webp",
+ ...["germs","mucus","molecule","rbc","sickle","wbc","platelet","alveoli","piezo","wave","neuron","rbcfast","sickleclump","clot","brainfold","spark"].map(n=>"obj/"+n+".webp"),"img/coin.webp","img/crystal.webp","img/logo.webp",
+ ...["wall","block","agent","agent_run","society_face","bollard","cone","lamp","pillar","tree","crates","tape","title"].map(n=>"obj/"+n+".webp"),
+ ...CHARS.flatMap(c=>["sprites/"+c.id+".webp","faces/"+c.id+".webp"])];
+let loaded=0;ASSETS.forEach(a=>{const i=img(a);const done=()=>{loaded++;if(loaded===ASSETS.length)boot()};if(i.complete)done();else{i.onload=done;i.onerror=done}});
+setTimeout(()=>boot(),8000);
+function post(msg){if(EMBED)try{parent.postMessage({source:"warriors-thrive-runner",...msg},location.origin)}catch{}}
+
+/* ================= deck ================= */
+let DECK=[],deckI=0;
+fetch("cards.json").then(r=>r.json()).then(d=>{
+ const kid=AGE!=null&&AGE<12,teen=AGE!=null&&AGE>=13;
+ let pool=d.filter(c=>c.lvl==="kid"||(!kid&&c.lvl==="all")||(teen&&c.lvl==="teen"));
+ if(AGE==null)pool=d.filter(c=>c.lvl!=="teen");
+ DECK=pool;
+}).catch(()=>{});
+/* no repeats: answered cards are remembered and only come back after the whole deck; level 2 asks acute chest cards first */
+function nextCard(){if(!DECK.length)return{q:"What do red blood cells carry around the body?",a:["Oxygen","Sugar","Water","Germs"],c:0};
+ let seen=store.get("wt-runner-seen",[]);let fresh=DECK.filter(c=>!seen.includes(c.id));if(!fresh.length){seen=[];fresh=DECK}
+ const mine=LV.topic?fresh.filter(c=>c.topic===LV.topic):[],gen=fresh.filter(c=>!c.topic),from=mine.length?mine:gen.length?gen:fresh;
+ const c=from[Math.floor(Math.random()*from.length)];seen.push(c.id);store.set("wt-runner-seen",seen);return c}
+
+/* ================= audio ================= */
+let AC=null,musicOn=store.get("wt-runner-music",true);
+const music=$("music");music.volume=.35;
+function audioInit(){if(!AC){try{AC=new(window.AudioContext||window.webkitAudioContext)()}catch{}}if(AC&&AC.state==="suspended")AC.resume();if(musicOn)music.play().catch(()=>{})}
+function tone(f,d=.08,type="sine",v=.12,slide=0){if(!AC)return;const t=AC.currentTime,o=AC.createOscillator(),g=AC.createGain();o.type=type;o.frequency.setValueAtTime(f,t);if(slide)o.frequency.exponentialRampToValueAtTime(f*slide,t+d);g.gain.setValueAtTime(v,t);g.gain.exponentialRampToValueAtTime(.001,t+d);o.connect(g).connect(AC.destination);o.start(t);o.stop(t+d+.02)}
+const sfx={coin(){tone(1320,.06,"square",.04);setTimeout(()=>tone(1760,.08,"square",.04),50)},jump(){tone(330,.18,"sine",.12,2)},slide(){tone(500,.18,"sawtooth",.04,.4)},crystal(){[880,1110,1320,1760].forEach((f,i)=>setTimeout(()=>tone(f,.15,"triangle",.1),i*70))},hit(){tone(160,.35,"sawtooth",.15,.4)},good(){[660,880,1320].forEach((f,i)=>setTimeout(()=>tone(f,.14,"triangle",.12),i*90))},bad(){tone(300,.3,"triangle",.12,.6)},lane(){tone(700,.05,"sine",.04)},cp(){[523,659,784,1046].forEach((f,i)=>setTimeout(()=>tone(f,.18,"triangle",.1),i*90))}};
+
+/* ================= camera ================= */
+const cv=$("c"),ctx=cv.getContext("2d");
+let W=0,H=0,DPR=1,F=0,HOR=0,FEET=0,S0=1,CAMH=10,K=.36;
+const CAM_BACK=16,LANE=2.2,HALF=3.5,PH=4.3,IW=1080,IH=1910;
+function resize(){DPR=Math.min(2,window.devicePixelRatio||1);W=innerWidth;H=innerHeight;cv.width=Math.round(W*DPR);cv.height=Math.round(H*DPR);ctx.setTransform(DPR,0,0,DPR,0,0);ctx.imageSmoothingQuality="high";
+ S0=Math.max(W/IW,H/IH)*1.05;
+ const hi=Math.min(...ZONES.map(z=>z.vpy*IH*S0)),lo=Math.max(...ZONES.map(z=>H-(1-z.vpy)*IH*S0));
+ HOR=clamp(H*.3,lo,hi);
+ FEET=H*(W>H?.86:.82);
+ K=W>H?Math.min(.9,.36*(W/H)*.75):.36;
+ CAMH=HALF/K;
+ F=(FEET-HOR)*CAM_BACK/CAMH}
+addEventListener("resize",resize);resize();
+let camX=0;
+const bend=z=>LV.curve?LV.curve(z)-LV.curve(G.pz):0;
+function proj(x,y,z){const dz=z-G.pz+CAM_BACK;if(dz<.35)return null;const s=F/dz;return{x:W/2+(x+bend(z)-camX)*s,y:HOR+(CAMH-y)*s,s,dz}}
+const fade=dz=>1-smooth(100,128,dz);
+
+/* ================= level ================= */
+let G=null,char=CHARS.find(c=>c.id===(prof.character||prof.avatar))||CHARS[0];
+function zoneAt(z){const i=ZONES.findIndex(Z=>z<Z.z1);return i<0?2:i}
+const TX=k=>LV.TX[k];
+function newLevel(){
+ const r=rng(20261119+LV.n*7919),O=[],gaps=[],props=[];
+ const pick=a=>a[Math.floor(r()*a.length)];
+ let force=true;const COINP=.12;
+ const coinLine=(lane,z0,n,y=1.25)=>{if(!force&&r()>COINP)return;for(let i=0;i<n;i++)O.push({t:"coin",lane,z:z0+i*2.4,y})};
+ const arc=(lane,zc)=>{if(!force&&r()>.3)return;for(let i=-3;i<=3;i++){const k=i/3;O.push({t:"coin",lane,z:zc+i*1.5,y:1.25+1.5*(1-k*k)})}};
+ const tx=k=>k==="crates"?TX("crates"):k==="cone"?TX("cone"):k==="agent"?pick(WALLS):pick(BLOCKS);
+ const P={
+  dodge(z,zi){const b=Math.floor(r()*3);const kind=zi===0?(r()<.6?"crates":"agent"):zi===1?(r()<.45?"block":r()<.55?"cone":"agent"):(r()<.6?"block":"agent");
+   O.push({t:kind,lane:b,z,text:tx(kind)});coinLine((b+1+Math.floor(r()*2))%3,z-9,6)},
+  double(z,zi){const f=Math.floor(r()*3);[0,1,2].filter(l=>l!==f).forEach((l,i)=>{const kind=zi===0?(i?"crates":"agent"):i?"block":(r()<.5?"cone":"agent");O.push({t:kind,lane:l,z,text:tx(kind)})});coinLine(f,z-12,7)},
+  wall(z){O.push({t:"wall",lane:-1,z,text:pick(WALLS)});arc(Math.floor(r()*3),z)},
+  tape(z){O.push({t:"tape",lane:-1,z,text:TX("tape")});coinLine(Math.floor(r()*3),z-6,5,.7)},
+  gap(z,zi){gaps.push([z-1.7,z+1.7]);O.push({t:"gap",lane:-1,z,z0:z-1.7,z1:z+1.7,text:TX("gap"),zi});arc(Math.floor(r()*3),z)},
+  coins(z){const l=Math.floor(r()*3);coinLine(l,z-8,9);if(r()<.5)coinLine((l+1+Math.floor(r()*2))%3,z+16,6)},
+  zig(z){if(r()>.3)return;let l=Math.floor(r()*3);for(let i=0;i<12;i++){if(i%4===3)l=clamp(l+(r()<.5?-1:1),0,2);O.push({t:"coin",lane:l,z:z-10+i*2.4,y:1.25})}}};
+ coinLine(1,30,10);
+ const T1=LV.n===1;
+ O.push({t:"crates",lane:1,z:90,text:TX("crates"),tut:T1&&"Swipe LEFT or RIGHT to dodge!"});coinLine(0,80,5);coinLine(2,80,5);
+ O.push({t:"wall",lane:-1,z:130,text:WALLS[0],tut:T1&&"Swipe UP to jump the barricade!"});arc(1,130);
+ O.push({t:"tape",lane:-1,z:170,text:TX("tape"),tut:T1&&"Swipe DOWN to slide under!"});coinLine(1,164,5,.7);
+ gaps.push([208.3,211.7]);O.push({t:"gap",lane:-1,z:210,z0:208.3,z1:211.7,text:TX("gap"),zi:0,tut:T1&&"Swipe UP to jump the gap!"});arc(1,210);
+ coinLine(0,235,8);force=false;
+ const avoid=[...CPS.map(c=>c.z),...CRYSTAL_Z,...ZONES.map(Z=>Z.z1)];
+ let z=262;
+ while(z<END-150){
+  if(avoid.some(a=>Math.abs(a-z)<13)){z+=7;continue}
+  const p=z/END,zi=zoneAt(z),k=r();let name;
+  if(zi===2)name=k<.3?"dodge":k<.48?"wall":k<.62?"tape":k<.76?"coins":k<.88?"zig":"double";
+  else name=p<.3?(k<.32?"dodge":k<.48?"wall":k<.6?"tape":k<.7?"gap":k<.85?"coins":"zig"):(k<.22?"dodge":k<.4?"double":k<.53?"wall":k<.64?"tape":k<.74?"gap":k<.87?"coins":"zig");
+  P[name](z,zi);
+  if(r()<.35&&name!=="coins"&&name!=="zig")coinLine(Math.floor(r()*3),z+9,4);
+  z+=(p<.4?20:16)+r()*(p<.4?8:6);
+ }
+ force=true;for(let i=0;i<10;i++)O.push({t:"coin",lane:1,z:END-120+i*7,y:1.25});
+ CRYSTAL_Z.forEach((cz,i)=>{const l=Math.floor(r()*3);O.push({t:"crystal",lane:l,z:cz,y:1.9,h:i});coinLine(l,cz-14,5)});
+ CPS.slice(1).forEach(c=>O.push({t:"gate",lane:-1,z:c.z,text:c.name}));
+ O.forEach(o=>{if(o.t==="coin"&&gaps.some(g=>o.z>g[0]-.6&&o.z<g[1]+.6)&&o.y<2)o.y=2.6});
+ const solid=O.filter(o=>["crates","block","agent","cone"].includes(o.t));
+ const O2=O.filter(o=>!(o.t==="coin"&&solid.some(s=>s.lane===o.lane&&Math.abs(s.z-o.z)<1.6)));
+ O2.sort((a,b)=>a.z-b.z);
+ if(LV.n===3){for(let z=6;z<END+40;z+=10){const zi=zoneAt(z),n=Math.round(z/10);
+   if(zi===0){props.push({k:"piezo",z,side:-1,y:.6+(n%3)*.7},{k:"piezo",z:z+5,side:1,y:1+(n%2)*.8})}
+   else if(zi===1){props.push({k:n%3?"rbcfast":"sickle",z,side:-1,y:.8+(n%4)*.5},{k:n%4?"rbcfast":"rbc",z:z+5,side:1,y:1+(n%3)*.6})}
+   else{props.push({k:n%2?"neuron":"brainfold",z,side:-1},{k:n%2?"brainfold":"neuron",z,side:1});if(n%3===0)props.push({k:"spark",z:z+3,side:n%2?1:-1,y:2.5})}}
+ }else if(LV.n===2){const cells=["rbc","rbc","sickle","wbc","rbc","platelet"];
+  for(let z=6;z<END+40;z+=10){const zi=zoneAt(z),n=Math.round(z/10);
+   if(zi===0){const ab=["CEFTRIAXONE","AMPICILLIN-SULBACTAM","AZITHROMYCIN"];props.push({k:"molecule",z,side:-1,y:1.2+(n%3)*.5,lbl:n%3===0?ab[(n/3|0)%3]:null},{k:"molecule",z:z+5,side:1,y:1.6+(n%2)*.6,lbl:n%3===1?ab[((n/3|0)+1)%3]:null})}
+   else if(zi===1){props.push({k:cells[n%6],z,side:-1,y:.8+(n%4)*.5},{k:cells[(n+3)%6],z:z+5,side:1,y:1+(n%3)*.6})}
+   else if(n%2)props.push({k:"alveoli",z,side:-1},{k:"alveoli",z,side:1})}
+ }else for(let z=6;z<END+40;z+=10){const zi=zoneAt(z),n=Math.round(z/10);
+  if(zi===0){if(n%2)props.push({k:"pillar",z,side:-1},{k:"pillar",z,side:1})}
+  else if(zi===1){props.push({k:n%3===0?"lamp":"tree",z,side:-1},{k:n%3===1?"lamp":"tree",z,side:1})}
+  else props.push({k:n%2?"bollard":"tree",z,side:-1},{k:n%2?"tree":"bollard",z,side:1});}
+ return{O:O2,gaps,props,coinsTotal:O2.filter(o=>o.t==="coin").length};
+}
+function nextBonusGap(){return 40+Math.floor(Math.random()*11)}
+function startRun(){
+ const L=newLevel();
+ G={...L,state:"count",pz:0,speed:10,lane:1,x:0,y:0,vy:0,slide:0,falling:0,fallY:0,coins:0,crys:0,got:[],score:0,
+  cp:0,snap:{coins:0,crys:0,score:0,got:[]},nextBonus:nextBonusGap(),bonusBase:0,inv:0,t:0,shake:0,chase:0,tutShown:{},zone:-1,parts:[],flash:0,endT:0};
+ $("select").classList.add("hide");$("winL").classList.add("hide");$("hud").classList.remove("hide");$("progMe").style.backgroundImage=`url(faces/${char.id}.webp)`;
+ buildProg();updHud();countdown();
+}
+function buildProg(){const p=$("prog");p.querySelectorAll("b,.z").forEach(b=>b.remove());
+ const cols={lab:"#5ee7ff",city:"#ffc23d",hosp:"#ff8ac2",iv:"#5ee7ff",vessel:"#ff6b6b",lung:"#ff8ac2",probe:"#5ee7ff",artery:"#ff6b6b",brain:"#c49bff"};
+ ZONES.forEach(Z=>{const d=document.createElement("div");d.className="z";d.style.left=(Z.z0/END*100)+"%";d.style.width=((Z.z1-Z.z0)/END*100)+"%";d.style.background=cols[Z.id];p.insertBefore(d,p.firstChild)});
+ CPS.slice(1).forEach(c=>{const b=document.createElement("b");b.style.left=(c.z/END*100)+"%";b.dataset.z=c.z;p.appendChild(b)})}
+function updHud(){$("hCoins").textContent=G.coins;$("hCrys").textContent=G.crys+"/7";
+ const f=Math.min(100,G.pz/END*100);$("progFill").style.width=f+"%";$("progMe").style.left=f+"%";
+ $("prog").querySelectorAll("b").forEach(b=>b.classList.toggle("done",G.cp>=+b.dataset.z));
+ const need=Math.max(0,G.nextBonus-G.coins),span=G.nextBonus-G.bonusBase;
+ $("bonusTxt").textContent=need?`Bonus question in ${need}`:"Bonus question!";$("bonusBar").style.width=clamp((G.coins-G.bonusBase)/span*100,0,100)+"%"}
+let toastT;function toast(t,s,ms=1400,color){const e=$("toast");e.innerHTML=t+(s?"<small>"+s+"</small>":"");e.style.color=color||"#fff";e.style.opacity=1;clearTimeout(toastT);toastT=setTimeout(()=>e.style.opacity=0,ms)}
+let habT;function habitPop(h){$("habIc").textContent=h.icon;$("habB").textContent=h.name+"!";$("habS").textContent=h.fact;$("habit").classList.add("on");clearTimeout(habT);habT=setTimeout(()=>$("habit").classList.remove("on"),3800)}
+let zbT;function zoneBanner(i){$("zbS").textContent="Zone "+(i+1)+" of 3";$("zbB").textContent=ZONES[i].name;$("zoneBanner").classList.add("on");clearTimeout(zbT);zbT=setTimeout(()=>$("zoneBanner").classList.remove("on"),2300)}
+function hint(t){const h=$("hint");if(t){h.textContent=t;h.classList.remove("hide")}else h.classList.add("hide")}
+let cdIv;function countdown(){G.state="count";clearInterval(cdIv);$("countL").classList.remove("hide");let n=3;$("count").textContent=n;tone(660,.12,"triangle",.1);
+ cdIv=setInterval(()=>{n--;if(n<=0){clearInterval(cdIv);$("count").textContent="GO!";tone(990,.2,"triangle",.12);setTimeout(()=>{$("countL").classList.add("hide");if(G&&G.state==="count")G.state="run"},420)}else{$("count").textContent=n;tone(660,.12,"triangle",.1)}},620)}
+
+/* ================= input ================= */
+let tStart=null;
+function act(a){if(!G||G.state!=="run")return;
+ if(a==="left"&&G.lane>0){G.lane--;sfx.lane()}
+ else if(a==="right"&&G.lane<2){G.lane++;sfx.lane()}
+ else if(a==="up"&&G.y<=.001&&!G.falling){G.vy=11.5;G.slide=0;sfx.jump()}
+ else if(a==="down"){if(G.y>.01)G.vy=-18;G.slide=.8;sfx.slide()}}
+addEventListener("touchstart",e=>{if(!G||G.state!=="run")return;const t=e.touches[0];tStart={x:t.clientX,y:t.clientY,done:false}},{passive:true});
+addEventListener("touchmove",e=>{if(!tStart||tStart.done)return;const t=e.touches[0],dx=t.clientX-tStart.x,dy=t.clientY-tStart.y;if(Math.hypot(dx,dy)>26){tStart.done=true;act(Math.abs(dx)>Math.abs(dy)?(dx<0?"left":"right"):(dy<0?"up":"down"))}},{passive:true});
+addEventListener("touchend",()=>tStart=null);
+let mStart=null;cv.addEventListener("pointerdown",e=>{if(e.pointerType==="mouse")mStart={x:e.clientX,y:e.clientY}});
+addEventListener("pointerup",e=>{if(!mStart)return;const dx=e.clientX-mStart.x,dy=e.clientY-mStart.y;mStart=null;if(Math.hypot(dx,dy)>26)act(Math.abs(dx)>Math.abs(dy)?(dx<0?"left":"right"):(dy<0?"up":"down"))});
+addEventListener("keydown",e=>{const k={ArrowLeft:"left",a:"left",ArrowRight:"right",d:"right",ArrowUp:"up",w:"up"," ":"up",ArrowDown:"down",s:"down"}[e.key];if(k){e.preventDefault();act(k)}if(e.key==="Escape"||e.key==="p")pause()});
+document.addEventListener("visibilitychange",()=>{if(document.hidden)pause()});
+
+/* ================= pause ================= */
+function pause(){if(!G||G.state!=="run")return;G.state="paused";$("pauseL").classList.remove("hide");music.pause()}
+$("pauseBtn").onclick=pause;
+$("resumeBtn").onclick=()=>{$("pauseL").classList.add("hide");audioInit();countdown()};
+$("musicBtn").onclick=()=>{musicOn=!musicOn;store.set("wt-runner-music",musicOn);$("musicBtn").textContent="Music: "+(musicOn?"on":"off");if(!musicOn)music.pause()};
+$("musicBtn").textContent="Music: "+(musicOn?"on":"off");
+$("quitBtn").onclick=()=>{$("pauseL").classList.add("hide");toSelect()};
+
+/* ================= cards ================= */
+function cpName(){return CPS.filter(x=>x.z<=G.cp).pop().name}
+function showCard(kind,obs){
+ const c=nextCard();G.state="card";hint(null);
+ const P=$("cardP"),bonus=kind==="bonus";
+ const head=bonus?`<div class="card-h"><img src="img/coin.webp" alt=""><div><span class="tag bonus">Warrior Bonus</span><h2>${G.coins} coins! Bonus question</h2></div></div><p class="sub" style="margin:0 0 6px">${EMBED?"Get it right for <b>+5 Warrior points</b>.":"Get it right for <b>+500 score</b>."}</p>`
+  :`<div class="card-h"><img src="obj/society_face.webp" alt="" style="border-radius:50%;background:radial-gradient(circle,#2a1236,#12041c)"><div><span class="tag">Warrior Card</span><h2>${obs.t==="gap"?"You fell in a gap!":"The Society caught you!"}</h2></div></div><div class="myth"><b>"${obs.text}"</b>Answer right to break free and keep running.</div>`;
+ P.innerHTML=head+`<div class="q">${c.q}</div><div class="ans">${c.a.map((a,i)=>`<button data-i="${i}">${a}</button>`).join("")}</div><div id="resBox"></div>`;
+ $("cardL").classList.remove("hide");P.scrollTop=0;
+ P.querySelectorAll(".ans button").forEach(b=>b.onclick=()=>{
+  const i=+b.dataset.i,ok=i===c.c;P.querySelectorAll(".ans button").forEach(x=>{x.disabled=true;if(+x.dataset.i===c.c)x.classList.add("right")});if(!ok)b.classList.add("wrong");
+  const truth=obs&&MYTHS[obs.text],tr=truth?`<span class="truth"><i>The truth:</i> ${truth}</span>`:"";
+  let html;
+  if(bonus){html=ok?`<div class="res good"><b class="h">Correct! ${EMBED?"+5 points":"+500"}</b>${EMBED?"Nice work, warrior!":"Nice work, warrior!"}</div>`:`<div class="res bad"><b class="h">Not quite.</b>The answer is: <b>${c.a[c.c]}</b></div>`;
+   post({type:"bonus",correct:ok});if(ok){G.score+=500;sfx.good()}else sfx.bad();html+=`<button class="cta" id="cardGo">Keep running ▶</button>`}
+  else if(ok){html=`<div class="res good"><b class="h">You broke free!</b>${tr}</div><button class="cta" id="cardGo">Keep running ▶</button>`;sfx.good();post({type:"card",correct:true})}
+  else{html=`<div class="res bad"><b class="h">Not quite.</b>The answer is: <b>${c.a[c.c]}</b>${tr}</div><button class="cta alt" id="cardGo">Back to ${cpName()} ↺</button>`;sfx.bad();post({type:"card",correct:false})}
+  $("resBox").innerHTML=html;
+  setTimeout(()=>{const g=$("cardGo");g&&g.scrollIntoView({block:"nearest",behavior:"smooth"})},60);
+  $("cardGo").onclick=()=>{$("cardL").classList.add("hide");audioInit();
+   if(bonus){countdown();return}
+   if(ok){obs.cleared=true;G.inv=1.6;G.chase=5;if(obs.t==="gap")G.pz=obs.z1+1.5;G.falling=0;G.y=0;G.vy=0;countdown()}
+   else respawn()};
+ });
+}
+function respawn(){
+ Object.assign(G,{pz:G.cp,coins:G.snap.coins,crys:G.snap.crys,got:[...G.snap.got],score:G.snap.score,lane:1,x:0,y:0,vy:0,slide:0,falling:0,inv:0,chase:0,zone:zoneAt(G.cp)});
+ if(G.nextBonus-G.coins>50){G.bonusBase=G.coins;G.nextBonus=G.coins+nextBonusGap()}
+ G.O.forEach(o=>{if(o.z>G.cp){o.taken=false;o.cleared=false}});
+ updHud();toast(cpName(),"Checkpoint. You've got this!",1600,"#ffc23d");countdown();
+}
+function hitBy(o){if(G.inv>0||G.state!=="run")return;G.state="hit";G.shake=.45;G.flash=.35;sfx.hit();navigator.vibrate&&navigator.vibrate(120);G.chase=0;
+ setTimeout(()=>showCard("card",o),o.t==="gap"?900:700)}
+
+/* ================= particles ================= */
+function burst(x,y,col,n=10,sp=160,life=.55,size=4){for(let i=0;i<n;i++){const a=Math.random()*Math.PI*2,v=sp*(.4+Math.random()*.8);G.parts.push({x,y,vx:Math.cos(a)*v,vy:Math.sin(a)*v-sp*.3,life,max:life,col,size:size*(.6+Math.random()*.8)})}}
+
+/* ================= update ================= */
+const laneX=l=>(l-1)*LANE;
+function update(dt){
+ G.t+=dt;if(G.shake>0)G.shake-=dt;if(G.flash>0)G.flash-=dt;
+ for(const p of G.parts){p.life-=dt;p.x+=p.vx*dt;p.y+=p.vy*dt;p.vy+=500*dt}G.parts=G.parts.filter(p=>p.life>0);
+ if(G.state==="hit"){if(G.falling)G.fallY-=dt*14;return}
+ if(G.state==="ending"){G.speed=Math.max(0,G.speed-dt*9);G.pz+=G.speed*dt;G.endT+=dt;G.x+=(0-G.x)*Math.min(1,dt*4);if(G.endT>1.6){G.state="won";showWin()}return}
+ if(G.state!=="run")return;
+ G.speed=LV.speed+5*(G.pz/END);
+ if(LV.rush){const[a,b,x]=LV.rush,k=smooth(a,a+60,G.pz)*(1-smooth(b-10,b+40,G.pz));G.speed+=x*k;
+  if(k>.05&&!G.rushShown){G.rushShown=1;toast("HIGH VELOCITY!","Narrow arteries make blood rush faster. That's what TCD measures!",2600,"#5ee7ff")}}
+ const prevZ=G.pz;G.pz+=G.speed*dt;
+ G.x+=(laneX(G.lane)-G.x)*Math.min(1,dt*15);
+ if(G.y>0||G.vy>0){G.vy-=30*dt;G.y+=G.vy*dt;if(G.y<=0){G.y=0;G.vy=0}}
+ if(G.slide>0)G.slide-=dt;if(G.inv>0)G.inv-=dt;if(G.chase>0)G.chase-=dt;
+ const zi=zoneAt(G.pz);if(zi!==G.zone){zoneBanner(zi);G.zone=zi}
+ const inGap=G.gaps.find(g=>G.pz>g[0]+.3&&G.pz<g[1]-.3);
+ if(inGap&&G.y<=0){const o=G.O.find(o=>o.t==="gap"&&o.z0===inGap[0]);if(o&&!o.cleared&&G.inv<=0){G.falling=1;G.fallY=0;hitBy(o);return}}
+ for(const o of G.O){
+  if(o.z<prevZ-3)continue;if(o.z>G.pz+60)break;
+  if(o.tut&&!G.tutShown[o.z]&&o.z-G.pz<40&&o.z>G.pz){G.tutShown[o.z]=1;hint(o.tut);setTimeout(()=>hint(null),2800)}
+  if(o.taken||o.cleared)continue;
+  const near=Math.abs(o.z-G.pz)<.6,inLane=o.lane<0||Math.abs(G.x-laneX(o.lane))<1.25;
+  if(o.t==="coin"){if(near&&inLane&&Math.abs((G.y+1.25)-o.y)<1.7){o.taken=true;G.coins++;G.score+=10;sfx.coin();const p=proj(laneX(o.lane),o.y,o.z);p&&burst(p.x,p.y,"#ffd76a",7,120,.4,3);updHud();
+     if(G.coins>=G.nextBonus){G.bonusBase=G.nextBonus;G.nextBonus+=nextBonusGap();G.state="bonuswait";setTimeout(()=>showCard("bonus"),250);return}}}
+  else if(o.t==="crystal"){if(Math.abs(o.z-G.pz)<.9&&inLane){o.taken=true;G.crys++;G.got.push(o.h);G.score+=250;sfx.crystal();const p=proj(laneX(o.lane),o.y,o.z);p&&burst(p.x,p.y,"#5dffa0",22,260,.8,5);G.flash=-.25;updHud();habitPop(HABITS[o.h])}}
+  else if(o.t==="gate"){if(G.pz>=o.z&&G.cp<o.z){G.cp=o.z;G.snap={coins:G.coins,crys:G.crys,score:G.score,got:[...G.got]};sfx.cp();toast("Checkpoint!",o.text,1500,"#ffc23d");updHud()}}
+  else if(near&&inLane&&G.inv<=0){
+   if(o.t==="wall"&&G.y<1.05){hitBy(o);return}
+   if(o.t==="cone"&&G.y<.95){hitBy(o);return}
+   if(o.t==="tape"&&G.slide<=0){hitBy(o);return}
+   if(o.t==="block"||o.t==="agent"||o.t==="crates"){hitBy(o);return}
+  }
+ }
+ if(G.pz>=END-6){G.state="ending";hint(null);sfx.cp();setTimeout(()=>sfx.crystal(),350)}
+ updHud();
+}
+
+/* ================= win ================= */
+function showWin(){
+ music.volume=.2;
+ const score=Math.floor(G.score+END);
+ const best=store.get(LV.best,{}),prev=best[char.id]||0;if(score>prev){best[char.id]=score;store.set(LV.best,best)}
+ if(LV.n===1)store.set("wt-runner-done1",true);if(LV.n===2)store.set("wt-runner-done2",true);
+ const L2=LV.n===2,L3=LV.n===3;
+ $("winT").textContent=G.crys===7?(L2?"Acute chest, treated!":"All 7 crystals delivered!"):G.crys?"Crystals delivered!":(L2?"You made it to the lungs!":"You made it to the hospital!");
+ if(L3){$("winT").textContent=G.crys===7?"Mateo's brain is protected!":G.crys?"Crystals delivered!":"You made it to the brain!"}
+ $("winS").textContent=L3?(G.crys===7?`${char.name} delivered every stroke-fighting crystal to Mateo's brain!`:`${char.name} delivered ${G.crys} crystal${G.crys===1?"":"s"} to Mateo's brain. Run again to bring all 7!`):L2?(G.crys===7?`${char.name} delivered every treatment to Darius's lungs. His lungs can heal!`:`${char.name} delivered ${G.crys} treatment crystal${G.crys===1?"":"s"} to Darius's lungs. Run again to bring all 7!`)
+  :G.crys===7?`${char.name} brought every healthy habit to the hospital. That's how warriors thrive!`:`${char.name} delivered ${G.crys} Health Crystal${G.crys===1?"":"s"}. Run again to collect all 7 healthy habits!`;
+ $("wHabits").innerHTML=HABITS.map((h,i)=>`<div class="${G.got.includes(i)?"got":"miss"}"><span>${h.icon}</span>${h.short}${G.got.includes(i)?" ✓":""}</div>`).join("");
+ $("wCrys").textContent=G.crys+"/7";$("wCoins").textContent=G.coins;$("wScore").textContent=score.toLocaleString();
+ $("wBest").textContent=score>prev?"New best score for "+char.name+"!":"Best with "+char.name+": "+prev.toLocaleString();
+ $("wApp").textContent=EMBED?(L3?"+25 Warrior points for reaching the brain (once a day)":L2?"+25 Warrior points for reaching the lungs (once a day)":"+25 Warrior points for reaching the hospital (once a day)"):"";
+ post({type:"level",level:LV.n,crystals:G.crys,coins:G.coins,score});
+ $("winL").classList.remove("hide");$("hud").classList.add("hide");
+}
+$("againBtn").onclick=()=>{audioInit();music.volume=.35;startRun()};
+$("charBtn").onclick=()=>toSelect();
+function toSelect(){G=null;refreshLocks();$("winL").classList.add("hide");$("hud").classList.add("hide");$("select").classList.remove("hide");hint(null);music.volume=.35;showBest();drawPrev();ctx.clearRect(0,0,W,H)}
+
+/* ================= render ================= */
+function drawBackdrop(){
+ const z=G.pz,zi=zoneAt(z),Z=ZONES[zi];
+ const t=clamp((z-Z.z0)/(Z.z1-Z.z0),0,1);
+ const parX=-camX*F/CAM_BACK*.12+(LV.curve?bend(G.pz+70)*F/90:0);
+ const zoomOf=(Zn,tt)=>Zn===ZONES[2]?1+Zn.zoom*Math.pow(tt,1.6):1+Zn.zoom*tt;
+ const draw=(Zn,zoom,alpha)=>{const im=imgs[Zn.img];if(!ready(im)||alpha<=0)return;const s=S0*zoom,w=IW*s,h=IH*s;ctx.globalAlpha=alpha;ctx.drawImage(im,W/2-w/2+parX*zoom,HOR-Zn.vpy*h,w,h);ctx.globalAlpha=1};
+ const tail=55;
+ if(zi<2&&z>Z.z1-tail){const k=smooth(Z.z1-tail,Z.z1,z);draw(Z,zoomOf(Z,1)+k*.9,1);draw(ZONES[zi+1],1,k)}
+ else draw(Z,zoomOf(Z,t),1);
+}
+/* level 3: the stroke area (ischemia) waits at the end of the brain zone, and lights back up when the warrior arrives */
+function drawIsch(){if(LV.n!==3||G.pz<2050)return;const k=smooth(2050,END,G.pz),heal=G.state==="ending"||G.state==="won"?Math.min(1,G.endT/1.2):0,r=(50+Math.min(W,H)*.35*k)*(1+.05*Math.sin(G.t*3)),x=W/2-camX*F/CAM_BACK*.12,y=HOR-r*.15;
+ const g=ctx.createRadialGradient(x,y,0,x,y,r);g.addColorStop(0,heal?`rgba(255,${180+60*heal|0},220,.9)`:`rgba(160,170,195,${.85+.1*Math.sin(G.t*9)})`);g.addColorStop(.55,heal?"rgba(255,140,220,.5)":"rgba(130,140,170,.6)");g.addColorStop(1,"rgba(90,100,140,0)");
+ ctx.fillStyle=g;ctx.beginPath();ctx.arc(x,y,r,0,7);ctx.fill();if(!heal){ctx.save();ctx.setLineDash([8,8]);ctx.lineDashOffset=-G.t*20;ctx.strokeStyle="rgba(255,255,255,.55)";ctx.lineWidth=2;ctx.beginPath();ctx.arc(x,y,r*.62,0,7);ctx.stroke();ctx.restore()}label(heal?"✨ HEALING":"STROKE AREA: NEEDS HELP",x,y+r*.12,clamp(r*.12,16,30),smooth(2050,2150,G.pz),heal?"#16824f":"#4a5a8a")}
+function roadCol(z){const zi=zoneAt(z),Z=ZONES[zi];let c=Z.road,c2=Z.road2;
+ if(zi<2&&z>Z.z1-30){const k=smooth(Z.z1-30,Z.z1,z),N=ZONES[zi+1];c=c.map((v,i)=>lerp(v,N.road[i],k));c2=c2.map((v,i)=>lerp(v,N.road2[i],k))}return[c,c2,zi]}
+function quad(a,b,c,d){ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.lineTo(c.x,c.y);ctx.lineTo(d.x,d.y);ctx.closePath()}
+function strip(x0,x1,z0,z1){const A=proj(x0,0,z0),B=proj(x1,0,z0),C=proj(x1,0,z1),D=proj(x0,0,z1);if(!A||!D)return false;quad(A,B,C,D);return true}
+function drawRoad(){
+ const seg=2,zNear=G.pz-CAM_BACK+.4,zFar=G.pz+112;
+ for(let z=Math.floor(zFar/seg)*seg;z>=Math.floor(zNear/seg)*seg;z-=seg){
+  const za=Math.max(z,zNear),zb=z+seg;if(zb<=za)continue;
+  const dzm=(za+zb)/2-G.pz+CAM_BACK,al=fade(dzm);if(al<=0)continue;
+  const[c,c2,zi]=roadCol(z);const n=Math.round(z/seg),band=n%2;
+  const gap=G.gaps.find(g=>za<g[1]&&zb>g[0]);
+  const pieces=gap?[[za,Math.max(za,gap[0])],[Math.min(zb,gap[1]),zb]]:[[za,zb]];
+  ctx.globalAlpha=al;
+  for(const[p0,p1]of pieces){if(p1-p0<.01)continue;
+   if(strip(-HALF,HALF,p0,p1)){const col=band?c:c2;ctx.fillStyle=`rgb(${col[0]|0},${col[1]|0},${col[2]|0})`;ctx.fill()}
+   for(let l=0;l<3;l++){if(strip(laneX(l)-.55,laneX(l)+.55,p0,p1)){ctx.fillStyle=`rgba(255,255,255,${zi===0?.06:.035})`;ctx.fill()}}
+   for(const dx of[-LANE/2,LANE/2]){
+    if(zi===0){if(strip(dx-.3,dx+.3,p0,p1)){ctx.fillStyle="rgba(94,231,255,.18)";ctx.fill()}if(strip(dx-.09,dx+.09,p0,p1)){ctx.fillStyle="rgba(150,240,255,.95)";ctx.fill()}}
+    else if(zi===1){if(band&&strip(dx-.1,dx+.1,p0,p1)){ctx.fillStyle="rgba(255,255,255,.92)";ctx.fill()}}
+    else{if(strip(dx-.07,dx+.07,p0,p1)){ctx.fillStyle="rgba(255,220,255,.75)";ctx.fill()}}
+   }
+   if(zi===2&&n%3===0&&strip(-HALF,HALF,p0,Math.min(p1,p0+.08))){ctx.fillStyle="rgba(255,220,255,.35)";ctx.fill()}
+   if(zi===1&&(n%75===0||n%75===1)){for(let i=0;i<9;i++){const x=-HALF+.3+i*.8;if(strip(x,x+.45,p0,p1)){ctx.fillStyle="rgba(255,255,255,.85)";ctx.fill()}}}
+   for(const sd of[-1,1]){const e=sd*HALF;
+    if(strip(Math.min(e-.45*sd,e),Math.max(e-.45*sd,e),p0,p1)){ctx.fillStyle="rgba(255,194,61,.25)";ctx.fill()}
+    if(strip(Math.min(e-.14*sd,e+.06*sd),Math.max(e-.14*sd,e+.06*sd),p0,p1)){ctx.fillStyle=zi===0?"#9cf3ff":"#ffc23d";ctx.fill()}
+   }
+  }
+  if(gap){const g0=Math.max(za,gap[0]),g1=Math.min(zb,gap[1]);if(g1>g0&&strip(-HALF,HALF,g0,g1)){const A=proj(0,0,g0),D=proj(0,0,g1);const gr=ctx.createLinearGradient(0,D.y,0,A.y+1);gr.addColorStop(0,"#0b0312");gr.addColorStop(1,"#2a0b3a");ctx.fillStyle=gr;ctx.fill();
+    if(Math.abs(g1-gap[1])<.01&&strip(-HALF,HALF,g1-.12,g1)){ctx.fillStyle="#ff4fa3";ctx.fill()}}}
+  ctx.globalAlpha=1;
+ }
+ if(LV.n===3&&zoneAt(G.pz+20)===0){for(let i=0;i<7;i++){const z=G.pz+((i*16+G.t*34)%112);const L=proj(-HALF-.4,0,z),Rr=proj(HALF+.4,0,z),T=proj(0,2.4,z);if(!L||!Rr||!T)continue;
+   ctx.globalAlpha=fade(L.dz)*.75*(1-Math.min(1,(z-G.pz)/112));ctx.strokeStyle=i%2?"#5ee7ff":"#ffd76a";ctx.lineWidth=Math.max(1.5,L.s*.12);ctx.beginPath();ctx.ellipse((L.x+Rr.x)/2,L.y,(Rr.x-L.x)/2,Math.max(2,L.y-T.y),0,Math.PI,2*Math.PI);ctx.stroke()}ctx.globalAlpha=1}
+ else if(zoneAt(G.pz+20)===0){for(let i=0;i<6;i++){const z=G.pz+((i*18-G.t*30)%108+108)%108;for(const dx of[-LANE/2,LANE/2]){const p=proj(dx,0,z);if(!p)continue;const r=p.s*.4;ctx.globalAlpha=fade(p.dz)*.9;const g=ctx.createRadialGradient(p.x,p.y,0,p.x,p.y,r);g.addColorStop(0,"rgba(230,255,255,1)");g.addColorStop(1,"rgba(94,231,255,0)");ctx.fillStyle=g;ctx.fillRect(p.x-r,p.y-r,r*2,r*2)}}ctx.globalAlpha=1}
+}
+function sprite(name,x,z,wM,y=0,alpha=1,flip=false){const im=imgs["obj/"+name+".webp"];if(!ready(im))return null;const p=proj(x,y,z);if(!p)return null;const w=wM*p.s,h=w*im.naturalHeight/im.naturalWidth;
+ ctx.globalAlpha=alpha*fade(p.dz);if(flip){ctx.save();ctx.translate(p.x,0);ctx.scale(-1,1);ctx.drawImage(im,-w/2,p.y-h,w,h);ctx.restore()}else ctx.drawImage(im,p.x-w/2,p.y-h,w,h);ctx.globalAlpha=1;return{x:p.x,y:p.y,w,h,s:p.s,dz:p.dz}}
+function shadow(x,z,wM,a=.32){const p=proj(x,0,z);if(!p)return;ctx.globalAlpha=a*fade(p.dz);ctx.fillStyle="#12041c";ctx.beginPath();ctx.ellipse(p.x,p.y,wM*p.s*.5,wM*p.s*.13,0,0,7);ctx.fill();ctx.globalAlpha=1}
+function fitText(text,cx,cy,maxW,maxH,color,maxSize=40){
+ const words=text.split(" ");let size=Math.min(maxSize,maxH*.62),lines=[];
+ for(let it=0;it<8;it++){ctx.font=`${size}px "Lilita One","Arial Rounded MT Bold",sans-serif`;lines=[];let cur="";for(const w of words){const t=cur?cur+" "+w:w;if(ctx.measureText(t).width>maxW&&cur){lines.push(cur);cur=w}else cur=t}lines.push(cur);
+  const wid=Math.max(...lines.map(l=>ctx.measureText(l).width));if(lines.length*size*1.02<=maxH&&wid<=maxW)break;size*=.85}
+ if(size<5)return;ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillStyle=color;
+ lines.forEach((l,i)=>ctx.fillText(l,cx,cy+(i-(lines.length-1)/2)*size*1.02))}
+function rr(x,y,w,h,r){ctx.beginPath();if(ctx.roundRect)ctx.roundRect(x,y,w,h,r);else ctx.rect(x,y,w,h)}
+function label(text,x,y,s,alpha,col="#d6246e"){
+ if(alpha<=0)return;const size=clamp(s*.42,10,20);ctx.font=`${size}px "Lilita One","Arial Rounded MT Bold",sans-serif`;const w=ctx.measureText(text).width+size*1.1,h=size*1.55;
+ ctx.globalAlpha=alpha;ctx.fillStyle=col;rr(x-w/2,y-h,w,h,h/2);ctx.fill();ctx.strokeStyle="rgba(255,255,255,.85)";ctx.lineWidth=2;ctx.stroke();
+ ctx.fillStyle="#fff";ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillText(text,x,y-h/2+1);ctx.globalAlpha=1}
+function speech(text,x,y,s,alpha){if(alpha<=0)return;const size=clamp(s*.4,10,18);ctx.font=`${size}px "Lilita One","Arial Rounded MT Bold",sans-serif`;const maxW=Math.min(W*.46,s*5);
+ const words=text.split(" ");const lines=[];let cur="";for(const w of words){const t=cur?cur+" "+w:w;if(ctx.measureText(t).width>maxW-size&&cur){lines.push(cur);cur=w}else cur=t}lines.push(cur);
+ const bw=Math.max(...lines.map(l=>ctx.measureText(l).width))+size*1.2,bh=lines.length*size*1.1+size*.7;
+ ctx.globalAlpha=alpha;ctx.fillStyle="#fff";rr(x-bw/2,y-bh,bw,bh,size*.6);ctx.fill();ctx.beginPath();ctx.moveTo(x-6,y-1);ctx.lineTo(x+6,y-1);ctx.lineTo(x,y+8);ctx.fill();
+ ctx.fillStyle="#7a1a52";ctx.textAlign="center";ctx.textBaseline="middle";lines.forEach((l,i)=>ctx.fillText(l,x,y-bh+size*.9+i*size*1.1));ctx.globalAlpha=1}
+const PROP={pillar:1.6,lamp:1.9,tree:3.4,bollard:1.5,molecule:1.5,rbc:1.6,sickle:1.6,wbc:1.7,platelet:1,alveoli:3.4,piezo:1.3,rbcfast:1.8,neuron:3,brainfold:3.2,spark:.9};
+function drawProp(p){const fl=p.y!=null,x=p.side*(HALF+(p.k==="tree"||p.k==="alveoli"||p.k==="neuron"||p.k==="brainfold"?2.6:1.5))+(fl?Math.sin(G.t*1.3+p.z)*.25:0);const r=sprite(p.k,x,p.z,PROP[p.k],fl?p.y+Math.sin(G.t*2+p.z*.3)*.2:0,1,p.side>0);
+ if(p.lbl&&r&&r.dz<60)label("💉 "+p.lbl,r.x,r.y-r.h-r.s*.1,r.s*.8,fade(r.dz)*smooth(60,46,r.dz),"#1b7fc4")}
+function drawObj(o){
+ const dz=o.z-G.pz+CAM_BACK;if(dz<.4||dz>110)return;const f=fade(dz);
+ if(o.t==="coin"){if(o.taken)return;const p=proj(laneX(o.lane),o.y,o.z);if(!p)return;const sz=1.05*p.s,sp=Math.max(.15,Math.abs(Math.cos(G.t*5+o.z*.7)));const im=imgs["img/coin.webp"];
+  ctx.globalAlpha=f;if(ready(im))ctx.drawImage(im,p.x-sz*sp/2,p.y-sz/2,sz*sp,sz);ctx.globalAlpha=1;return}
+ if(o.t==="crystal"){if(o.taken)return;const p=proj(laneX(o.lane),o.y,o.z),g0=proj(laneX(o.lane),0,o.z);if(!p||!g0)return;const vib=LV.n===3&&o.z<800,bob=Math.sin(G.t*3+o.z)*.18*p.s+(vib?Math.sin(G.t*55+o.z)*.05*p.s:0),sz=1.9*p.s*(vib?1+.04*Math.sin(G.t*40):1);
+  ctx.globalAlpha=f;ctx.fillStyle="rgba(93,255,160,.35)";ctx.beginPath();ctx.ellipse(g0.x,g0.y,sz*.55,sz*.15,0,0,7);ctx.fill();
+  const gl=ctx.createRadialGradient(p.x,p.y+bob,1,p.x,p.y+bob,sz*1.2);gl.addColorStop(0,"rgba(150,255,200,.75)");gl.addColorStop(1,"rgba(93,255,160,0)");ctx.fillStyle=gl;ctx.fillRect(p.x-sz*1.2,p.y+bob-sz*1.2,sz*2.4,sz*2.4);
+  const im=imgs["img/crystal.webp"];ready(im)&&ctx.drawImage(im,p.x-sz/2,p.y-sz/2+bob,sz,sz);ctx.globalAlpha=1;
+  if(dz<70){const h=HABITS[o.h];label(h.icon+" "+h.short,p.x,p.y-sz*.6+bob,p.s,f*smooth(70,56,dz),"#16824f")}return}
+ if(o.t==="gap"){if(o.cleared)return;const p=proj(0,0,o.z1);if(p&&dz<80)label(o.text,p.x,p.y-p.s*.3,p.s,f*smooth(80,64,dz),"#8a1f8f");return}
+ if(o.cleared&&o.t!=="gate")return;
+ if(o.t==="wall"){for(let l=0;l<3;l++){shadow(laneX(l),o.z,2.1);const r=sprite("wall",laneX(l),o.z,2.15);if(r&&r.w>14){ctx.globalAlpha=f;fitText(l===1?o.text:"MYTH",r.x,r.y-r.h*(1-.515),r.w*.7,r.h*.22,"#4a1366");ctx.globalAlpha=1}}}
+ else if(o.t==="tape"){const r=sprite("tape",0,o.z,2*HALF+1.2);if(r&&dz<90)label(o.text,r.x,r.y-r.h*.98,r.s,f*smooth(90,74,dz),"#c2183c")}
+ else if(o.t==="block"){const x=laneX(o.lane);shadow(x,o.z,2);const r=sprite("block",x,o.z,2.15);if(r&&r.w>14){ctx.globalAlpha=f;fitText(o.text,r.x,r.y-r.h*(1-.305),r.w*.66,r.h*.16,"#b0153a");ctx.globalAlpha=1}}
+ else if(o.t==="crates"){const x=laneX(o.lane);shadow(x,o.z,1.9);const r=sprite(LV.OBJ.crates,x,o.z,2.0);if(r&&dz<90)label(o.text,r.x,r.y-r.h-r.s*.15,r.s,f*smooth(90,74,dz),"#7b4dff")}
+ else if(o.t==="cone"){const x=laneX(o.lane);shadow(x-.5,o.z,1);shadow(x+.5,o.z,1);sprite(LV.OBJ.cone,x-.5,o.z,1.05);sprite(LV.OBJ.cone,x+.5,o.z,1.05)}
+ else if(o.t==="agent"){const x=laneX(o.lane);shadow(x,o.z,1.9,.45);const gp=proj(x,1.9,o.z);if(gp){const gr=gp.s*2.1,g=ctx.createRadialGradient(gp.x,gp.y,0,gp.x,gp.y,gr);g.addColorStop(0,"rgba(94,231,255,.32)");g.addColorStop(1,"rgba(94,231,255,0)");ctx.globalAlpha=f;ctx.fillStyle=g;ctx.fillRect(gp.x-gr,gp.y-gr,gr*2,gr*2);ctx.globalAlpha=1}const bob=Math.abs(Math.sin(G.t*4+o.z))*.08;const r=sprite("agent",x,o.z,2.5,bob);if(r&&dz<75)speech(o.text,r.x,r.y-r.h-r.s*.2,r.s,f*smooth(75,60,dz))}
+ else if(o.t==="gate"){const L=proj(-HALF-.7,0,o.z),R=proj(HALF+.7,0,o.z),T=proj(0,6.2,o.z);if(!L||!R||!T)return;ctx.globalAlpha=f;const pw=Math.max(3,L.s*.5);
+  const pg=ctx.createLinearGradient(L.x-pw/2,0,L.x+pw/2,0);pg.addColorStop(0,"#b97f0a");pg.addColorStop(.5,"#ffd76a");pg.addColorStop(1,"#b97f0a");ctx.fillStyle=pg;ctx.fillRect(L.x-pw/2,T.y,pw,L.y-T.y);ctx.fillRect(R.x-pw/2,T.y,pw,R.y-T.y);
+  const bh=Math.max(14,L.s*1.15);const bg=ctx.createLinearGradient(0,T.y-bh*.2,0,T.y+bh*.8);bg.addColorStop(0,"#9b78ff");bg.addColorStop(1,"#5b2bd0");ctx.fillStyle=bg;rr(L.x-pw,T.y-bh*.2,R.x-L.x+pw*2,bh,bh*.3);ctx.fill();ctx.strokeStyle="#ffc23d";ctx.lineWidth=Math.max(1.5,L.s*.08);ctx.stroke();
+  fitText("CHECKPOINT · "+o.text.toUpperCase(),(L.x+R.x)/2,T.y+bh*.3,(R.x-L.x)*.92,bh*.62,"#fff");ctx.globalAlpha=1}
+}
+function drawPlayer(){
+ const sp=imgs["sprites/"+char.id+".webp"];if(!ready(sp))return;
+ const p=proj(G.x,G.y+(G.falling?G.fallY:0),G.pz),sh=proj(G.x,0,G.pz);if(!p||!sh)return;
+ const hgt=PH*p.s,wid=hgt*char.w/SPR_H;
+ const runAnim=G.state==="run"||(G.state==="ending"&&G.speed>1);
+ const rate=Math.max(6,G.speed*1.05),fr=runAnim?Math.floor(G.t*rate)%6:0;
+ let sx=1,sy=1;if(G.slide>0&&G.y<=0){sy=.56;sx=1.14}if(G.y>0){sy=1.04;sx=.96}
+ if(!G.falling){ctx.fillStyle="rgba(18,4,28,.42)";ctx.beginPath();ctx.ellipse(sh.x,sh.y,wid*.42*(1-Math.min(.5,G.y*.18)),wid*.11,0,0,7);ctx.fill()}
+ if(G.crys>0&&!G.falling){const a=.13+.05*Math.sin(G.t*4);const g=ctx.createRadialGradient(p.x,p.y-hgt*.5,0,p.x,p.y-hgt*.5,hgt*.7);g.addColorStop(0,`rgba(93,255,160,${a})`);g.addColorStop(1,"rgba(93,255,160,0)");ctx.fillStyle=g;ctx.fillRect(p.x-hgt*.7,p.y-hgt*1.2,hgt*1.4,hgt*1.4)}
+ if(G.inv>0&&Math.floor(G.t*12)%2)ctx.globalAlpha=.45;
+ const bob=runAnim&&G.y<=0?Math.abs(Math.sin(G.t*rate*Math.PI/3))*hgt*.025:0;
+ const lean=(laneX(G.lane)-G.x)*.05;
+ ctx.save();ctx.translate(p.x,p.y-bob);ctx.rotate(lean);if(G.falling){const k=Math.max(.2,1+G.fallY*.05);ctx.scale(k,k)}
+ ctx.drawImage(sp,fr*char.w,0,char.w,SPR_H,-wid*sx/2,-hgt*sy,wid*sx,hgt*sy);ctx.restore();ctx.globalAlpha=1;
+ if(runAnim&&G.y<=0&&Math.random()<.35)G.parts.push({x:sh.x+(Math.random()-.5)*wid*.4,y:sh.y,vx:(Math.random()-.5)*40,vy:-30-Math.random()*30,life:.35,max:.35,col:"rgba(230,210,255,.6)",size:3+Math.random()*3});
+}
+function drawChase(){if(!(G.chase>0||G.state==="hit"))return;const a=G.state==="hit"?1:Math.min(1,G.chase/1.5)*.9;
+ [-1.6,1.6].forEach((o,i)=>sprite("agent_run",G.x+o,G.pz-(G.state==="hit"?.8:2.4)+Math.sin(G.t*6+i)*.3,2.6,Math.abs(Math.sin(G.t*9+i))*.15,a,o>0))}
+function drawSpeed(){const sp=G.state==="run"?(G.speed-9)/6:0;if(sp<=0)return;ctx.strokeStyle=`rgba(255,255,255,${.1+.16*sp})`;ctx.lineWidth=2;
+ for(let i=0;i<12;i++){const side=i%2?1:-1,ph=((G.t*1.8+i*.29)%1),x=W/2+side*W*(.36+ph*.3),y=HOR+(H-HOR)*(.15+((i*.37)%1)*.6);const dx=(x-W/2)*.12*(1+sp),dy=(y-HOR)*.12*(1+sp);ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x+dx,y+dy);ctx.stroke()}}
+function render(){
+ if(!G)return;
+ ctx.save();
+ if(G.shake>0)ctx.translate((Math.random()-.5)*16*G.shake,(Math.random()-.5)*16*G.shake);
+ camX+=(G.x*.6-camX)*.12;
+ drawBackdrop();drawIsch();drawRoad();
+ const items=[];
+ for(const p of G.props){if(p.z<G.pz-CAM_BACK+1)continue;if(p.z>G.pz+110)break;items.push({dz:p.z-G.pz+CAM_BACK+.02,draw:()=>drawProp(p)})}
+ for(const o of G.O){if(o.z<G.pz-CAM_BACK)continue;if(o.z>G.pz+110)break;items.push({dz:o.z-G.pz+CAM_BACK,draw:()=>drawObj(o)})}
+ items.push({dz:CAM_BACK-.05,draw:drawPlayer},{dz:CAM_BACK+.4,draw:drawChase});
+ items.sort((a,b)=>b.dz-a.dz).forEach(i=>i.draw());
+ for(const p of G.parts){ctx.globalAlpha=Math.max(0,p.life/p.max);ctx.fillStyle=p.col;ctx.beginPath();ctx.arc(p.x,p.y,p.size,0,7);ctx.fill()}ctx.globalAlpha=1;
+ drawSpeed();
+ const vg=ctx.createRadialGradient(W/2,H*.55,Math.min(W,H)*.45,W/2,H*.55,Math.max(W,H)*.85);vg.addColorStop(0,"rgba(20,4,30,0)");vg.addColorStop(1,"rgba(20,4,30,.42)");ctx.fillStyle=vg;ctx.fillRect(0,0,W,H);
+ if(G.flash>0){ctx.fillStyle=`rgba(214,36,110,${G.flash*.6})`;ctx.fillRect(0,0,W,H)}
+ if(G.flash<0){G.flash=Math.min(0,G.flash+.016);ctx.fillStyle=`rgba(150,255,200,${-G.flash})`;ctx.fillRect(0,0,W,H)}
+ ctx.restore();
+}
+
+/* ================= loop ================= */
+let last=performance.now();
+function loop(now){const dt=Math.min(.05,(now-last)/1000);last=now;if(G){update(dt);render()}requestAnimationFrame(loop)}
+
+/* ================= title / select ================= */
+const pv=$("prev"),pctx=pv.getContext("2d");let pvT=0,pvOn=false;
+function drawPrev(){if(pvOn)return;pvOn=true;(function f(){pvT+=1/60;pctx.clearRect(0,0,pv.width,pv.height);const sp=imgs["sprites/"+char.id+".webp"];if(ready(sp)){const fr=Math.floor(pvT*9)%6,h=330,w=h*char.w/SPR_H,bob=Math.abs(Math.sin(pvT*9*Math.PI/3))*8;pctx.drawImage(sp,fr*char.w,0,char.w,SPR_H,pv.width/2-w/2,pv.height-h-bob,w,h)}
+ if(!$("select").classList.contains("hide"))requestAnimationFrame(f);else pvOn=false})()}
+function pickChar(c){char=c;$("whoName").textContent=c.name;$("whoName").style.color=c.color;$("whoAbil").textContent=c.abil;document.querySelectorAll(".pick").forEach(p=>p.classList.toggle("on",p.dataset.id===c.id));store.set("wt-runner-char",c.id);showBest()}
+function showBest(){const b=store.get(LV.best,{})[char.id];$("bestTxt").textContent=b?`Best with ${char.name}: ${b.toLocaleString()}`:""}
+(function(){const g=$("grid");CHARS.forEach(c=>{const b=document.createElement("button");b.className="pick";b.dataset.id=c.id;b.innerHTML=`<img src="faces/${c.id}.webp" alt=""><span>${c.name}</span>`;b.onclick=()=>{pickChar(c);tone(880,.06,"sine",.06)};g.appendChild(b)});
+ const saved=CHARS.find(c=>c.id===store.get("wt-runner-char",null));pickChar(saved||char)})();
+if(EMBED){document.body.classList.add("embed");["exitBtn","exitBtn2","exitBtn3"].forEach(id=>{const b=$(id);b.classList.remove("hide");b.onclick=()=>{music.pause();post({type:"exit"})}})}
+let seenStory=store.get("wt-runner-story2",false);
+const lvl2Open=()=>store.get("wt-runner-done1",false)||Object.keys(store.get("wt-runner-best",{})).length>0;
+const lvl3Open=()=>store.get("wt-runner-done2",false)||Object.keys(store.get("wt-runner-best2",{})).length>0;
+function pickLevel(n){if(n===2&&!lvl2Open()){toast("Level 2 is locked","Finish Level 1 to unlock it!",1800,"#ffc23d");return}
+ if(n===3&&!lvl3Open()){toast("Level 3 is locked","Finish Level 2 to unlock it!",1800,"#ffc23d");return}
+ setLevel(n);store.set("wt-runner-level",n);document.querySelectorAll(".lvl").forEach(b=>b.classList.toggle("on",+b.dataset.l===n));
+ document.querySelector(".tag-line").textContent=n===3?"Shrink down and race stroke-fighting crystals to Mateo's brain!":n===2?"Shrink down and race treatment crystals to Darius's lungs!":"Race healthy-habit crystals from the lab to the hospital!";
+ $("select").style.backgroundImage=n>1?`linear-gradient(180deg,rgba(27,11,36,.15) 0%,rgba(27,11,36,.55) 38%,rgba(27,11,36,.92) 62%,#1b0b24 100%),url(bg/${n===3?"brain":"lung"}.webp)`:"";showBest()}
+document.querySelectorAll(".lvl").forEach(b=>b.onclick=()=>{pickLevel(+b.dataset.l);tone(880,.06,"sine",.06)});
+function refreshLocks(){const q=document.querySelector('.lvl[data-l="2"]');q.classList.toggle("lock",!lvl2Open());q.querySelector("span").textContent=lvl2Open()?"Acute Chest Rescue 🫁":"🔒 Finish Level 1";
+ const q3=document.querySelector('.lvl[data-l="3"]');q3.classList.toggle("lock",!lvl3Open());q3.querySelector("span").textContent=lvl3Open()?"Stroke Shield 🧠":"🔒 Finish Level 2"}
+refreshLocks();{const sv=store.get("wt-runner-level",1);if(sv===2&&lvl2Open())pickLevel(2);if(sv===3&&lvl3Open())pickLevel(3)}
+/* level 2 opens with Dr. Amos and the Micro-Shrinker clip */
+function playIntro(done){const L=$("introL"),v=$("introV");let fin=false;const end=()=>{if(fin)return;fin=true;v.pause();L.classList.add("hide");if(musicOn)music.play().catch(()=>{});done()};
+ music.pause();v.src=LV.n===3?"vid/stroke.mp4":"vid/acs.mp4";L.classList.remove("hide");v.onended=end;v.onerror=end;$("introSkip").onclick=end;v.play().catch(end)}
+function go(){if(LV.n===3){playIntro(()=>{if(!store.get("wt-runner-story-stroke",false))$("story3").classList.remove("hide");else startRun()})}
+ else if(LV.n===2){playIntro(()=>{if(!store.get("wt-runner-story-acs",false))$("story2").classList.remove("hide");else startRun()})}
+ else if(!seenStory)$("story").classList.remove("hide");else startRun()}
+$("story3Go").onclick=()=>{audioInit();store.set("wt-runner-story-stroke",true);$("story3").classList.add("hide");startRun()};
+$("story2Go").onclick=()=>{audioInit();store.set("wt-runner-story-acs",true);$("story2").classList.add("hide");startRun()};
+$("goBtn").onclick=()=>{audioInit();go()};
+$("howBtn").onclick=()=>$("story").classList.remove("hide");
+$("storyGo").onclick=()=>{audioInit();seenStory=true;store.set("wt-runner-story2",true);$("story").classList.add("hide");startRun()};
+let booted=false;
+function boot(){if(booted)return;booted=true;$("loading").classList.add("hide");$("select").classList.remove("hide");drawPrev();requestAnimationFrame(loop)}
+window.__wt={get G(){return G},startRun,showCard,HABITS,ZONES};
+</script>
+</body>
+</html>

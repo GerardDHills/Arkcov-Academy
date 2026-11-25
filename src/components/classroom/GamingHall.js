@@ -1,6 +1,7 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
+import Link from 'next/link';
 import Icon from '@/components/Icon';
 import { SPECIALTIES } from '@/lib/games';
 import r from './room.module.css';
@@ -10,17 +11,8 @@ import s from './gaming.module.css';
 // Games open in a full-screen player inside the Academy.
 export default function GamingHall() {
   const [tab, setTab] = useState('hematology');
-  const [playing, setPlaying] = useState(null);
   const spec = SPECIALTIES.find((x) => x.slug === tab);
 
-  useEffect(() => {
-    if (!playing) return undefined;
-    const prev = document.body.style.overflow;
-    document.body.style.overflow = 'hidden';
-    const onKey = (e) => e.key === 'Escape' && setPlaying(null);
-    window.addEventListener('keydown', onKey);
-    return () => { document.body.style.overflow = prev; window.removeEventListener('keydown', onKey); };
-  }, [playing]);
 
   return (
     <div className={r.glass}>
@@ -47,17 +39,17 @@ export default function GamingHall() {
         <div className={s.grid}>
           {spec.games.map((g, i) => (
             <article key={g.slug} className={s.card} style={{ animationDelay: `${i * 70}ms` }}>
-              <button type="button" className={s.cover} onClick={() => setPlaying(g)} aria-label={`Play ${g.title}`}>
+              <Link href={`/play/${g.slug}`} className={s.cover} aria-label={`Play ${g.title}`}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src={g.cover} alt="" loading="lazy" />
                 <span className={s.play}><Icon name="play" size={22} /></span>
-              </button>
+              </Link>
               <div className={s.body}>
                 <small>{g.series} · {g.condition}</small>
                 <h3>{g.title}</h3>
                 <p>{g.text}</p>
-                <div className={s.meta}><span>{g.players}</span><span>{g.ages}</span>{g.landscape && <span>Best sideways</span>}</div>
-                <button type="button" className={`${r.btn} ${r.small}`} onClick={() => setPlaying(g)}>Play <Icon name="arrow" size={15} /></button>
+                <div className={s.meta}><span>{g.players}</span><span>{g.ages}</span>{g.landscape && <span>Wide screen</span>}</div>
+                <Link href={`/play/${g.slug}`} className={`${r.btn} ${r.small}`}>Play <Icon name="arrow" size={15} /></Link>
               </div>
             </article>
           ))}
@@ -70,18 +62,6 @@ export default function GamingHall() {
         </div>
       )}
 
-      {playing && (
-        <div className={s.player} role="dialog" aria-modal="true" aria-label={playing.title}>
-          <div className={s.playerBar}>
-            <span><b>{playing.title}</b> <small>{playing.specialtyName || spec.name} · {playing.condition}</small></span>
-            <span style={{ display: 'flex', gap: 8 }}>
-              <a className={`${r.btnGhost} ${r.small}`} href={playing.url} target="_blank" rel="noopener noreferrer">Open full screen</a>
-              <button type="button" className={`${r.btn} ${r.small}`} onClick={() => setPlaying(null)}>Back to the Gaming Hall</button>
-            </span>
-          </div>
-          <iframe src={playing.url} title={playing.title} allow="autoplay; fullscreen; gamepad; accelerometer; gyroscope" allowFullScreen />
-        </div>
-      )}
     </div>
   );
 }
