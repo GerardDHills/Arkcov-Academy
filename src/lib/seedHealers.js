@@ -1,6 +1,7 @@
 import { sql } from '@/lib/db';
 import { ensureClassroomTables } from '@/lib/classroom';
 import { ROOMS, BUILDINGS, buildingName, HEALERS_ART } from '@/lib/rooms';
+import { ensureSeasonOne, SUPERPOWER_BODY, SUPERPOWER_CHECK } from '@/lib/seasonOne';
 
 // Starter version of the Inspiring Healers Program, drawn from Dr. Hills'
 // IHP sketchbook (Identity, Social Superpowers, The Brain and the Body).
@@ -64,26 +65,11 @@ export const HEALERS = {
         '**I am whole. I am whole. I am whole.**',
         'Say it out loud. You were not made to be broken.') },
     { unit: 'Unit B · Social Superpowers', kind: 'reading', title: 'Your Social Superpower', minutes: 7,
-      summary: 'Grit, creativity and compassion: how you connect with others.',
-      body: P(
-        '## What is a social superpower?',
-        'Your social superpower is the way you naturally connect with other people. It makes the connection between your brain, your spirit and your soul stronger, and it helps you help others.',
-        '- **Brain**: language and the senses: taste, touch, hearing, sight and smell.',
-        '- **Spirit**: how you respond to negative and positive energy around you.',
-        '- **Soul**: your interests, desires, ideas, dreams and personality.',
-        '## Three superpowers healers use every day',
-        '- **Grit**: you keep going when it gets hard.',
-        '- **Creativity**: you find new ways to solve problems.',
-        '- **Compassion**: you feel with people and act to help.',
-        'The Social Superpower Assessment will show which one you lead with.') },
+      summary: 'The seven social superpowers and how healers use them.',
+      body: SUPERPOWER_BODY },
     { unit: 'Unit B · Social Superpowers', kind: 'quiz', title: 'Superpower Check', minutes: 4,
-      summary: 'Words, connection and the three healer superpowers.',
-      data: { questions: [
-        { q: 'A patient is scared before a procedure. Which superpower helps you sit with them and calm them?', options: ['Grit', 'Compassion', 'Creativity', 'Speed'], answer: 1, explain: 'Compassion is feeling with someone and acting to help.' },
-        { q: 'Your science project fails twice and you try again. Which superpower is that?', options: ['Grit', 'Compassion', 'Luck', 'Creativity'], answer: 0, explain: 'Grit is continuing when it gets hard.' },
-        { q: 'Which of these is part of the brain in this lesson?', options: ['Dreams', 'Language and the senses', 'Personality', 'Desires'], answer: 1, explain: 'Language and the five senses are the brain’s part of connection.' },
-        { q: 'What makes communication “rooted in truth”?', options: ['Saying whatever you feel', 'Honest, kind and clear words', 'Only saying good news', 'Avoiding hard topics'], answer: 1, explain: 'Healers speak honestly, kindly and clearly.' },
-      ] } },
+      summary: 'The seven superpowers in action.',
+      data: SUPERPOWER_CHECK },
 
     { unit: 'Unit C · The Brain and the Body', kind: 'reading', title: 'Body Positions and the Brain Map', minutes: 8,
       summary: 'Anterior, posterior, superior, inferior, and what each part of the brain does.',
@@ -173,7 +159,7 @@ async function ensureRooms() {
 export async function ensureSeed() {
   await ensureClassroomTables();
   const [have] = await sql`SELECT id FROM programs WHERE slug = ${HEALERS.slug}`;
-  if (have) { await ensureRooms(); return have.id; }
+  if (have) { await ensureRooms(); await ensureSeasonOne(); return have.id; }
   const h = HEALERS;
   const [p] = await sql`INSERT INTO programs (slug, title, subtitle, description, building, room, theme, pass_score)
     VALUES (${h.slug}, ${h.title}, ${h.subtitle}, ${h.description}, ${h.building}, ${h.room}, ${h.theme}, ${h.pass_score})
@@ -186,5 +172,6 @@ export async function ensureSeed() {
         ${s.media_url || null}, ${JSON.stringify(s.data || {})}::jsonb, ${s.minutes || null})`;
   }
   await ensureRooms();
+  await ensureSeasonOne();
   return p.id;
 }

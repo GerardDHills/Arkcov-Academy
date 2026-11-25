@@ -11,6 +11,7 @@ const memberLinks = [
   { href: '/dashboard', label: 'Dashboard', icon: 'home' },
   { href: '/explore', label: 'Explore', icon: 'compass' },
   { href: '/classroom', label: 'Virtual Classrooms', icon: 'door' },
+  { href: '/passport', label: 'Cadet Passport', icon: 'award' },
   { href: '/teach', label: 'Faculty Hall', icon: 'cap' },
   { href: '/explore?type=course', label: 'Courses', icon: 'book' },
   { href: '/explore?type=podcast', label: 'Podcasts', icon: 'mic' },

@@ -45,3 +45,17 @@
 
 .tips { margin: 0; padding: 14px 22px 18px 38px; display: grid; gap: 7px; font-size: 14px; color: rgba(246, 238, 223, 0.8); line-height: 1.5; }
 .tips code { color: #E6C27A; background: rgba(201, 151, 63, 0.12); padding: 1px 6px; border-radius: 6px; }
+
+.lessonForm, .caseForm { display: grid; gap: 14px; }
+.part { border: 1px solid rgba(230, 194, 122, 0.22); border-radius: 14px; padding: 14px; display: grid; gap: 10px; margin: 0; min-width: 0; }
+.part legend { font-family: var(--font-brand); font-size: 12px; letter-spacing: .16em; text-transform: uppercase; color: #E6C27A; padding: 0 6px; }
+.row2b { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+@media (max-width: 640px) { .row2b { grid-template-columns: 1fr; } }
+.code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 13px; line-height: 1.5; min-height: 420px; color: #F6EEDF; background: rgba(5, 10, 26, 0.7); border: 1px solid rgba(230, 194, 122, 0.24); border-radius: 12px; padding: 12px; }
+.approve { display: flex; gap: 10px; align-items: center; cursor: pointer; padding: 10px; border-radius: 12px; border: 1px solid rgba(60, 201, 180, 0.35); }
+.approve input { width: 20px; height: 20px; accent-color: #3CC9B4; }
+.approve b { display: block; font-size: 14px; }
+.approve small { font-size: 12.5px; color: rgba(246, 238, 223, 0.6); }
+.status { font: inherit; font-size: 12px; font-weight: 800; padding: 5px 10px; border-radius: 999px; cursor: pointer; white-space: nowrap; }
+.draft { color: #F2CE7B; background: rgba(242, 206, 123, 0.1); border: 1px solid rgba(242, 206, 123, 0.5); }
+.live { color: #9BE8D9; background: rgba(60, 201, 180, 0.1); border: 1px solid rgba(60, 201, 180, 0.4); }

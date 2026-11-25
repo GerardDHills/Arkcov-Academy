@@ -11,7 +11,8 @@ export async function PATCH(request, { params }) {
   let st;
   try { st = cleanStep(await request.json()); } catch (e) { return fail(e.message); }
   const rows = await sql`UPDATE program_steps SET unit = ${st.unit}, kind = ${st.kind}, title = ${st.title}, summary = ${st.summary},
-    body = ${st.body}, media_url = ${st.media_url}, data = ${JSON.stringify(st.data)}::jsonb, minutes = ${st.minutes}
+    body = ${st.body}, media_url = ${st.media_url}, data = ${JSON.stringify(st.data)}::jsonb, minutes = ${st.minutes},
+    reviewed = ${st.reviewed}, founder_notes = ${st.founder_notes}, honor = ${st.honor}, code = ${st.code}
     WHERE id = ${Number(params.id)} RETURNING id`;
   if (!rows.length) return fail('Lesson not found', 404);
   return json({ ok: true });
@@ -22,5 +23,14 @@ export async function DELETE(_req, { params }) {
   if (!canBuild(me)) return fail('Only the Dean and professors can build curriculum.', 403);
   await sql`UPDATE live_sessions SET active_step_id = NULL WHERE active_step_id = ${Number(params.id)}`;
   await sql`DELETE FROM program_steps WHERE id = ${Number(params.id)}`;
+  return json({ ok: true });
+}
+
+// Quick approve / unapprove from the lesson list.
+export async function PUT(request, { params }) {
+  const me = await getViewer();
+  if (!canBuild(me)) return fail('Only the Dean and professors can build curriculum.', 403);
+  const { reviewed } = await request.json().catch(() => ({}));
+  await sql`UPDATE program_steps SET reviewed = ${Boolean(reviewed)} WHERE id = ${Number(params.id)}`;
   return json({ ok: true });
 }

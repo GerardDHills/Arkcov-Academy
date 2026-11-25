@@ -5,23 +5,33 @@ import { progressSummary, newCode } from '@/lib/classroom';
 export const json = (data, status = 200) => NextResponse.json(data, { status });
 export const fail = (error, status = 400) => NextResponse.json({ error }, { status });
 
-// Remove answers from a step before sending it to a cadet.
+const stripQs = (qs) => (qs || []).map(({ q, options }) => ({ q, options }));
+
+// Prepare a step for the viewer: cadets never receive quiz answers or the
+// founder's private teaching notes.
 export function publicStep(step, { reveal = false } = {}) {
   const data = step.data || {};
-  if (step.kind === 'quiz' && !reveal) {
-    return {
-      ...step,
-      data: { ...data, questions: (data.questions || []).map(({ q, options }) => ({ q, options })) },
-    };
+  let out = step;
+  if (!reveal) {
+    if (step.kind === 'quiz') out = { ...step, data: { ...data, questions: stripQs(data.questions) } };
+    if (step.kind === 'lesson') {
+      const check = data.check || {};
+      out = { ...step, data: { ...data, check: { junior: stripQs(check.junior), senior: stripQs(check.senior) } } };
+    }
+    const { founder_notes, ...rest } = out;
+    out = rest;
   }
-  return step;
+  return out;
 }
 
-export function gradeQuiz(step, answers) {
-  const qs = step.data?.questions || [];
+export function gradeQuestions(qs = [], answers = []) {
   const results = qs.map((q, i) => ({ correct: Number(answers?.[i]) === q.answer, answer: q.answer, explain: q.explain }));
   const right = results.filter((r) => r.correct).length;
   return { score: qs.length ? Math.round((right / qs.length) * 100) : 100, right, total: qs.length, results };
+}
+
+export function gradeQuiz(step, answers) {
+  return gradeQuestions(step.data?.questions || [], answers);
 }
 
 // Issue the certificate of performance once every step is complete and the

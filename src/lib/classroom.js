@@ -61,6 +61,11 @@ export async function ensureClassroomTables() {
     minutes INTEGER,
     created_at TIMESTAMP DEFAULT NOW()
   )`;
+  await vercelSql`ALTER TABLE program_steps ADD COLUMN IF NOT EXISTS reviewed BOOLEAN DEFAULT true`;
+  await vercelSql`ALTER TABLE program_steps ADD COLUMN IF NOT EXISTS founder_notes TEXT`;
+  await vercelSql`ALTER TABLE program_steps ADD COLUMN IF NOT EXISTS code VARCHAR(24)`;
+  await vercelSql`ALTER TABLE program_steps ADD COLUMN IF NOT EXISTS honor VARCHAR(60)`;
+  await vercelSql`ALTER TABLE users ADD COLUMN IF NOT EXISTS grade INTEGER`;
   await vercelSql`CREATE TABLE IF NOT EXISTS enrollments (
     id SERIAL PRIMARY KEY,
     user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
@@ -158,12 +163,13 @@ export async function getViewer() {
   if (!token) return null;
   await ensureClassroomTables();
   const [u] = await sql`SELECT id, email, name, role, staff_role, staff_status, staff_type, staff_title,
-    guardian_name, guardian_email FROM users WHERE id = ${token.id}`;
+    guardian_name, guardian_email, grade FROM users WHERE id = ${token.id}`;
   if (!u) return null;
   return {
     ...u,
     isAdmin: u.role === 'admin',
     isStaff: u.role === 'admin' || (STAFF_ROLES.includes(u.staff_role) && u.staff_status === 'approved'),
+    division: divisionFor(u.grade),
   };
 }
 
@@ -185,8 +191,18 @@ export async function programBySlug(slug) {
   return p || null;
 }
 
-export async function stepsFor(programId) {
-  return sql`SELECT * FROM program_steps WHERE program_id = ${programId} ORDER BY sort_order, id`;
+// Junior Cadets are grades 6–8; Senior Cadets are grades 9–12.
+export function divisionFor(grade) {
+  const g = Number(grade);
+  if (!g) return null;
+  return g >= 9 ? 'senior' : 'junior';
+}
+
+// Cadets only see lessons the Dean has approved; faculty also see drafts.
+export async function stepsFor(programId, { drafts = false } = {}) {
+  return drafts
+    ? sql`SELECT * FROM program_steps WHERE program_id = ${programId} ORDER BY sort_order, id`
+    : sql`SELECT * FROM program_steps WHERE program_id = ${programId} AND reviewed IS NOT FALSE ORDER BY sort_order, id`;
 }
 
 // Score summary: average of graded steps (quiz/simulation) and completion count.
@@ -195,7 +211,7 @@ export async function progressSummary(userId, programId) {
   const rows = await sql`SELECT sp.* FROM step_progress sp JOIN program_steps s ON s.id = sp.step_id
     WHERE sp.user_id = ${userId} AND s.program_id = ${programId}`;
   const byStep = Object.fromEntries(rows.map((r) => [r.step_id, r]));
-  const graded = steps.filter((s) => s.kind === 'quiz' || s.kind === 'simulation');
+  const graded = steps.filter((s) => ['quiz', 'simulation', 'lesson', 'case'].includes(s.kind));
   const scores = graded.map((s) => byStep[s.id]?.score).filter((v) => typeof v === 'number');
   const done = steps.filter((s) => byStep[s.id]?.completed).length;
   return {

@@ -11,7 +11,7 @@ export async function GET() {
   if (!me) return fail('Please log in.', 401);
   await ensureSeed();
   const programs = await sql`SELECT p.id, p.slug, p.title, p.subtitle, p.building, p.room, p.art, p.building_slug, p.kind,
-      (SELECT COUNT(*)::int FROM program_steps s WHERE s.program_id = p.id) AS step_count
+      (SELECT COUNT(*)::int FROM program_steps s WHERE s.program_id = p.id AND (s.reviewed IS NOT FALSE OR ${me.isStaff})) AS step_count
     FROM programs p WHERE p.published = true ORDER BY p.sort_order, p.id`;
   const enrolled = await sql`SELECT e.program_id,
       (SELECT COUNT(*)::int FROM step_progress sp JOIN program_steps s ON s.id = sp.step_id
@@ -29,6 +29,6 @@ export async function GET() {
       done: byProgram[p.id]?.done || 0,
       nextSession: nextBy[p.id] || null,
     })),
-    me: { name: me.name, isStaff: me.isStaff, isAdmin: me.isAdmin, canBuild: canBuild(me) },
+    me: { name: me.name, isStaff: me.isStaff, isAdmin: me.isAdmin, canBuild: canBuild(me), division: me.division, grade: me.grade || null },
   });
 }

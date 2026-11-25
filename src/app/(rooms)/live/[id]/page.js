@@ -139,7 +139,7 @@ export default function LiveRoom({ params, searchParams }) {
                   {active ? (
                     <>
                       <h3 className={s.boardTitle}>{active.step.title}</h3>
-                      <StepView key={`${active.step.id}-${active.since}`} step={active.step} done={Boolean(active.mine?.completed)} sessionId={session.id} />
+                      <StepView key={`${active.step.id}-${active.since}`} step={active.step} track={me.division || 'junior'} done={Boolean(active.mine?.completed)} sessionId={session.id} />
                     </>
                   ) : (
                     <div className={s.waiting}>
