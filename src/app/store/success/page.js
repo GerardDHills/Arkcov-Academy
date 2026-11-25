@@ -30,10 +30,10 @@ export default async function StoreSuccess({ searchParams }) {
             </>
           ) : paid.product.kind === 'digital' ? (
             <>
-              <h1>Your journal is ready</h1>
+              <h1>Your download is ready</h1>
               <p>Thank you for your order{email ? `, a receipt is on its way to ${email}` : ''}. Download your copy below. Keep this page&apos;s link to download it again.</p>
               <a href={`/api/store/download?session_id=${encodeURIComponent(paid.session.id)}`} className="btn btn-crimson btn-lg">
-                Download the Medicine Bullet Journal
+                Download {paid.product.name}
               </a>
               <p className={styles.small}>Large file. On a phone, it may be easier to download on Wi-Fi.</p>
             </>

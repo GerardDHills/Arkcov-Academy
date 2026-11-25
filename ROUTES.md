@@ -12,6 +12,7 @@ Use this to find any file instantly.
 | `/` | `src/app/page.js` | Marketing homepage / landing page | Public |
 | `/store` | `src/app/store/page.js` (catalog in `src/lib/products.js`) | Academy store: journal PDF, merch; Stripe one-time checkout via `/api/store/checkout` | Public |
 | `/store/success` | `src/app/store/success/page.js` | Order confirmation and PDF download (`/api/store/download`, checks Stripe payment) | Public |
+| `/admin/store` | `src/app/(admin)/admin/store/page.js` | Upload the PDFs sold in the store to Vercel Blob (`/api/admin/store-files`) | Admin |
 | `/campus` | `public/campus/index.html` (rewrite in `next.config.js`) | Virtual campus at BodyWorld: aerial map, building pages (`/campus#learning-hall` etc.), uniforms, houses, roadmap | Public |
 | `/login` | `src/app/login/page.js` | Login form | Public |
 | `/signup` | `src/app/signup/page.js` | Create account form | Public |

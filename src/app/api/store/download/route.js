@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { getPaidStoreSession, recordStoreOrder } from '@/lib/store';
+import { getPaidStoreSession, recordStoreOrder, getFileUrl } from '@/lib/store';
 
 export const dynamic = 'force-dynamic';
 
@@ -12,7 +12,7 @@ export async function GET(request) {
     if (!paid || paid.product.kind !== 'digital') {
       return NextResponse.json({ error: 'We could not find a paid order for this link.' }, { status: 403 });
     }
-    const fileUrl = process.env[paid.product.fileEnv];
+    const fileUrl = await getFileUrl(paid.product);
     if (!fileUrl) {
       return NextResponse.json({ error: 'The download is being prepared. Please email support and we will send it.' }, { status: 503 });
     }

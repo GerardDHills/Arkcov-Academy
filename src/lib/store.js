@@ -13,6 +13,28 @@ export async function getPaidStoreSession(sessionId) {
   return { session, product };
 }
 
+export async function ensureStoreFilesTable() {
+  await sql`
+    CREATE TABLE IF NOT EXISTS store_files (
+      slug VARCHAR(120) PRIMARY KEY,
+      url TEXT NOT NULL,
+      uploaded_at TIMESTAMP DEFAULT NOW()
+    )
+  `;
+}
+
+// Where a digital product's file lives: uploaded through /admin/store, or an env var.
+export async function getFileUrl(product) {
+  try {
+    await ensureStoreFilesTable();
+    const [row] = await sql`SELECT url FROM store_files WHERE slug = ${product.slug}`;
+    if (row?.url) return row.url;
+  } catch (e) {
+    console.error('store_files lookup failed:', e.message);
+  }
+  return product.fileEnv ? process.env[product.fileEnv] || null : null;
+}
+
 export async function ensureOrdersTable() {
   await sql`
     CREATE TABLE IF NOT EXISTS store_orders (
