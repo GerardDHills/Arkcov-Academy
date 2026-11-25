@@ -31,3 +31,6 @@
 .thanks h1 { color: var(--navy); font-size: clamp(1.8rem, 4vw, 2.4rem); margin: 0 0 12px; }
 .thanks p { color: var(--text-muted); margin: 0 auto 20px; max-width: 52ch; }
 .thanks .small { margin-top: 16px; }
+.views { position: absolute; bottom: 12px; left: 50%; transform: translateX(-50%); display: flex; gap: 4px; background: rgba(255,255,255,.9); border-radius: 999px; padding: 4px; box-shadow: var(--shadow-soft); }
+.views button { min-height: 36px; min-width: 64px; border: 0; border-radius: 999px; background: transparent; font: 600 14px inherit; color: var(--navy); cursor: pointer; }
+.views button[aria-pressed='true'] { background: var(--navy); color: #fff; }

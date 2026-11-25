@@ -12,6 +12,7 @@ function ProductCard({ product, role }) {
   const [variantId, setVariantId] = useState(product.variants?.[0]?.id || '');
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
+  const [showBack, setShowBack] = useState(false);
   const variant = product.variants?.find((v) => v.id === variantId);
   const base = variant?.price || product.price;
   const yours = priceFor({ ...product, price: base }, role);
@@ -39,7 +40,13 @@ function ProductCard({ product, role }) {
     <article className={styles.card}>
       <div className={styles.media}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={variant?.image || product.image} alt={product.name} loading="lazy" />
+        <img src={showBack && product.backImage ? product.backImage : variant?.image || product.image} alt={showBack ? `${product.name}, back` : product.name} loading="lazy" />
+        {product.backImage && (
+          <div className={styles.views} role="group" aria-label="View">
+            <button aria-pressed={!showBack} onClick={() => setShowBack(false)}>Front</button>
+            <button aria-pressed={showBack} onClick={() => setShowBack(true)}>Back</button>
+          </div>
+        )}
         {soon && <span className={styles.soon}>Coming soon</span>}
       </div>
       <div className={styles.body}>

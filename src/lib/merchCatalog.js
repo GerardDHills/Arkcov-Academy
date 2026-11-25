@@ -1041,6 +1041,74 @@ export const MERCH_PRODUCTS = [
     ]
   },
   {
+    "slug": "academy-wordmark-dad-hat",
+    "name": "Arkcov Academy Wordmark Dad Hat",
+    "category": "Hats",
+    "kind": "physical",
+    "status": "available",
+    "price": 3499,
+    "image": "/images/store/merch/academy-wordmark-dad-hat-navy.jpg",
+    "blurb": "Cotton twill cap with the Academy arch and \"Arkcov Academy\" embroidered on the front and \"Est. 2008\" on the back.",
+    "details": [
+      "Made to order by Printful",
+      "Ships in about 5 to 10 business days (US)"
+    ],
+    "variants": [
+      {
+        "id": "5665800990",
+        "label": "Navy",
+        "price": 3499,
+        "image": "/images/store/merch/academy-wordmark-dad-hat-navy.jpg",
+        "printfulSyncVariantId": 5665800990
+      },
+      {
+        "id": "5665800991",
+        "label": "Black",
+        "price": 3499,
+        "image": "/images/store/merch/academy-wordmark-dad-hat-black.jpg",
+        "printfulSyncVariantId": 5665800991
+      },
+      {
+        "id": "5665800992",
+        "label": "Stone",
+        "price": 3499,
+        "image": "/images/store/merch/academy-wordmark-dad-hat-stone.jpg",
+        "printfulSyncVariantId": 5665800992
+      }
+    ],
+    "backImage": "/images/store/merch/academy-wordmark-dad-hat-navy-back.jpg"
+  },
+  {
+    "slug": "academy-wordmark-beanie",
+    "name": "Arkcov Academy Wordmark Beanie",
+    "category": "Hats",
+    "kind": "physical",
+    "status": "available",
+    "price": 2799,
+    "image": "/images/store/merch/academy-wordmark-beanie-navy.jpg",
+    "blurb": "Knit cuffed beanie with the Academy arch and \"Arkcov Academy\" embroidered across the cuff.",
+    "details": [
+      "Made to order by Printful",
+      "Ships in about 5 to 10 business days (US)"
+    ],
+    "variants": [
+      {
+        "id": "5665802441",
+        "label": "Navy",
+        "price": 2799,
+        "image": "/images/store/merch/academy-wordmark-beanie-navy.jpg",
+        "printfulSyncVariantId": 5665802441
+      },
+      {
+        "id": "5665802442",
+        "label": "Black",
+        "price": 2799,
+        "image": "/images/store/merch/academy-wordmark-beanie-black.jpg",
+        "printfulSyncVariantId": 5665802442
+      }
+    ]
+  },
+  {
     "slug": "academy-high-tops-mens",
     "name": "Arkcov Academy High Tops (Men's)",
     "category": "Footwear",
