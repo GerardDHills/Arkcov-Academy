@@ -1,23 +1,10 @@
 import { NextResponse } from 'next/server';
 import { getCurrentUser } from '@/lib/auth';
-import { MERCH, FILE_SIZES } from '@/lib/printfulMerch';
+import { MERCH, place } from '@/lib/printfulMerch';
 import { pf, allowedAdmin } from '@/lib/printful';
 
 export const dynamic = 'force-dynamic';
 export const maxDuration = 60;
-
-function place(file, area) {
-  const name = file.url.split('/').pop();
-  const [iw, ih] = FILE_SIZES[name] || [1000, 1000];
-  const aw = area.width;
-  const ah = area.height;
-  let s = file.fit === 'cover' ? Math.max(aw / iw, ah / ih) : Math.min(aw / iw, ah / ih);
-  s *= file.scale || 1;
-  const width = Math.round(iw * s);
-  const height = Math.round(ih * s);
-  const top = file.type === 'front' ? Math.round(ah * 0.06) : Math.round((ah - height) / 2);
-  return { area_width: aw, area_height: ah, width, height, top, left: Math.round((aw - width) / 2) };
-}
 
 async function createOne(item) {
   const existing = await pf(`/store/products/@${item.slug}`);

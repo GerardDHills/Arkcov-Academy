@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { getCurrentUser } from '@/lib/auth';
-import { MERCH, FILE_SIZES } from '@/lib/printfulMerch';
+import { MERCH, place } from '@/lib/printfulMerch';
 import { pf, allowedAdmin } from '@/lib/printful';
 
 export const dynamic = 'force-dynamic';
@@ -26,9 +26,14 @@ export async function GET(request) {
   const perColor = {};
   for (const v of syncVariants) if (!perColor[v.color]) perColor[v.color] = v;
   const sample = Object.values(perColor);
-  const files = sample[0].files
-    .filter((f) => f.type !== 'preview')
-    .map((f) => ({ placement: f.type, image_url: f.url || item.files.find((x) => x.type === f.type)?.url, position: f.position || undefined }));
+  const pfs = await pf(`/mockup-generator/printfiles/${item.productId}`);
+  if (!pfs.ok) return NextResponse.json({ error: 'printfiles failed', detail: pfs.json }, { status: 502 });
+  const printfiles = Object.fromEntries(pfs.json.result.printfiles.map((p) => [p.printfile_id, p]));
+  const placements = pfs.json.result.variant_printfiles.find((v) => v.variant_id === sample[0].variant_id)?.placements || {};
+  const files = item.files.map((f) => {
+    const area = printfiles[placements[f.type]];
+    return { placement: f.type, image_url: f.url, position: area ? place(f, area) : undefined };
+  });
 
   const task = await pf(`/mockup-generator/create-task/${item.productId}`, {
     method: 'POST',
