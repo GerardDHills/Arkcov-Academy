@@ -2,7 +2,9 @@
 // healthcare professionals care for the condition (sickle cell disease is
 // Hematology, asthma is Pulmonology, and so on).
 
-const LIFE_APP = 'https://gerarddhills.github.io/warriors-thrive-life-app';
+// Games are hosted inside the Academy (public/games/play) so they run full
+// screen on our own pages and their exit buttons return to the Gaming Hall.
+const PLAY = '/games/play';
 
 export const SPECIALTIES = [
   {
@@ -10,19 +12,19 @@ export const SPECIALTIES = [
     team: 'Hematologists, hematology nurses and pharmacists',
     games: [
       { slug: 'warriors-thrive-board-game', title: 'Warriors Thrive: The Board Game', series: 'Warriors Thrive', condition: 'Sickle cell disease',
-        cover: '/games/board-game.jpg', url: `${LIFE_APP}/board/`, players: '2–8 players', ages: 'Ages 7+',
+        cover: '/games/board-game.jpg', url: `${PLAY}/board/index.html`, players: '2–8 players', ages: 'Ages 7+',
         text: 'The cooperative board game, now playable online. Move through the body’s organs, beat crises and protect the Warriors together.' },
       { slug: 'warrior-mission', title: 'Warrior Mission', series: 'Warriors Thrive', condition: 'Sickle cell disease',
-        cover: '/games/mission.jpg', url: `${LIFE_APP}/mission/`, players: '1 player', ages: 'Ages 7+', landscape: true,
+        cover: '/games/mission.jpg', url: `${PLAY}/mission/index.html`, players: '1 player', ages: 'Ages 7+', landscape: true,
         text: 'Choose your Warrior, bust sickle cell myths, find truth clues and collect health crystals across the city.' },
       { slug: 'hemoglobin-heroes', title: 'Hemoglobin Heroes', series: 'Warriors Thrive', condition: 'Sickle cell disease',
-        cover: '/games/hemoglobin-heroes.jpg', url: `${LIFE_APP}/molecule/`, players: '1 player', ages: 'Ages 9+',
+        cover: '/games/hemoglobin-heroes.jpg', url: `${PLAY}/molecule/index.html`, players: '1 player', ages: 'Ages 9+',
         text: 'Shrink down with Dr. Amos to see how sickle cell works at the molecule level, and how every medicine fights back. Ten boards.' },
       { slug: 'bloodstream-rush', title: 'Bloodstream Rush', series: 'Warriors Thrive', condition: 'Sickle cell disease',
-        cover: '/games/bloodstream-rush.jpg', url: `${LIFE_APP}/race/`, players: '1 player', ages: 'Ages 7+', landscape: true,
+        cover: '/games/bloodstream-rush.jpg', url: `${PLAY}/race/index.html`, players: '1 player', ages: 'Ages 7+', landscape: true,
         text: 'Race through the body as a blood cell or a medicine. Treat blockages, dodge The Society and make it back to the bone marrow.' },
       { slug: 'health-crystal-run', title: 'Health Crystal Run', series: 'Warriors Thrive', condition: 'Sickle cell disease',
-        cover: '/games/health-crystal-run.jpg', url: `${LIFE_APP}/runner/`, players: '1 player', ages: 'Ages 7+',
+        cover: '/games/health-crystal-run.jpg', url: `${PLAY}/runner/index.html`, players: '1 player', ages: 'Ages 7+',
         text: 'Race healthy-habit crystals from the lab to the hospital, with Acute Chest Rescue and Stroke Shield levels.' },
     ],
   },
