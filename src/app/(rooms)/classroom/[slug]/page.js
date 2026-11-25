@@ -5,6 +5,7 @@ import Link from 'next/link';
 import Icon from '@/components/Icon';
 import Scene from '@/components/classroom/Scene';
 import { KIND } from '@/components/classroom/StepView';
+import GamingHall from '@/components/classroom/GamingHall';
 import r from '@/components/classroom/room.module.css';
 import s from './studio.module.css';
 
@@ -84,7 +85,8 @@ export default function Studio({ params }) {
 
       <section className={`${r.wrap} ${s.body}`}>
         <div className={s.main}>
-          <div className={r.glass}>
+          {program.slug === 'gaming-hall' && <GamingHall />}
+          {!(program.slug === 'gaming-hall' && empty) && <div className={r.glass}>
             <div className={r.panelHead}><h2>The path</h2><span className={r.muted} style={{ fontSize: 13 }}>Self-paced between live classes</span></div>
             {empty && (
               <div className={s.emptyPath}>
@@ -113,7 +115,7 @@ export default function Studio({ params }) {
                 </div>
               ))}
             </div>
-          </div>
+          </div>}
 
           {isHealers && (
             <>

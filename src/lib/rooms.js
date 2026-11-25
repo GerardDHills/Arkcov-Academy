@@ -46,7 +46,7 @@ export const ROOMS = [
     'vast domed theater with an enormous anatomically inspired glowing heart suspended in the center, crimson and gold light pulsing through arteries that spread across the dome ceiling, viewing balcony with navy seats, cinematic'),
   R('bodyworld', 'brain-pavilion', 'Brain & Mind Pavilion', 'Experience', 'brain-pavilion', 'Explore how we think, feel and learn.',
     'futuristic pavilion with a giant translucent brain sculpture glowing with gold neural pathways and sparks of light, mirrored floor, curved navy walls, cream arch entry, calm wonder'),
-  R('bodyworld', 'warriors-arcade', 'Warriors Thrive Arcade', 'Game', 'warriors-arcade', 'Play Warriors Thrive and other Arkcov games together.',
+  R('bodyworld', 'gaming-hall', 'Arkcov Gaming Hall', 'Games', 'gaming-hall', 'Play Arkcov games by medical specialty, starting with the Warriors Thrive games for sickle cell disease.',
     'stylish game arcade lounge with neon purple and blue light accents, large game tables with a glowing board game, gaming screens, navy booth seating, a big illuminated sign area left blank, energetic but classy'),
   R('bodyworld', 'channel-theater', 'Arkcov Academy Channel Theater', 'Watch', 'channel-theater', 'Watch shows together with other cadets.',
     'boutique cinema with navy velvet recliners, gold sconces, crimson curtains framing a huge glowing screen, cream stone proscenium arch, soft popcorn-warm lighting'),

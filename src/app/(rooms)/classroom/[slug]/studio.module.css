@@ -64,3 +64,4 @@ a.space { display: block; color: #F6EEDF; text-decoration: none; }
 .emptyPath { display: grid; justify-items: center; text-align: center; gap: 8px; padding: 34px 24px 10px; color: #E6C27A; }
 .emptyPath b { color: #F6EEDF; font-size: 1.15rem; }
 .emptyPath span { color: rgba(246, 238, 223, 0.7); max-width: 460px; line-height: 1.6; }
+.main > *, .side > * { min-width: 0; }
