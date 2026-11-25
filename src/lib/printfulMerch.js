@@ -163,3 +163,10 @@ export function place(file, area) {
   return { area_width: aw, area_height: ah, width, height, top, left: Math.round((aw - width) / 2) };
 }
 
+
+// Printing technique, used when asking Printful for print areas
+export function techniqueFor(item) {
+  if (item.files.some((f) => f.type.startsWith('embroidery'))) return 'EMBROIDERY';
+  if ([513, 525, 19].includes(item.productId)) return 'SUBLIMATION';
+  return 'DTG';
+}

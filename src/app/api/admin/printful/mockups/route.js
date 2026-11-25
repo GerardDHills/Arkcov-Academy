@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { getCurrentUser } from '@/lib/auth';
-import { MERCH, place } from '@/lib/printfulMerch';
+import { MERCH, place, techniqueFor } from '@/lib/printfulMerch';
 import { pf, allowedAdmin } from '@/lib/printful';
 
 export const dynamic = 'force-dynamic';
@@ -26,7 +26,7 @@ export async function GET(request) {
   const perColor = {};
   for (const v of syncVariants) if (!perColor[v.color]) perColor[v.color] = v;
   const sample = Object.values(perColor);
-  const pfs = await pf(`/mockup-generator/printfiles/${item.productId}`);
+  const pfs = await pf(`/mockup-generator/printfiles/${item.productId}?technique=${techniqueFor(item)}`);
   if (!pfs.ok) return NextResponse.json({ error: 'printfiles failed', detail: pfs.json }, { status: 502 });
   const printfiles = Object.fromEntries(pfs.json.result.printfiles.map((p) => [p.printfile_id, p]));
   const placements = pfs.json.result.variant_printfiles.find((v) => v.variant_id === sample[0].variant_id)?.placements || {};
@@ -40,11 +40,12 @@ export async function GET(request) {
     body: {
       variant_ids: sample.map((v) => v.variant_id),
       format: 'jpg',
+      technique: techniqueFor(item),
       files,
       ...(item.options ? { options: item.options.filter((o) => o.id === 'embroidery_type') } : {}),
     },
   });
-  if (!task.ok) return NextResponse.json({ error: 'create-task failed', detail: task.json, files }, { status: 502 });
+  if (!task.ok) return NextResponse.json({ error: 'create-task failed', detail: task.json, files, placements, sampleVariant: sample[0].variant_id }, { status: 502 });
   const key = task.json.result.task_key;
 
   for (let i = 0; i < 18; i++) {

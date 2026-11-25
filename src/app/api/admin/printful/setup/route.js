@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { getCurrentUser } from '@/lib/auth';
-import { MERCH, place } from '@/lib/printfulMerch';
+import { MERCH, place, techniqueFor } from '@/lib/printfulMerch';
 import { pf, allowedAdmin } from '@/lib/printful';
 
 export const dynamic = 'force-dynamic';
@@ -14,7 +14,7 @@ async function createOne(item) {
   if (!catalog.ok) return { slug: item.slug, status: 'error', step: 'catalog', error: catalog.json };
   const variants = catalog.json.result.variants;
 
-  const pfs = await pf(`/mockup-generator/printfiles/${item.productId}`);
+  const pfs = await pf(`/mockup-generator/printfiles/${item.productId}?technique=${techniqueFor(item)}`);
   if (!pfs.ok) return { slug: item.slug, status: 'error', step: 'printfiles', error: pfs.json };
   const printfiles = Object.fromEntries(pfs.json.result.printfiles.map((p) => [p.printfile_id, p]));
   const byVariant = Object.fromEntries(pfs.json.result.variant_printfiles.map((v) => [v.variant_id, v.placements]));
