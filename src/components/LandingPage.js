@@ -48,8 +48,8 @@ const CONTENT_TYPES = [
 ];
 
 const VIDEOS = [
-  { src: '/videos/arkcov_commercial.mp4', poster: '/images/posters/arkcov-commercial.jpg', tag: 'Featured', title: 'Welcome to Arkcov Academy', text: "The world's first medical entertainment platform, built to inspire the next generation of healers." },
-  { src: '/videos/healthworld_commercial.mp4', poster: '/images/posters/healthworld-commercial.jpg', tag: 'Series', title: 'HealthWorld Academy', text: 'Immersive medical education that brings health science to life through story.' },
+  { src: '/videos/arkcov_welcome.mp4', poster: '/images/posters/arkcov-welcome.jpg', tag: 'Featured', title: 'Welcome to Arkcov Academy', text: 'Where young minds discover the art of medicine, and curiosity becomes a calling.' },
+  { src: '/videos/arkcov_bodyworld.mp4', poster: '/images/posters/arkcov-bodyworld.jpg', tag: 'Virtual campus', title: 'BodyWorld: Your Virtual Campus', text: 'Explore real medicine from inside the human body. Study together, run labs and prepare for college.', href: '/campus' },
   { src: '/videos/characters_glow.mp4', poster: '/images/posters/characters-glow.jpg', tag: 'Animated short', title: 'Characters Come to Life', text: 'The Warriors Thrive characters leap off the board into a world of adventure and healing.' },
 ];
 
@@ -165,12 +165,13 @@ export default function LandingPage() {
             {VIDEOS.map((v) => (
               <article key={v.title} className={styles.contentCard}>
                 <div className={styles.cardMedia}>
-                  <video src={v.src} poster={v.poster} controls muted playsInline preload="metadata" aria-label={`${v.title} trailer`} />
+                  <video src={v.src} poster={v.poster} controls playsInline preload="metadata" aria-label={`${v.title} trailer`} />
                 </div>
                 <div className={styles.cardBody}>
                   <span className={styles.cardTag}>{v.tag}</span>
                   <h3>{v.title}</h3>
                   <p>{v.text}</p>
+                  {v.href && <a href={v.href} className={styles.cardLink}>Tour the virtual campus</a>}
                 </div>
               </article>
             ))}
