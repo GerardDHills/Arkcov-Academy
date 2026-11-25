@@ -36,7 +36,7 @@ export async function POST(request) {
             unit_amount: unitAmount,
             product_data: {
               name: variant ? `${product.name} (${variant.label})` : product.name,
-              images: product.image ? [`${appUrl}${product.image}`] : undefined,
+              images: (variant?.image || product.image) ? [`${appUrl}${variant?.image || product.image}`] : undefined,
             },
           },
         },

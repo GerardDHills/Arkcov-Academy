@@ -11,6 +11,8 @@
 // For Printful items, each variant carries the Printful *sync variant* id from the
 // Printful store, so paid orders can be sent to Printful automatically.
 
+import { MERCH_PRODUCTS } from './merchCatalog';
+
 export const MEMBER_DISCOUNT = 0.1; // members and family plans save 10%
 
 export const PRODUCTS = [
@@ -115,7 +117,7 @@ export const PRODUCTS = [
     blurb: 'The Represented Edition of the ROUNDS Planner as a printed, coil-bound executive edition.',
     details: ['Printed edition coming soon'],
   },
-  // Printful merch is added below once the products exist in the Printful store.
+  ...MERCH_PRODUCTS,
 ];
 
 export function getProduct(slug) {

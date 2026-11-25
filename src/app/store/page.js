@@ -51,7 +51,7 @@ function ProductCard({ product, role }) {
         )}
         {product.variants?.length > 0 && (
           <label className={styles.select}>
-            <span>Size and color</span>
+            <span>{product.variants.some((v) => v.label.includes('/')) ? 'Color and size' : 'Choose'}</span>
             <select value={variantId} onChange={(e) => setVariantId(e.target.value)} disabled={soon}>
               {product.variants.map((v) => <option key={v.id} value={v.id}>{v.label}</option>)}
             </select>
