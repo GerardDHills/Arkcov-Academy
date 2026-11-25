@@ -13,9 +13,11 @@ export const FILE_SIZES = {
   'arkcov-wordmark-navy.png': [4441, 1107],
   'arkcov-pattern-navy.png': [4000, 4000],
   'arkcov-mug-wrap.png': [2700, 1140],
+  'arkcov-crest-est2008-embroidery.png': [1598, 1349],
 };
 const MARK_EMB = `${FILES}/arkcov-mark-embroidery.png`;
 const THREADS = ['#A67843', '#CC3333']; // Old Gold arches, Red drop
+const CREST_EST = `${FILES}/arkcov-crest-est2008-embroidery.png`;
 
 const APPAREL = ['S', 'M', 'L', 'XL', '2XL', '3XL'];
 
@@ -43,6 +45,30 @@ export const MERCH = [
     files: [{ type: 'embroidery_chest_left', url: MARK_EMB, fit: 'contain' }],
     options: [{ id: 'thread_colors_chest_left', value: THREADS }],
     blurb: 'Classic crewneck sweatshirt with the embroidered Academy arch.',
+  },
+  {
+    slug: 'crest-est-2008-hoodie',
+    name: 'Arkcov Academy Est. 2008 Hoodie',
+    productId: 146,
+    colors: ['Navy', 'Maroon', 'Black'],
+    sizes: APPAREL,
+    price: 59.99,
+    upcharge: { '2XL': 2, '3XL': 4 },
+    files: [{ type: 'embroidery_chest_center', url: CREST_EST, fit: 'contain' }],
+    options: [{ id: 'thread_colors_chest_center', value: THREADS }],
+    blurb: 'Heavy blend hoodie with the Academy arch embroidered over "Arkcov Academy, Est. 2008" across the chest.',
+  },
+  {
+    slug: 'crest-est-2008-crewneck',
+    name: 'Arkcov Academy Est. 2008 Crewneck',
+    productId: 145,
+    colors: ['Navy', 'Maroon', 'Black'],
+    sizes: APPAREL,
+    price: 54.99,
+    upcharge: { '2XL': 2, '3XL': 4 },
+    files: [{ type: 'embroidery_chest_center', url: CREST_EST, fit: 'contain' }],
+    options: [{ id: 'thread_colors_chest_center', value: THREADS }],
+    blurb: 'Classic crewneck with the Academy arch embroidered over "Arkcov Academy, Est. 2008" across the chest.',
   },
   {
     slug: 'crest-tee',
