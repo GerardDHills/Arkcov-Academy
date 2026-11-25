@@ -14,10 +14,14 @@ export const FILE_SIZES = {
   'arkcov-pattern-navy.png': [4000, 4000],
   'arkcov-mug-wrap.png': [2700, 1140],
   'arkcov-crest-est2008-embroidery.png': [1598, 1349],
+  'arkcov-lockup-horizontal-embroidery.png': [2289, 511],
+  'arkcov-est2008-text-embroidery.png': [1647, 192],
 };
 const MARK_EMB = `${FILES}/arkcov-mark-embroidery.png`;
 const THREADS = ['#A67843', '#CC3333']; // Old Gold arches, Red drop
 const CREST_EST = `${FILES}/arkcov-crest-est2008-embroidery.png`;
+const LOCKUP = `${FILES}/arkcov-lockup-horizontal-embroidery.png`;
+const EST_TEXT = `${FILES}/arkcov-est2008-text-embroidery.png`;
 
 const APPAREL = ['S', 'M', 'L', 'XL', '2XL', '3XL'];
 
@@ -126,6 +130,35 @@ export const MERCH = [
     files: [{ type: 'embroidery_front', url: MARK_EMB, fit: 'contain' }],
     options: [{ id: 'embroidery_type', value: 'flat' }, { id: 'thread_colors', value: THREADS }],
     blurb: 'Warm knit cuffed beanie with the embroidered Academy arch.',
+  },
+  {
+    slug: 'academy-wordmark-dad-hat',
+    name: 'Arkcov Academy Wordmark Dad Hat',
+    productId: 206,
+    colors: ['Navy', 'Black', 'Stone'],
+    sizes: ['One size'],
+    price: 34.99,
+    files: [
+      { type: 'embroidery_front_large', url: LOCKUP, fit: 'contain', scale: 0.95 },
+      { type: 'embroidery_back', url: EST_TEXT, fit: 'contain', scale: 0.9 },
+    ],
+    options: [
+      { id: 'embroidery_type', value: 'flat' },
+      { id: 'thread_colors_front_large', value: THREADS },
+      { id: 'thread_colors_back', value: ['#A67843'] },
+    ],
+    blurb: 'Cotton twill cap with the Academy arch and "Arkcov Academy" embroidered on the front and "Est. 2008" on the back.',
+  },
+  {
+    slug: 'academy-wordmark-beanie',
+    name: 'Arkcov Academy Wordmark Beanie',
+    productId: 266,
+    colors: ['Navy', 'Black'],
+    sizes: ['One size'],
+    price: 27.99,
+    files: [{ type: 'embroidery_front', url: LOCKUP, fit: 'contain', scale: 0.95 }],
+    options: [{ id: 'embroidery_type', value: 'flat' }, { id: 'thread_colors', value: THREADS }],
+    blurb: 'Knit cuffed beanie with the Academy arch and "Arkcov Academy" embroidered across the cuff.',
   },
   {
     slug: 'academy-high-tops-mens',
