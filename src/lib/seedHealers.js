@@ -146,6 +146,12 @@ export const HEALERS = {
 let roomsReady = false;
 async function ensureRooms() {
   if (roomsReady) return;
+  // The arcade became the Arkcov Gaming Hall.
+  await sql`UPDATE programs SET slug = 'gaming-hall', title = 'Arkcov Gaming Hall', room = 'Arkcov Gaming Hall', kind = 'Games',
+    subtitle = 'Play Arkcov games by medical specialty, starting with the Warriors Thrive games for sickle cell disease.',
+    description = 'Play Arkcov games by medical specialty, starting with the Warriors Thrive games for sickle cell disease.',
+    art = '/classroom/rooms/gaming-hall.jpg'
+    WHERE slug = 'warriors-arcade' AND NOT EXISTS (SELECT 1 FROM programs WHERE slug = 'gaming-hall')`;
   const [{ n }] = await sql`SELECT COUNT(*)::int AS n FROM programs WHERE building_slug IS NOT NULL`;
   if (n < ROOMS.length + 1) {
     let i = 0;
