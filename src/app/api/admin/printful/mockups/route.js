@@ -57,6 +57,7 @@ export async function GET(request) {
       return NextResponse.json({
         slug,
         mockups: sample.map((v) => ({ color: v.color, url: byVariant[v.variant_id] || r.mockups[0]?.mockup_url })),
+        all: r.mockups.map((m) => ({ placement: m.placement, variants: m.variant_ids, url: m.mockup_url, extra: (m.extra || []).map((x) => ({ title: x.title, url: x.url })) })),
       });
     }
     if (r?.status === 'failed') return NextResponse.json({ error: 'Mockup task failed', detail: r }, { status: 502 });
