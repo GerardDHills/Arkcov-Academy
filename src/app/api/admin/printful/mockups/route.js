@@ -42,7 +42,6 @@ export async function GET(request) {
       format: 'jpg',
       technique: techniqueFor(item),
       files,
-      ...(item.options ? { options: item.options.filter((o) => o.id === 'embroidery_type') } : {}),
     },
   });
   if (!task.ok) return NextResponse.json({ error: 'create-task failed', detail: task.json, files, placements, sampleVariant: sample[0].variant_id }, { status: 502 });

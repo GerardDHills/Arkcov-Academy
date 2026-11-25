@@ -62,8 +62,8 @@ export const MERCH = [
     colors: ['Navy', 'Cranberry', 'Stone'],
     sizes: ['One size'],
     price: 29.99,
-    files: [{ type: 'embroidery_front', url: MARK_EMB, fit: 'contain' }],
-    options: [{ id: 'embroidery_type', value: 'flat' }, { id: 'thread_colors', value: THREADS }],
+    files: [{ type: 'embroidery_front_large', url: MARK_EMB, fit: 'contain' }],
+    options: [{ id: 'embroidery_type', value: 'flat' }, { id: 'thread_colors_front_large', value: THREADS }],
     blurb: 'Unstructured cotton twill cap with the embroidered Academy arch.',
   },
   {

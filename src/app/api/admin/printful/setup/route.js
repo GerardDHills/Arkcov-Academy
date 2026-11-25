@@ -6,7 +6,8 @@ import { pf, allowedAdmin } from '@/lib/printful';
 export const dynamic = 'force-dynamic';
 export const maxDuration = 60;
 
-async function createOne(item) {
+async function createOne(item, replace) {
+  if (replace) await pf(`/store/products/@${item.slug}`, { method: 'DELETE' });
   const existing = await pf(`/store/products/@${item.slug}`);
   if (existing.ok) return { slug: item.slug, status: 'exists', id: existing.json.result?.sync_product?.id };
 
@@ -54,11 +55,13 @@ export async function POST(request) {
   if (!(await allowedAdmin(request, getCurrentUser))) {
     return NextResponse.json({ error: 'Admins only' }, { status: 403 });
   }
-  const only = new URL(request.url).searchParams.get('only');
+  const params = new URL(request.url).searchParams;
+  const only = params.get('only');
+  const replace = params.get('replace') === '1' && !!only;
   const results = [];
   for (const item of MERCH.filter((m) => !only || m.slug === only)) {
     try {
-      results.push(await createOne(item));
+      results.push(await createOne(item, replace));
     } catch (e) {
       results.push({ slug: item.slug, status: 'error', error: e.message });
     }
