@@ -9,14 +9,155 @@ import StepView, { KIND } from '@/components/classroom/StepView';
 import r from '@/components/classroom/room.module.css';
 import s from './build.module.css';
 
-const TYPES = ['video', 'reading', 'activity', 'quiz', 'simulation'];
+const TYPES = ['lesson', 'case', 'video', 'reading', 'activity', 'quiz', 'simulation'];
 const BLANK_Q = () => ({ q: '', options: ['', '', '', ''], answer: 0, explain: '' });
 const blank = (unit) => ({ kind: 'video', unit: unit || '', title: '', summary: '', minutes: 5, body: '', media_url: '', data: {} });
+
+function QuestionsEditor({ qs, onChange, label = 'Question' }) {
+  const setQ = (i, patch) => onChange(qs.map((q, j) => (j === i ? { ...q, ...patch } : q)));
+  return (
+    <div className={s.questions}>
+      {qs.map((q, i) => (
+        <div key={i} className={s.qCard}>
+          <div className={s.qHead}><b>{label} {i + 1}</b>
+            <button type="button" className={`${r.btnGhost} ${r.small}`} onClick={() => onChange(qs.filter((_, j) => j !== i))}>Remove</button>
+          </div>
+          <label className={r.field}><span>Question</span><input value={q.q} onChange={(e) => setQ(i, { q: e.target.value })} /></label>
+          <div className={s.opts}>
+            {q.options.map((o, oi) => (
+              <div key={oi} className={s.opt}>
+                <button type="button" className={s.correct} aria-pressed={q.answer === oi} title="Mark as the correct answer" onClick={() => setQ(i, { answer: oi })}>
+                  {q.answer === oi ? <Icon name="check" size={14} /> : String.fromCharCode(65 + oi)}
+                </button>
+                <input value={o} placeholder={`Answer ${String.fromCharCode(65 + oi)}`} onChange={(e) => setQ(i, { options: q.options.map((x, k) => (k === oi ? e.target.value : x)) })} />
+              </div>
+            ))}
+          </div>
+          <label className={r.field}><span>Why it’s right (shown after they answer)</span><input value={q.explain || ''} onChange={(e) => setQ(i, { explain: e.target.value })} /></label>
+        </div>
+      ))}
+      <button type="button" className={r.btnGhost} onClick={() => onChange([...qs, BLANK_Q()])}>Add a question</button>
+    </div>
+  );
+}
+
+const lines = (v) => (Array.isArray(v) ? v.join('\n') : v || '');
+const toLines = (v) => String(v || '').split('\n');
+
+// The seven parts of an Arkcov lesson, each with a junior and senior version
+// where the content differs.
+function LessonFields({ data, set }) {
+  const L = data || {};
+  const put = (path, value) => {
+    const next = JSON.parse(JSON.stringify(L));
+    let o = next;
+    path.slice(0, -1).forEach((k) => { o[k] = o[k] || {}; o = o[k]; });
+    o[path[path.length - 1]] = value;
+    set(next);
+  };
+  const spots = L.mission?.spots || [];
+  return (
+    <div className={s.lessonForm}>
+      <div className={s.row2}>
+        <label className={r.field}><span>Lesson code</span><input value={L.code || ''} onChange={(e) => put(['code'], e.target.value)} placeholder="IH-06" /></label>
+        <div className={s.row2}>
+          <label className={r.field}><span>Junior min</span><input type="number" value={L.minutes?.junior || 20} onChange={(e) => put(['minutes', 'junior'], e.target.value)} /></label>
+          <label className={r.field}><span>Senior min</span><input type="number" value={L.minutes?.senior || 30} onChange={(e) => put(['minutes', 'senior'], e.target.value)} /></label>
+        </div>
+      </div>
+      <fieldset className={s.part}><legend>1 · The Hook</legend>
+        <label className={r.field}><span>Opening narration</span><textarea value={L.hook?.narration || ''} onChange={(e) => put(['hook', 'narration'], e.target.value)} /></label>
+        <div className={s.row2b}>
+          <label className={r.field}><span>Junior objectives (one per line)</span><textarea value={lines(L.objectives?.junior)} onChange={(e) => put(['objectives', 'junior'], toLines(e.target.value))} /></label>
+          <label className={r.field}><span>Senior objectives (one per line)</span><textarea value={lines(L.objectives?.senior)} onChange={(e) => put(['objectives', 'senior'], toLines(e.target.value))} /></label>
+        </div>
+      </fieldset>
+      <fieldset className={s.part}><legend>2 · The Discovery</legend>
+        <label className={r.field}><span>Junior Cadet version</span><textarea style={{ minHeight: 200 }} value={L.discovery?.junior || ''} onChange={(e) => put(['discovery', 'junior'], e.target.value)} /></label>
+        <label className={r.field}><span>Senior Cadet version</span><textarea style={{ minHeight: 200 }} value={L.discovery?.senior || ''} onChange={(e) => put(['discovery', 'senior'], e.target.value)} /></label>
+      </fieldset>
+      <fieldset className={s.part}><legend>3 · Healer Spotlight</legend>
+        <div className={s.row2b}>
+          <label className={r.field}><span>Name</span><input value={L.spotlight?.name || ''} onChange={(e) => put(['spotlight', 'name'], e.target.value)} /></label>
+          <label className={r.field}><span>Years</span><input value={L.spotlight?.years || ''} onChange={(e) => put(['spotlight', 'years'], e.target.value)} placeholder="1831–1895" /></label>
+        </div>
+        <label className={r.field}><span>What they discovered or did</span><textarea value={L.spotlight?.contribution || ''} onChange={(e) => put(['spotlight', 'contribution'], e.target.value)} /></label>
+        <label className={r.field}><span>Connection to this lesson</span><input value={L.spotlight?.connection || ''} onChange={(e) => put(['spotlight', 'connection'], e.target.value)} /></label>
+        <div className={s.row2b}>
+          <label className={r.field}><span>Source title</span><input value={L.spotlight?.source?.title || ''} onChange={(e) => put(['spotlight', 'source', 'title'], e.target.value)} /></label>
+          <label className={r.field}><span>Source link</span><input value={L.spotlight?.source?.url || ''} onChange={(e) => put(['spotlight', 'source', 'url'], e.target.value)} placeholder="https://" /></label>
+        </div>
+      </fieldset>
+      <fieldset className={s.part}><legend>4 · The Mission</legend>
+        <label className={r.field}><span>Mission title</span><input value={L.mission?.title || ''} onChange={(e) => put(['mission', 'title'], e.target.value)} /></label>
+        <label className={r.field}><span>Mission introduction</span><textarea value={L.mission?.intro || ''} onChange={(e) => put(['mission', 'intro'], e.target.value)} /></label>
+        {spots.map((sp, i) => (
+          <div key={i} className={s.qCard}>
+            <div className={s.qHead}><b>Stop {i + 1}</b><button type="button" className={`${r.btnGhost} ${r.small}`} onClick={() => put(['mission', 'spots'], spots.filter((_, j) => j !== i))}>Remove</button></div>
+            <div className={s.row2b}>
+              <label className={r.field}><span>Name</span><input value={sp.name} onChange={(e) => put(['mission', 'spots'], spots.map((x, j) => (j === i ? { ...x, name: e.target.value } : x)))} /></label>
+              <label className={r.field}><span>Image path</span><input value={sp.art} onChange={(e) => put(['mission', 'spots'], spots.map((x, j) => (j === i ? { ...x, art: e.target.value } : x)))} placeholder="/classroom/rooms/heart-dome.jpg" /></label>
+            </div>
+            <label className={r.field}><span>What cadets learn here</span><input value={sp.text} onChange={(e) => put(['mission', 'spots'], spots.map((x, j) => (j === i ? { ...x, text: e.target.value } : x)))} /></label>
+          </div>
+        ))}
+        <button type="button" className={r.btnGhost} onClick={() => put(['mission', 'spots'], [...spots, { name: '', art: '/classroom/healers-studio.jpg', text: '' }])}>Add a mission stop</button>
+        <label className={r.field}><span>Reward message</span><input value={L.mission?.reward || ''} onChange={(e) => put(['mission', 'reward'], e.target.value)} /></label>
+      </fieldset>
+      <fieldset className={s.part}><legend>5 · Knowledge Check · Junior</legend>
+        <QuestionsEditor qs={L.check?.junior || []} onChange={(v) => put(['check', 'junior'], v)} />
+      </fieldset>
+      <fieldset className={s.part}><legend>5 · Knowledge Check · Senior</legend>
+        <QuestionsEditor qs={L.check?.senior || []} onChange={(v) => put(['check', 'senior'], v)} />
+      </fieldset>
+      <fieldset className={s.part}><legend>6 · Physician Connection</legend>
+        <label className={r.field}><span>What cadets see</span><textarea value={L.physician?.prompt || ''} onChange={(e) => put(['physician', 'prompt'], e.target.value)} /></label>
+        <label className={r.field}><span>Discussion questions (one per line)</span><textarea value={lines(L.physician?.questions)} onChange={(e) => put(['physician', 'questions'], toLines(e.target.value))} /></label>
+      </fieldset>
+      <fieldset className={s.part}><legend>7 · Healer’s Journal</legend>
+        <label className={r.field}><span>Reflection prompt</span><input value={L.journal?.prompt || ''} onChange={(e) => put(['journal', 'prompt'], e.target.value)} /></label>
+        <label className={r.field}><span>Closing narration</span><textarea value={L.closing || ''} onChange={(e) => put(['closing'], e.target.value)} /></label>
+      </fieldset>
+    </div>
+  );
+}
+
+const CASE_TEMPLATE = {
+  code: 'CASE-0XX', specialty: 'Hematology', minutes: { junior: 15, senior: 30 },
+  patient: { name: 'Fictional Patient', age: 12, interests: ['Music'], concern: 'Chief concern', portrait: '', scene: '' },
+  opening: { scene: 'What we see first.', dialogue: 'What the patient says.', narrator: 'What the attending tells the cadets.' },
+  stages: [
+    { id: 'history', type: 'interview', title: 'Patient interview', min: 2, prompt: 'Ask at least two questions.', questions: [{ q: 'Question?', a: 'Answer.', feedback: 'Why it matters.' }] },
+    { id: 'decision', type: 'decision', title: 'What explains the evidence?', modes: {
+      junior: { prompt: 'Junior question', choices: [{ label: 'Best answer', preferred: true, feedback: 'Why.' }, { label: 'Other answer', feedback: 'Why not.' }] },
+      senior: { prompt: 'Senior question', choices: [{ label: 'Best answer', preferred: true, feedback: 'Why.' }, { label: 'Other answer', feedback: 'Why not.' }] },
+    } },
+  ],
+  debrief: { science: '', uncertainty: '', human: '', closing: '' },
+  journal: { prompt: 'Reflection prompt' },
+};
+
+function CaseFields({ data, set }) {
+  const [text, setText] = useState(() => JSON.stringify(data && data.patient ? data : CASE_TEMPLATE, null, 2));
+  const [bad, setBad] = useState('');
+  useEffect(() => { if (!data?.patient) set(CASE_TEMPLATE); }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  return (
+    <div className={s.caseForm}>
+      <p className={r.muted} style={{ margin: 0, lineHeight: 1.6, fontSize: 14 }}>Cases are written in a structured format: patient, opening scene, then stages (interview, observe, labs, decision, oxygen) with junior and senior versions. Use Preview to try it. Ask Claude to draft a new case from the blueprint and paste it here.</p>
+      <textarea className={s.code} spellCheck={false} value={text} onChange={(e) => {
+        setText(e.target.value);
+        try { set(JSON.parse(e.target.value)); setBad(''); } catch (er) { setBad('The format has an error: check commas and quotes.'); }
+      }} />
+      {bad && <p className={r.error}>{bad}</p>}
+    </div>
+  );
+}
 
 function Editor({ initial, units, onSave, onCancel, saving }) {
   const [st, setSt] = useState(initial);
   const [uploading, setUploading] = useState('');
   const [preview, setPreview] = useState(false);
+  const [ptrack, setPtrack] = useState('junior');
   const [err, setErr] = useState('');
   const fileRef = useRef(null);
   const set = (k, v) => setSt((x) => ({ ...x, [k]: v }));
@@ -65,7 +206,12 @@ function Editor({ initial, units, onSave, onCancel, saving }) {
       {preview ? (
         <div className={r.panelBody}>
           <h3 className={s.previewTitle}>{st.title || 'Untitled lesson'}</h3>
-          <StepView step={{ ...st, id: initial.id || 0 }} previewOnly />
+          {(st.kind === 'lesson' || st.kind === 'case') && (
+            <div style={{ display: 'flex', gap: 8, marginBottom: 14 }}>
+              {['junior', 'senior'].map((t) => <button key={t} type="button" className={`${ptrack === t ? r.btn : r.btnGhost} ${r.small}`} onClick={() => setPtrack(t)}>{t === 'senior' ? 'Senior' : 'Junior'}</button>)}
+            </div>
+          )}
+          <StepView key={ptrack} step={{ ...st, id: initial.id || 0 }} track={ptrack} previewOnly />
         </div>
       ) : (
         <form className={r.panelBody} style={{ display: 'grid', gap: 14 }} onSubmit={(e) => { e.preventDefault(); onSave(st, setErr); }}>
@@ -114,36 +260,24 @@ function Editor({ initial, units, onSave, onCancel, saving }) {
             </label>
           )}
 
-          <label className={r.field}>
+          {st.kind !== 'lesson' && st.kind !== 'case' && <label className={r.field}>
             <span>{st.kind === 'video' ? 'Notes under the film (optional)' : st.kind === 'quiz' ? 'Teaching text before the questions (optional)' : 'Lesson text'}</span>
             <textarea value={st.body || ''} onChange={(e) => set('body', e.target.value)} style={{ minHeight: st.kind === 'reading' ? 260 : 120 }}
               placeholder={'## A heading\n\nA paragraph of text.\n\n- A bullet point\n- **Bold words** with two stars'} />
-          </label>
+          </label>}
 
-          {st.kind === 'quiz' && (
-            <div className={s.questions}>
-              {qs.map((q, i) => (
-                <div key={i} className={s.qCard}>
-                  <div className={s.qHead}><b>Question {i + 1}</b>
-                    {qs.length > 1 && <button type="button" className={`${r.btnGhost} ${r.small}`} onClick={() => setData('questions', qs.filter((_, j) => j !== i))}>Remove</button>}
-                  </div>
-                  <label className={r.field}><span>Question</span><input value={q.q} onChange={(e) => setQ(i, { q: e.target.value })} /></label>
-                  <div className={s.opts}>
-                    {q.options.map((o, oi) => (
-                      <div key={oi} className={s.opt}>
-                        <button type="button" className={s.correct} aria-pressed={q.answer === oi} title="Mark as the correct answer" onClick={() => setQ(i, { answer: oi })}>
-                          {q.answer === oi ? <Icon name="check" size={14} /> : String.fromCharCode(65 + oi)}
-                        </button>
-                        <input value={o} placeholder={`Answer ${String.fromCharCode(65 + oi)}`} onChange={(e) => setQ(i, { options: q.options.map((x, k) => (k === oi ? e.target.value : x)) })} />
-                      </div>
-                    ))}
-                  </div>
-                  <label className={r.field}><span>Why it’s right (shown after they answer)</span><input value={q.explain} onChange={(e) => setQ(i, { explain: e.target.value })} /></label>
-                </div>
-              ))}
-              <button type="button" className={r.btnGhost} onClick={() => setData('questions', [...qs, BLANK_Q()])}>Add a question</button>
+          {st.kind === 'quiz' && <QuestionsEditor qs={qs} onChange={(v) => setData('questions', v)} />}
+
+          {st.kind === 'lesson' && <LessonFields data={st.data} set={(v) => set('data', v)} />}
+          {st.kind === 'case' && <CaseFields data={st.data} set={(v) => set('data', v)} />}
+
+          <fieldset className={s.part}><legend>Faculty only</legend>
+            <label className={r.field}><span>Founder’s notes and stories (cadets never see these)</span><textarea value={st.founder_notes || ''} onChange={(e) => set('founder_notes', e.target.value)} placeholder="Your personal story, teaching notes and discussion plan for the live session…" /></label>
+            <div className={s.row2b}>
+              <label className={r.field}><span>Honor earned on completion (optional)</span><input value={st.honor || ''} onChange={(e) => set('honor', e.target.value)} placeholder="e.g., Heart Scholar" /></label>
+              <label className={s.approve}><input type="checkbox" checked={st.reviewed !== false} onChange={(e) => set('reviewed', e.target.checked)} /> <span><b>Approved for cadets</b><small>Check after reviewing the history and medical content.</small></span></label>
             </div>
-          )}
+          </fieldset>
 
           {err && <p className={r.error} role="alert">{err}</p>}
           <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 10 }}>
@@ -187,6 +321,11 @@ export default function Builder({ params }) {
     [ids[i], ids[j]] = [ids[j], ids[i]];
     setD({ ...d, steps: ids.map((id) => d.steps.find((x) => x.id === id)) });
     await fetch(`/api/classroom/build/${params.slug}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ order: ids }) });
+  };
+  const approve = async (st) => {
+    if (st.reviewed === false && !confirm(`Approve “${st.title}” for cadets? Do this after you’ve checked its history and medical content.`)) return;
+    await fetch(`/api/classroom/build/step/${st.id}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ reviewed: st.reviewed === false }) });
+    load();
   };
   const remove = async (st) => {
     if (!confirm(`Delete “${st.title}”? Cadet progress on it is removed too.`)) return;
@@ -238,7 +377,10 @@ export default function Builder({ params }) {
                       <li key={st.id}>
                         <span className={s.num}>{i + 1}</span>
                         <span className={s.icon}><Icon name={KIND[st.kind]?.icon} size={17} /></span>
-                        <span className={s.text}><small>{st.unit} · {KIND[st.kind]?.label} · {st.minutes} min</small><b>{st.title}</b></span>
+                        <span className={s.text}><small>{st.code ? `${st.code} · ` : ''}{st.unit} · {KIND[st.kind]?.label} · {st.minutes} min</small><b>{st.title}</b></span>
+                        <button type="button" className={`${s.status} ${st.reviewed === false ? s.draft : s.live}`} onClick={() => approve(st)} title={st.reviewed === false ? 'Approve for cadets' : 'Move back to draft'}>
+                          {st.reviewed === false ? 'Draft · approve' : 'Approved'}
+                        </button>
                         <span className={s.actions}>
                           <button type="button" aria-label="Move up" onClick={() => move(i, -1)} disabled={i === 0}><span style={{ display: 'inline-flex', transform: 'rotate(-90deg)' }}><Icon name="arrow" size={15} /></span></button>
                           <button type="button" aria-label="Move down" onClick={() => move(i, 1)} disabled={i === d.steps.length - 1}><span style={{ display: 'inline-flex', transform: 'rotate(90deg)' }}><Icon name="arrow" size={15} /></span></button>

@@ -19,7 +19,7 @@ async function guard(slug) {
 export async function GET(_req, { params }) {
   const g = await guard(params.slug);
   if (g.error) return g.error;
-  return json({ program: g.program, steps: await stepsFor(g.program.id) });
+  return json({ program: g.program, steps: await stepsFor(g.program.id, { drafts: true }) });
 }
 
 // Add a lesson to the end of the room's path.
@@ -29,9 +29,9 @@ export async function POST(request, { params }) {
   let st;
   try { st = cleanStep(await request.json()); } catch (e) { return fail(e.message); }
   const [{ n }] = await sql`SELECT COALESCE(MAX(sort_order), 0)::int AS n FROM program_steps WHERE program_id = ${g.program.id}`;
-  const [row] = await sql`INSERT INTO program_steps (program_id, sort_order, unit, kind, title, summary, body, media_url, data, minutes)
+  const [row] = await sql`INSERT INTO program_steps (program_id, sort_order, unit, kind, title, summary, body, media_url, data, minutes, reviewed, founder_notes, honor, code)
     VALUES (${g.program.id}, ${n + 1}, ${st.unit}, ${st.kind}, ${st.title}, ${st.summary}, ${st.body}, ${st.media_url},
-      ${JSON.stringify(st.data)}::jsonb, ${st.minutes}) RETURNING id`;
+      ${JSON.stringify(st.data)}::jsonb, ${st.minutes}, ${st.reviewed}, ${st.founder_notes}, ${st.honor}, ${st.code}) RETURNING id`;
   return json({ id: row.id });
 }
 

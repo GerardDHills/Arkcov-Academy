@@ -89,6 +89,7 @@ export const config = {
     '/live/:path*',
     '/teach/:path*',
     '/play/:path*',
+    '/passport/:path*',
     '/api/classroom/:path*',
     '/api/live/:path*',
     '/admin/:path*',

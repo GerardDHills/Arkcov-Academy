@@ -11,7 +11,7 @@ export async function GET(_req, { params }) {
   await ensureSeed();
   const program = await programBySlug(params.slug);
   if (!program) return fail('Not found', 404);
-  const steps = await stepsFor(program.id);
+  const steps = await stepsFor(program.id, { drafts: me.isStaff });
   const [enr] = await sql`SELECT * FROM enrollments WHERE user_id = ${me.id} AND program_id = ${program.id}`;
   const progress = await progressSummary(me.id, program.id);
   const sessions = await sql`SELECT ls.id, ls.title, ls.starts_at, ls.minutes, ls.status, u.name AS host_name, u.staff_role, u.role AS host_role
@@ -20,7 +20,7 @@ export async function GET(_req, { params }) {
     ORDER BY (ls.status = 'live') DESC, ls.starts_at LIMIT 8`;
   const [cert] = await sql`SELECT code, score, honors, issued_at FROM certificates WHERE user_id = ${me.id} AND program_id = ${program.id}`;
   const neighbors = await sql`SELECT slug, room, art, kind,
-      (SELECT COUNT(*)::int FROM program_steps s WHERE s.program_id = p.id) AS step_count
+      (SELECT COUNT(*)::int FROM program_steps s WHERE s.program_id = p.id AND s.reviewed IS NOT FALSE) AS step_count
     FROM programs p WHERE p.building_slug = ${program.building_slug || ''} AND p.id <> ${program.id} AND p.published = true
     ORDER BY p.sort_order LIMIT 8`;
   const faculty = await sql`SELECT name, staff_role, staff_title, role FROM users
@@ -37,7 +37,7 @@ export async function GET(_req, { params }) {
     certificate: cert || null,
     neighbors,
     faculty: faculty.map((f) => ({ name: f.name, label: staffLabel(f), title: f.staff_title })),
-    me: { id: me.id, name: me.name, isStaff: me.isStaff, isAdmin: me.isAdmin, canBuild: canBuild(me), hasGuardian: Boolean(me.guardian_email) },
+    me: { id: me.id, name: me.name, isStaff: me.isStaff, isAdmin: me.isAdmin, canBuild: canBuild(me), hasGuardian: Boolean(me.guardian_email), division: me.division, grade: me.grade || null },
   });
 }
 

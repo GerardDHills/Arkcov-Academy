@@ -4,6 +4,8 @@ import { useEffect, useState } from 'react';
 import Icon from '@/components/Icon';
 import StrokeSim from './StrokeSim';
 import { RichText } from './Scene';
+import LessonView from './LessonView';
+import CaseView from './CaseView';
 import { getYouTubeId } from '@/lib/youtube';
 
 function embedUrl(url) {
@@ -21,6 +23,8 @@ export const KIND = {
   activity: { label: 'Activity', icon: 'pen' },
   quiz: { label: 'Evaluation', icon: 'quiz' },
   simulation: { label: 'Simulation', icon: 'flask' },
+  lesson: { label: 'Lesson', icon: 'cap' },
+  case: { label: 'Patient case', icon: 'pulse' },
 };
 
 async function submit(stepId, payload) {
@@ -32,7 +36,14 @@ async function submit(stepId, payload) {
 
 // Renders one lesson step in the room's style. Used for self-paced study
 // and inside live sessions (where the instructor pushes the step).
-export default function StepView({ step, done = false, sessionId = null, onSaved, previewOnly = false }) {
+export default function StepView(props) {
+  const { step, track = 'junior' } = props;
+  if (step.kind === 'lesson') return <LessonView {...props} track={track} />;
+  if (step.kind === 'case') return <CaseView {...props} track={track} />;
+  return <BasicStep {...props} />;
+}
+
+function BasicStep({ step, done = false, sessionId = null, onSaved, previewOnly = false }) {
   const [answers, setAnswers] = useState({});
   const [graded, setGraded] = useState(null);
   const [reveal, setReveal] = useState(null);

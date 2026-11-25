@@ -95,7 +95,7 @@ export async function GET(request, { params }) {
     })),
     results,
     steps,
-    me: { id: me.id, name: me.name, isStaff: me.isStaff, isAdmin: me.isAdmin, hasGuardian: Boolean(me.guardian_email) },
+    me: { id: me.id, name: me.name, isStaff: me.isStaff, isAdmin: me.isAdmin, hasGuardian: Boolean(me.guardian_email), division: me.division },
   });
 }
 

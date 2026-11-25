@@ -1,6 +1,6 @@
 import { sql } from '@/lib/db';
 import { getViewer, stepsFor, progressSummary } from '@/lib/classroom';
-import { json, fail, publicStep, gradeQuiz, maybeCertify } from '@/lib/classroomApi';
+import { json, fail, publicStep, gradeQuiz, gradeQuestions, maybeCertify } from '@/lib/classroomApi';
 
 export const dynamic = 'force-dynamic';
 
@@ -15,8 +15,8 @@ export async function GET(_req, { params }) {
   const me = await getViewer();
   if (!me) return fail('Please log in.', 401);
   const { step, program } = await load(params.id);
-  if (!step) return fail('Not found', 404);
-  const steps = await stepsFor(program.id);
+  if (!step || (step.reviewed === false && !me.isStaff)) return fail('Not found', 404);
+  const steps = await stepsFor(program.id, { drafts: me.isStaff });
   const i = steps.findIndex((s) => s.id === step.id);
   const [mine] = await sql`SELECT completed, score, attempts, data FROM step_progress WHERE user_id = ${me.id} AND step_id = ${step.id}`;
   return json({
@@ -27,6 +27,7 @@ export async function GET(_req, { params }) {
     prev: steps[i - 1]?.id || null,
     next: steps[i + 1]?.id || null,
     mine: mine || null,
+    me: { isStaff: me.isStaff, isAdmin: me.isAdmin, division: me.division, grade: me.grade || null },
   });
 }
 
@@ -35,8 +36,10 @@ export async function POST(request, { params }) {
   const me = await getViewer();
   if (!me) return fail('Please log in.', 401);
   const { step, program } = await load(params.id);
-  if (!step) return fail('Not found', 404);
+  if (!step || (step.reviewed === false && !me.isStaff)) return fail('Not found', 404);
   const body = await request.json().catch(() => ({}));
+  const track = body.track === 'senior' ? 'senior' : 'junior';
+  const journal = String(body.journal || '').trim().slice(0, 4000);
   await sql`INSERT INTO enrollments (user_id, program_id) VALUES (${me.id}, ${program.id}) ON CONFLICT DO NOTHING`;
 
   let score = null;
@@ -49,6 +52,17 @@ export async function POST(request, { params }) {
   } else if (step.kind === 'simulation') {
     score = Math.max(0, Math.min(100, Math.round(Number(body.score) || 0)));
     data = { log: Array.isArray(body.log) ? body.log.slice(0, 40) : [] };
+    result = { score };
+  } else if (step.kind === 'lesson') {
+    const qs = step.data?.check?.[track] || [];
+    result = gradeQuestions(qs, body.answers || []);
+    score = qs.length ? result.score : null;
+    if (!journal) return fail('Write your Healer’s Journal entry to finish the lesson.');
+    data = { track, answers: body.answers || [], journal, mission: Boolean(body.mission) };
+    result.reveal = qs.map((q) => ({ answer: q.answer, explain: q.explain }));
+  } else if (step.kind === 'case') {
+    score = Math.max(0, Math.min(100, Math.round(Number(body.score) || 0)));
+    data = { track, log: Array.isArray(body.log) ? body.log.slice(0, 60) : [], journal: journal || null };
     result = { score };
   } else if (step.kind === 'activity') {
     const text = String(body.response || '').trim().slice(0, 4000);

@@ -151,7 +151,7 @@ export default function FacultyHall() {
                   {roster.length === 0 && <p className={r.muted} style={{ padding: '12px 22px' }}>No cadets enrolled yet.</p>}
                   {roster.map((c, i) => (
                     <div key={i} className={s.tr}>
-                      <span><b>{c.name}</b>{!c.has_guardian && <small>No guardian on file</small>}</span>
+                      <span><Link href={`/passport?user=${c.user_id}`} className={s.link}>{c.name}</Link>{!c.has_guardian && <small>No guardian on file</small>}</span>
                       <span>{c.program_title}</span>
                       <span><span className={s.bar}><i style={{ width: `${c.total ? (c.done / c.total) * 100 : 0}%` }} /></span>{c.done}/{c.total}</span>
                       <span>{c.score ?? '—'}</span>
