@@ -555,6 +555,283 @@ export const MERCH_PRODUCTS = [
     ]
   },
   {
+    "slug": "crest-est-2008-hoodie-left",
+    "name": "Arkcov Academy Est. 2008 Hoodie (Left Chest)",
+    "category": "Apparel",
+    "kind": "physical",
+    "status": "available",
+    "price": 5999,
+    "image": "/images/store/merch/crest-est-2008-hoodie-left-navy.jpg",
+    "blurb": "Heavy blend hoodie with the Academy arch and \"Arkcov Academy, Est. 2008\" embroidered over the heart.",
+    "details": [
+      "Made to order by Printful",
+      "Ships in about 5 to 10 business days (US)"
+    ],
+    "variants": [
+      {
+        "id": "5665767061",
+        "label": "Navy / S",
+        "price": 5999,
+        "image": "/images/store/merch/crest-est-2008-hoodie-left-navy.jpg",
+        "printfulSyncVariantId": 5665767061
+      },
+      {
+        "id": "5665767062",
+        "label": "Navy / M",
+        "price": 5999,
+        "image": "/images/store/merch/crest-est-2008-hoodie-left-navy.jpg",
+        "printfulSyncVariantId": 5665767062
+      },
+      {
+        "id": "5665767063",
+        "label": "Navy / L",
+        "price": 5999,
+        "image": "/images/store/merch/crest-est-2008-hoodie-left-navy.jpg",
+        "printfulSyncVariantId": 5665767063
+      },
+      {
+        "id": "5665767064",
+        "label": "Navy / XL",
+        "price": 5999,
+        "image": "/images/store/merch/crest-est-2008-hoodie-left-navy.jpg",
+        "printfulSyncVariantId": 5665767064
+      },
+      {
+        "id": "5665767065",
+        "label": "Navy / 2XL",
+        "price": 6199,
+        "image": "/images/store/merch/crest-est-2008-hoodie-left-navy.jpg",
+        "printfulSyncVariantId": 5665767065
+      },
+      {
+        "id": "5665767066",
+        "label": "Navy / 3XL",
+        "price": 6399,
+        "image": "/images/store/merch/crest-est-2008-hoodie-left-navy.jpg",
+        "printfulSyncVariantId": 5665767066
+      },
+      {
+        "id": "5665767067",
+        "label": "Maroon / S",
+        "price": 5999,
+        "image": "/images/store/merch/crest-est-2008-hoodie-left-maroon.jpg",
+        "printfulSyncVariantId": 5665767067
+      },
+      {
+        "id": "5665767068",
+        "label": "Maroon / M",
+        "price": 5999,
+        "image": "/images/store/merch/crest-est-2008-hoodie-left-maroon.jpg",
+        "printfulSyncVariantId": 5665767068
+      },
+      {
+        "id": "5665767069",
+        "label": "Maroon / L",
+        "price": 5999,
+        "image": "/images/store/merch/crest-est-2008-hoodie-left-maroon.jpg",
+        "printfulSyncVariantId": 5665767069
+      },
+      {
+        "id": "5665767070",
+        "label": "Maroon / XL",
+        "price": 5999,
+        "image": "/images/store/merch/crest-est-2008-hoodie-left-maroon.jpg",
+        "printfulSyncVariantId": 5665767070
+      },
+      {
+        "id": "5665767071",
+        "label": "Maroon / 2XL",
+        "price": 6199,
+        "image": "/images/store/merch/crest-est-2008-hoodie-left-maroon.jpg",
+        "printfulSyncVariantId": 5665767071
+      },
+      {
+        "id": "5665767073",
+        "label": "Maroon / 3XL",
+        "price": 6399,
+        "image": "/images/store/merch/crest-est-2008-hoodie-left-maroon.jpg",
+        "printfulSyncVariantId": 5665767073
+      },
+      {
+        "id": "5665767074",
+        "label": "Black / S",
+        "price": 5999,
+        "image": "/images/store/merch/crest-est-2008-hoodie-left-black.jpg",
+        "printfulSyncVariantId": 5665767074
+      },
+      {
+        "id": "5665767075",
+        "label": "Black / M",
+        "price": 5999,
+        "image": "/images/store/merch/crest-est-2008-hoodie-left-black.jpg",
+        "printfulSyncVariantId": 5665767075
+      },
+      {
+        "id": "5665767076",
+        "label": "Black / L",
+        "price": 5999,
+        "image": "/images/store/merch/crest-est-2008-hoodie-left-black.jpg",
+        "printfulSyncVariantId": 5665767076
+      },
+      {
+        "id": "5665767077",
+        "label": "Black / XL",
+        "price": 5999,
+        "image": "/images/store/merch/crest-est-2008-hoodie-left-black.jpg",
+        "printfulSyncVariantId": 5665767077
+      },
+      {
+        "id": "5665767079",
+        "label": "Black / 2XL",
+        "price": 6199,
+        "image": "/images/store/merch/crest-est-2008-hoodie-left-black.jpg",
+        "printfulSyncVariantId": 5665767079
+      },
+      {
+        "id": "5665767081",
+        "label": "Black / 3XL",
+        "price": 6399,
+        "image": "/images/store/merch/crest-est-2008-hoodie-left-black.jpg",
+        "printfulSyncVariantId": 5665767081
+      }
+    ]
+  },
+  {
+    "slug": "crest-est-2008-crewneck-left",
+    "name": "Arkcov Academy Est. 2008 Crewneck (Left Chest)",
+    "category": "Apparel",
+    "kind": "physical",
+    "status": "available",
+    "price": 5499,
+    "image": "/images/store/merch/crest-est-2008-crewneck-left-navy.jpg",
+    "blurb": "Classic crewneck with the Academy arch and \"Arkcov Academy, Est. 2008\" embroidered over the heart.",
+    "details": [
+      "Made to order by Printful",
+      "Ships in about 5 to 10 business days (US)"
+    ],
+    "variants": [
+      {
+        "id": "5665770866",
+        "label": "Navy / S",
+        "price": 5499,
+        "image": "/images/store/merch/crest-est-2008-crewneck-left-navy.jpg",
+        "printfulSyncVariantId": 5665770866
+      },
+      {
+        "id": "5665770867",
+        "label": "Navy / M",
+        "price": 5499,
+        "image": "/images/store/merch/crest-est-2008-crewneck-left-navy.jpg",
+        "printfulSyncVariantId": 5665770867
+      },
+      {
+        "id": "5665770868",
+        "label": "Navy / L",
+        "price": 5499,
+        "image": "/images/store/merch/crest-est-2008-crewneck-left-navy.jpg",
+        "printfulSyncVariantId": 5665770868
+      },
+      {
+        "id": "5665770869",
+        "label": "Navy / XL",
+        "price": 5499,
+        "image": "/images/store/merch/crest-est-2008-crewneck-left-navy.jpg",
+        "printfulSyncVariantId": 5665770869
+      },
+      {
+        "id": "5665770870",
+        "label": "Navy / 2XL",
+        "price": 5699,
+        "image": "/images/store/merch/crest-est-2008-crewneck-left-navy.jpg",
+        "printfulSyncVariantId": 5665770870
+      },
+      {
+        "id": "5665770872",
+        "label": "Navy / 3XL",
+        "price": 5899,
+        "image": "/images/store/merch/crest-est-2008-crewneck-left-navy.jpg",
+        "printfulSyncVariantId": 5665770872
+      },
+      {
+        "id": "5665770874",
+        "label": "Maroon / S",
+        "price": 5499,
+        "image": "/images/store/merch/crest-est-2008-crewneck-left-maroon.jpg",
+        "printfulSyncVariantId": 5665770874
+      },
+      {
+        "id": "5665770875",
+        "label": "Maroon / M",
+        "price": 5499,
+        "image": "/images/store/merch/crest-est-2008-crewneck-left-maroon.jpg",
+        "printfulSyncVariantId": 5665770875
+      },
+      {
+        "id": "5665770876",
+        "label": "Maroon / L",
+        "price": 5499,
+        "image": "/images/store/merch/crest-est-2008-crewneck-left-maroon.jpg",
+        "printfulSyncVariantId": 5665770876
+      },
+      {
+        "id": "5665770878",
+        "label": "Maroon / XL",
+        "price": 5499,
+        "image": "/images/store/merch/crest-est-2008-crewneck-left-maroon.jpg",
+        "printfulSyncVariantId": 5665770878
+      },
+      {
+        "id": "5665770879",
+        "label": "Maroon / 2XL",
+        "price": 5699,
+        "image": "/images/store/merch/crest-est-2008-crewneck-left-maroon.jpg",
+        "printfulSyncVariantId": 5665770879
+      },
+      {
+        "id": "5665770881",
+        "label": "Black / S",
+        "price": 5499,
+        "image": "/images/store/merch/crest-est-2008-crewneck-left-black.jpg",
+        "printfulSyncVariantId": 5665770881
+      },
+      {
+        "id": "5665770882",
+        "label": "Black / M",
+        "price": 5499,
+        "image": "/images/store/merch/crest-est-2008-crewneck-left-black.jpg",
+        "printfulSyncVariantId": 5665770882
+      },
+      {
+        "id": "5665770883",
+        "label": "Black / L",
+        "price": 5499,
+        "image": "/images/store/merch/crest-est-2008-crewneck-left-black.jpg",
+        "printfulSyncVariantId": 5665770883
+      },
+      {
+        "id": "5665770885",
+        "label": "Black / XL",
+        "price": 5499,
+        "image": "/images/store/merch/crest-est-2008-crewneck-left-black.jpg",
+        "printfulSyncVariantId": 5665770885
+      },
+      {
+        "id": "5665770886",
+        "label": "Black / 2XL",
+        "price": 5699,
+        "image": "/images/store/merch/crest-est-2008-crewneck-left-black.jpg",
+        "printfulSyncVariantId": 5665770886
+      },
+      {
+        "id": "5665770888",
+        "label": "Black / 3XL",
+        "price": 5899,
+        "image": "/images/store/merch/crest-est-2008-crewneck-left-black.jpg",
+        "printfulSyncVariantId": 5665770888
+      }
+    ]
+  },
+  {
     "slug": "crest-tee",
     "name": "Arkcov Academy Crest Tee",
     "category": "Apparel",
