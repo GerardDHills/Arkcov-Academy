@@ -45,7 +45,7 @@ export default function LaunchBumper() {
   if (!show) return null;
   return (
     <div className={`${s.wrap} ${leaving ? s.out : ''}`} role="presentation">
-      <video ref={v} className={s.video} src={SRC} autoPlay muted={muted} playsInline preload="auto" onEnded={done} onError={done} />
+      <video ref={v} className={s.video} src={SRC} poster="/videos/arkcov-bumper-teen.jpg" autoPlay muted={muted} playsInline preload="auto" onEnded={done} onError={done} />
       <div className={s.bar}>
         <button type="button" onClick={() => { setMuted(false); if (v.current) { v.current.muted = false; v.current.play().catch(() => {}); } }} hidden={!muted}>🔊 Sound</button>
         <button type="button" onClick={done}>Skip</button>
