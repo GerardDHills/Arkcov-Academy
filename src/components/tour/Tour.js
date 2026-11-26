@@ -37,7 +37,11 @@ export default function Tour() {
     setMuted(store.get(MUTE) === '1');
     const saved = store.get(STEP, 'session');
     if (saved !== null) { setI(+saved); setMode('on'); }
-    else if (path === '/dashboard' && (!store.get(SEEN) || window.location.search.includes('tour=1'))) setMode('offer');
+    else if (path === '/dashboard' && (!store.get(SEEN) || window.location.search.includes('tour=1'))) {
+      // Wait for the launch bumper to finish before Nazareth says hello.
+      if (window.__arkcovBumper) window.addEventListener('arkcov:bumper-done', () => setMode('offer'), { once: true });
+      else setMode('offer');
+    }
     const go = () => { setI(0); setMode('offer'); };
     window.addEventListener('arkcov:tour', go);
     return () => window.removeEventListener('arkcov:tour', go);

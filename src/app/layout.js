@@ -1,6 +1,7 @@
 import './globals.css';
 import { AuthProvider } from '@/components/AuthProvider';
 import Tour from '@/components/tour/Tour';
+import LaunchBumper from '@/components/LaunchBumper';
 
 export const metadata = {
   title: 'Arkcov Academy — Your Mission Begins Here',
@@ -25,6 +26,7 @@ export default function RootLayout({ children }) {
         <AuthProvider>
           {children}
           <Tour />
+          <LaunchBumper />
         </AuthProvider>
       </body>
     </html>
