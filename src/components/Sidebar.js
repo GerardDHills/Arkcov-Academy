@@ -11,6 +11,7 @@ const memberLinks = [
   { href: '/dashboard', label: 'Academy Home', icon: 'home' },
   { href: '/classroom', label: 'Virtual Classrooms', icon: 'door' },
   { href: '/cases', label: 'Case Library', icon: 'stethoscope' },
+  { href: '/atlas', label: 'Body Atlas', icon: 'heart' },
   { href: '/passport', label: 'Cadet Passport', icon: 'award' },
   { href: '/superpower', label: 'Superpower Assessment', icon: 'sparkle' },
   { href: '/classroom/gaming-hall', label: 'Gaming Hall', icon: 'game' },
