@@ -50,7 +50,7 @@ const CONTENT_TYPES = [
 const VIDEOS = [
   { src: '/videos/arkcov_welcome.mp4', poster: '/images/posters/arkcov-welcome.jpg', tag: 'Featured', title: 'Welcome to Arkcov Academy', text: 'Where young minds discover the art of medicine, and curiosity becomes a calling.' },
   { src: '/videos/arkcov_bodyworld.mp4', poster: '/images/posters/arkcov-bodyworld.jpg', tag: 'Virtual campus', title: 'BodyWorld: Your Virtual Campus', text: 'Explore real medicine from inside the human body. Study together, run labs and prepare for college.', href: '/campus' },
-  { image: '/images/posters/warriors-thrive-series.jpg', soon: true, tag: 'Animated series', title: 'Warriors Thrive: The Series', text: 'Dr. Amos and the Warriors step out of the game and into their own animated series about the science of sickle cell disease.' },
+  { image: '/images/posters/arkcov-academy-tv-show.jpg', soon: true, tag: 'TV series', title: 'Arkcov Academy: The TV Show', text: 'Step inside the Academy, where cadets train to become the most diverse healers the world has seen, and medicine comes alive as story and art.' },
 ];
 
 const PILLARS = [
