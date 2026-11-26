@@ -130,3 +130,6 @@
   .link { white-space: nowrap; padding: 0.5rem 0.8rem; font-size: 0.88rem; border: 1px solid var(--warm-gray); }
   .collapsed .label { display: inline; }
 }
+
+/* Phones use the bottom tab bar; the Academy home links to everything else. */
+@media (max-width: 768px) { .sidebar { display: none !important; } }

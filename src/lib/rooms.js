@@ -10,6 +10,7 @@ export const BUILDINGS = [
   { slug: 'sports-complex', name: 'Sports Complex', kind: 'Athletics' },
   { slug: 'middle-school', name: 'Middle School Building', kind: 'Junior Cadets' },
   { slug: 'high-school', name: 'High School Building', kind: 'Senior Cadets' },
+  { slug: 'teaching-hospital', name: 'Arkcov Teaching Hospital', kind: 'Patient Cases' },
   { slug: 'junior-boys-house', name: "Junior Cadet Boys' House", kind: 'Residence' },
   { slug: 'junior-girls-house', name: "Junior Cadet Girls' House", kind: 'Residence' },
   { slug: 'senior-mens-house', name: "Senior Cadet Men's House", kind: 'Residence' },
@@ -75,6 +76,14 @@ export const ROOMS = [
     'college and career center with university pennants in navy and crimson, a wall of acceptance letters in frames, counseling desks, laptops, a pathway map mural to medicine, cream arches, optimistic light'),
   R('high-school', 'leadership-studio', 'Leadership Studio', 'Leadership', 'leadership-studio', 'Lead teams, plan service and mentor Junior Cadets.',
     'leadership studio with a boardroom table, a wall of community service photos, a podium, flags in navy and crimson, cream stone arches, gold details, confident atmosphere'),
+  R('teaching-hospital', 'emergency-department', 'Emergency Department', 'Cases', 'emergency-department', 'Emergency cases: shock, seizures, anaphylaxis, stroke and more. Act first, then reason.',
+    'a sleek modern pediatric and adult emergency department resuscitation bay with a stretcher, monitors glowing teal, a crash cart, glass doors, navy and cream walls with gold accents, cinematic calm lighting, no people'),
+  R('teaching-hospital', 'newborn-nursery', 'Newborn Nursery & Delivery Suite', 'Cases', 'newborn-nursery', 'Newborn cases, starting with the first breath.',
+    'a bright modern delivery suite with a neonatal radiant warmer bed, a small bag-mask on a tray, soft warm lights, cream walls with navy and gold accents, peaceful and hopeful, no people'),
+  R('teaching-hospital', 'childrens-clinic', "Children's Clinic", 'Cases', 'childrens-clinic', 'Clinic cases for children and teens across every body system.',
+    'a warm, playful pediatric clinic exam room with a padded exam table, a growth chart on the wall, a stethoscope on a hook, a window with afternoon light, navy and cream with gold accents and subtle illustrated animals, no people'),
+  R('teaching-hospital', 'adult-clinic', 'Adult Medicine Clinic', 'Cases', 'adult-clinic', 'Clinic cases for adults: diabetes, thyroid disease and more.',
+    'an elegant adult primary care exam room with an exam table, a blood pressure cuff on the wall, a desk with a computer, bookshelves, large window with city view, navy and cream with gold accents, calm daylight, no people'),
 ];
 
 // Each residence house gets its own rooms (houses are single-sex).

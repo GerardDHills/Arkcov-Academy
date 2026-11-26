@@ -281,3 +281,27 @@
 
 .quickIcon { color: var(--crimson); }
 .progressThumbFallback { color: var(--gold-light); }
+
+/* Your Academy: the fastest way into classrooms and cases */
+.academy { margin-bottom: 2.2rem; }
+.resume { position: relative; display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: end; gap: 12px; min-height: 150px; padding: 18px 20px; border-radius: 20px; overflow: hidden; text-decoration: none; color: #F6EEDF; margin-bottom: 14px; isolation: isolate; box-shadow: 0 18px 40px -24px rgba(14, 26, 58, 0.6); }
+.resume img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2; transition: transform .6s ease; }
+.resume:hover img { transform: scale(1.04); }
+.resume::after { content: ''; position: absolute; inset: 0; z-index: -1; background: linear-gradient(90deg, rgba(9, 16, 38, 0.92), rgba(9, 16, 38, 0.35)); }
+.resumeIn { display: grid; gap: 3px; }
+.resumeIn small { font-size: 11px; font-weight: 800; letter-spacing: .16em; text-transform: uppercase; color: #E6C27A; }
+.resumeIn b { font-family: var(--font-display); font-size: 1.7rem; line-height: 1.1; }
+.resumeIn em { font-style: normal; font-size: 14px; opacity: .8; }
+.resumeGo { display: inline-flex; gap: 6px; align-items: center; padding: 10px 16px; border-radius: 999px; font-weight: 800; color: #0E1A3A; background: linear-gradient(180deg, #E6C27A, #C9973F); }
+.doors { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.door { display: grid; gap: 4px; align-content: start; padding: 16px; border-radius: 16px; text-decoration: none; color: var(--navy); background: #fff; border: 1px solid rgba(201, 151, 63, 0.3); transition: transform .2s, box-shadow .2s; }
+.door:hover { transform: translateY(-2px); box-shadow: 0 14px 30px -20px rgba(14, 26, 58, 0.5); }
+.door b { font-family: var(--font-display); font-size: 1.15rem; }
+.door > span:last-child { font-size: 13px; color: var(--text-muted); }
+.doorIcon { width: 42px; height: 42px; border-radius: 12px; display: grid; place-items: center; color: #E6C27A; background: linear-gradient(160deg, #13224A, #0E1A3A); margin-bottom: 6px; }
+@media (max-width: 768px) {
+  .doors { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .door { padding: 14px; }
+  .resume { grid-template-columns: 1fr; }
+  .resumeIn b { font-size: 1.35rem; }
+}

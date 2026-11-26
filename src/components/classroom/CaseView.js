@@ -4,7 +4,7 @@ import { useMemo, useState } from 'react';
 import Link from 'next/link';
 import Icon from '@/components/Icon';
 import OxygenTransit from './OxygenTransit';
-import { ModelStage, DifferentialStage } from './CaseReasoning';
+import { ModelStage, DifferentialStage, SequenceStage } from './CaseReasoning';
 import r from './room.module.css';
 import s from './case.module.css';
 
@@ -50,7 +50,7 @@ export default function CaseView({ step, track = 'junior', sessionId = null, onS
 
   const st = stages[i];
   const variant = st?.modes ? st.modes[track] || st.modes.junior : st;
-  const isReasoning = (x) => x.type === 'model' || x.type === 'differential';
+  const isReasoning = (x) => x.type === 'model' || x.type === 'differential' || x.type === 'sequence';
   const graded = stages.filter((x) => isReasoning(x) || (x.modes ? (x.modes[track] || x.modes.junior)?.choices : x.choices));
   const score = graded.length
     ? Math.round((graded.reduce((a, x) => a + (isReasoning(x) ? credit[x.id] || 0 : first[x.id] ? 1 : 0), 0) / graded.length) * 100)
@@ -92,7 +92,7 @@ export default function CaseView({ step, track = 'junior', sessionId = null, onS
     <div className={s.case}>
       <aside className={s.chart}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        {pt.portrait && <img src={pt.portrait} alt="" className={s.portrait} />}
+        {(pt.portrait || pt.scene) && <img src={pt.portrait || pt.scene} alt="" className={s.portrait} />}
         <div className={s.chartBody}>
           <small>{d.code} · {d.specialty} · fictional patient</small>
           <h3>{pt.name}</h3>
@@ -116,12 +116,12 @@ export default function CaseView({ step, track = 'junior', sessionId = null, onS
               <div className={s.scene}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src={pt.scene} alt="" />
-                <blockquote className={s.bubble}><b>{pt.name?.split(' ')[0]}</b>{d.opening?.dialogue}</blockquote>
+                {d.opening?.dialogue && <blockquote className={s.bubble}><b>{d.opening.speaker || pt.name?.split(' ')[0]}</b>{d.opening.dialogue}</blockquote>}
               </div>
             )}
             <p className={s.sceneText}>{d.opening?.scene}</p>
-            <div className={s.attending}><Icon name="cap" size={18} /><p><b>Attending physician</b>{d.opening?.narrator}</p></div>
-            <div className={s.actions}><button type="button" className={r.btn} onClick={() => setI(0)}>Enter the clinic <Icon name="arrow" size={16} /></button></div>
+            <div className={s.attending}><Icon name="cap" size={18} /><p><b>{d.opening?.narratorRole || 'Attending physician'}</b>{d.opening?.narrator}</p></div>
+            <div className={s.actions}><button type="button" className={r.btn} onClick={() => setI(0)}>{d.emergency ? 'Respond now' : 'Enter the clinic'} <Icon name="arrow" size={16} /></button></div>
           </div>
         )}
 
@@ -144,7 +144,7 @@ export default function CaseView({ step, track = 'junior', sessionId = null, onS
                   {st.questions.map((q, k) => asked[k] && (
                     <div key={k} className={s.turn}>
                       <p className={s.you}>{q.q}</p>
-                      <p className={s.them}><b>{pt.name?.split(' ')[0]}</b>“{q.a}”</p>
+                      <p className={s.them}><b>{q.who || st.speaker || pt.name?.split(' ')[0]}</b>“{q.a}”</p>
                       <p className={s.why}>{q.feedback}</p>
                     </div>
                   ))}
@@ -169,6 +169,7 @@ export default function CaseView({ step, track = 'junior', sessionId = null, onS
 
             {st.type === 'model' && variant && <ModelStage v={variant} onDone={reason(st.id)} />}
             {st.type === 'differential' && variant && <DifferentialStage v={variant} onDone={reason(st.id)} />}
+            {st.type === 'sequence' && variant && <SequenceStage v={variant} onDone={reason(st.id)} />}
 
             {st.type === 'labs' && (
               <>

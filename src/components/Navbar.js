@@ -33,9 +33,10 @@ export default function Navbar() {
           </>
         ) : (
           <>
-            <li><Link href="/dashboard" onClick={() => setMenuOpen(false)}>Dashboard</Link></li>
-            <li><Link href="/explore" onClick={() => setMenuOpen(false)}>Explore</Link></li>
+            <li><Link href="/dashboard" onClick={() => setMenuOpen(false)}>Home</Link></li>
             <li><Link href="/classroom" onClick={() => setMenuOpen(false)}>Classrooms</Link></li>
+            <li><Link href="/cases" onClick={() => setMenuOpen(false)}>Cases</Link></li>
+            <li><Link href="/passport" onClick={() => setMenuOpen(false)}>Passport</Link></li>
             <li><a href="/campus" onClick={() => setMenuOpen(false)}>Campus</a></li>
             <li><Link href="/store" onClick={() => setMenuOpen(false)}>Store</Link></li>
             {user.role === 'admin' && (
@@ -64,7 +65,8 @@ export default function Navbar() {
                     <div className={styles.roleBadge}>{user.role}</div>
                   </div>
                   <div className={styles.dropdownDivider} />
-                  <Link href="/dashboard" className={styles.dropdownItem} onClick={() => setProfileOpen(false)}>Dashboard</Link>
+                  <Link href="/dashboard" className={styles.dropdownItem} onClick={() => setProfileOpen(false)}>Academy home</Link>
+                  <Link href="/explore" className={styles.dropdownItem} onClick={() => setProfileOpen(false)}>Watch &amp; listen library</Link>
                   <Link href="/pricing" className={styles.dropdownItem} onClick={() => setProfileOpen(false)}>Membership &amp; billing</Link>
                   <div className={styles.dropdownDivider} />
                   <button className={styles.dropdownItem} onClick={() => { setProfileOpen(false); logout(); }}>

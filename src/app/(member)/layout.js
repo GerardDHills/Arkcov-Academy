@@ -1,6 +1,7 @@
 'use client';
 
 import Navbar from '@/components/Navbar';
+import TabBar from '@/components/TabBar';
 import Sidebar from '@/components/Sidebar';
 import styles from './member.module.css';
 
@@ -14,6 +15,7 @@ export default function MemberLayout({ children }) {
           {children}
         </main>
       </div>
+      <TabBar />
     </>
   );
 }

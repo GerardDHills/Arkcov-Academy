@@ -64,6 +64,7 @@ export function ModelStage({ v, onDone }) {
               <span className={s.linkText}><b>{l.label}</b>{l.hint && <small>{l.hint}</small>}</span>
               <span className={s.linkClues}>
                 {v.clues.filter((c) => placed[c.id] === l.id).map((c) => <em key={c.id}>{c.label}</em>)}
+                {!v.clues.some((c) => c.layer === l.id) && <i className={s.inferred}>Reasoned, not directly observed: no clue belongs here.</i>}
               </span>
             </button>
             {k < v.layers.length - 1 && <span className={s.arrow} aria-hidden="true">leads to</span>}
@@ -163,6 +164,92 @@ export function DifferentialStage({ v, onDone }) {
         <div className={s.actions}>
           {list.length < min && <span className={r.muted}>Add at least {min - list.length} more.</span>}
           <button type="button" className={r.btn} disabled={list.length < min} onClick={check}>Check my differential <Icon name="check" size={16} /></button>
+        </div>
+      )}
+      {checked && v.wrap && <p className={r.explain}>{v.wrap}</p>}
+    </div>
+  );
+}
+
+// SequenceStage: in an emergency, what do you do, and in what order? The
+// cadet taps steps from a shuffled pool to build a plan, then checks it.
+// Credit is the longest run of correct steps in the right relative order,
+// less a penalty for each distractor chosen.
+function shuffled(list, seed) {
+  const a = [...list];
+  let x = seed || 7;
+  for (let k = a.length - 1; k > 0; k -= 1) {
+    x = (x * 9301 + 49297) % 233280;
+    const j = Math.floor((x / 233280) * (k + 1));
+    [a[k], a[j]] = [a[j], a[k]];
+  }
+  return a;
+}
+
+export function SequenceStage({ v, onDone }) {
+  const steps = v.steps.map((x, k) => ({ ...x, key: `s${k}`, at: k }));
+  const extra = (v.distractors || []).map((x, k) => ({ ...x, key: `d${k}`, at: -1 }));
+  const [pool] = useState(() => shuffled([...steps, ...extra], v.steps.length * 31 + extra.length));
+  const [plan, setPlan] = useState([]);
+  const [checked, setChecked] = useState(false);
+  const byKey = (k) => pool.find((x) => x.key === k);
+
+  const check = () => {
+    const ats = plan.map((k) => byKey(k).at).filter((a) => a >= 0);
+    // Longest increasing subsequence = steps placed in correct relative order.
+    const tails = [];
+    for (const a of ats) {
+      let lo = 0; let hi = tails.length;
+      while (lo < hi) { const m = (lo + hi) >> 1; if (tails[m] < a) lo = m + 1; else hi = m; }
+      tails[lo] = a;
+    }
+    const wrong = plan.filter((k) => byKey(k).at < 0).length;
+    const fraction = Math.max(0, (tails.length - wrong * 0.5) / steps.length);
+    setChecked(true);
+    onDone(fraction, { plan: plan.map((k) => byKey(k).label) });
+  };
+
+  const need = steps.length;
+  return (
+    <div className={s.ddx}>
+      <p className={s.ask}>{v.prompt}</p>
+      {!checked && (
+        <div className={s.ddxPool} role="group" aria-label="Possible actions">
+          {pool.filter((x) => !plan.includes(x.key)).map((x) => (
+            <button key={x.key} type="button" className={s.clue} onClick={() => plan.length < need && setPlan((p) => [...p, x.key])}>{x.label}</button>
+          ))}
+        </div>
+      )}
+      <div className={s.ddxList}>
+        <p className={s.ddxHead}>{checked ? 'Your plan' : 'Your plan, in order'} <span>{plan.length} of {need} steps</span></p>
+        {plan.length === 0 && <p className={r.muted}>Tap actions above in the order you would do them. Tap a step here to remove it.</p>}
+        <ol>
+          {plan.map((k, n) => {
+            const x = byKey(k);
+            const cls = !checked ? '' : x.at < 0 ? s.fitUnl : x.at === n ? s.fitLead : s.fitPoss;
+            return (
+              <li key={k} className={cls}>
+                <span className={s.rank}>{n + 1}</span>
+                <div className={s.ddxBody}>
+                  {checked ? <b>{x.label}</b> : <button type="button" className={s.planItem} onClick={() => setPlan((p) => p.filter((y) => y !== k))} aria-label={`Remove ${x.label}`}>{x.label}</button>}
+                  {checked && <small>{x.at < 0 ? 'Not part of this response' : x.at === n ? 'Right place' : `Best as step ${x.at + 1}`}</small>}
+                  {checked && <p>{x.why}</p>}
+                </div>
+              </li>
+            );
+          })}
+        </ol>
+      </div>
+      {checked && (
+        <div className={s.forgot} style={{ background: 'rgba(60, 201, 180, 0.08)', borderColor: 'rgba(60, 201, 180, 0.4)' }}>
+          <b style={{ color: '#9BE8D9' }}>The response, step by step</b>
+          {v.steps.map((x, k) => <p key={k}><em>{k + 1}. {x.label}.</em> {x.why}</p>)}
+        </div>
+      )}
+      {!checked && (
+        <div className={s.actions}>
+          {plan.length > 0 && <button type="button" className={r.btnGhost} onClick={() => setPlan([])}>Start over</button>}
+          <button type="button" className={r.btn} disabled={plan.length < need} onClick={check}>Check my plan <Icon name="check" size={16} /></button>
         </div>
       )}
       {checked && v.wrap && <p className={r.explain}>{v.wrap}</p>}
