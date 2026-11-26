@@ -32,6 +32,10 @@ export default function DashboardPage() {
 
   const [academy, setAcademy] = useState(null);
   useEffect(() => {
+    document.body.classList.add('dark-home');
+    return () => document.body.classList.remove('dark-home');
+  }, []);
+  useEffect(() => {
     fetch('/api/classroom/programs').then((x) => x.json()).then((d) => { if (!d.error) setAcademy(d); }).catch(() => {});
   }, []);
   const myRooms = (academy?.programs || []).filter((p) => p.enrolled).sort((a, b) => (a.done >= a.step_count) - (b.done >= b.step_count));

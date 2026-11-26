@@ -1,4 +1,4 @@
-.page { padding: 104px max(5vw, 16px) 64px; max-width: 1240px; margin: 0 auto; min-height: 100vh; }
+.page { padding: calc(var(--nav-h) + 32px) max(5vw, 16px) 64px; max-width: 1240px; margin: 0 auto; min-height: 100vh; }
 .header { text-align: center; margin-bottom: 28px; }
 .eyebrow { font-family: var(--font-brand); font-size: 0.8rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--crimson); margin: 0 0 8px; }
 .header h1 { font-size: clamp(2rem, 4vw, 3rem); color: var(--navy); margin: 0 0 8px; }

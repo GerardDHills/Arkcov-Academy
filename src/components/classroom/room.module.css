@@ -67,7 +67,7 @@
 
 /* ---- Layout ---- */
 .wrap { width: min(1180px, 100% - 40px); margin: 0 auto; }
-.top { padding: 108px 0 28px; }
+.top { padding: calc(var(--nav-h) + 36px) 0 28px; }
 .eyebrow { font-family: var(--font-brand); font-size: 12px; letter-spacing: .28em; text-transform: uppercase; color: var(--gold-light); display: inline-flex; align-items: center; gap: 10px; }
 .eyebrow::before { content: ''; width: 28px; height: 1px; background: var(--gold); }
 .title { font-family: var(--font-display); font-weight: 600; font-size: clamp(2.4rem, 5vw, 4.2rem); line-height: 1.02; margin: 14px 0 12px; letter-spacing: -0.01em; }
