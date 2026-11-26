@@ -1,0 +1,39 @@
+.scrim { position: fixed; inset: 0; z-index: 1000; display: grid; place-items: center; padding: 20px; background: rgba(4, 8, 20, 0.72); backdrop-filter: blur(6px); animation: fade .3s ease; }
+.offer { display: grid; grid-template-columns: 200px 1fr; width: min(620px, 100%); overflow: hidden; border-radius: 24px; background: linear-gradient(160deg, #13224A, #0A1430); border: 1px solid rgba(230, 194, 122, 0.45); box-shadow: 0 40px 90px -30px rgba(0, 0, 0, 0.9); color: #F6EEDF; animation: rise .45s cubic-bezier(.2,.8,.2,1); }
+.offerImg { width: 100%; height: 100%; object-fit: cover; object-position: center 20%; min-height: 240px; }
+.offerBody { padding: 26px 24px; display: grid; align-content: center; gap: 8px; }
+.offerBody small { font-size: 11px; font-weight: 800; letter-spacing: .18em; text-transform: uppercase; color: #E6C27A; }
+.offerBody h2 { margin: 0; font-family: var(--font-display); font-size: 2rem; font-weight: 600; color: #F6EEDF; }
+.offerBody p { margin: 0 0 8px; font-size: 15px; line-height: 1.6; color: rgba(246, 238, 223, 0.8); }
+.row { display: flex; gap: 8px; flex-wrap: wrap; }
+.primary, .ghost { font: inherit; font-size: 14px; font-weight: 800; padding: 10px 16px; border-radius: 999px; cursor: pointer; }
+.primary { color: #0E1A3A; background: linear-gradient(180deg, #E6C27A, #C9973F); border: 0; }
+.ghost { color: #F6EEDF; background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(230, 194, 122, 0.35); }
+.dim { position: fixed; inset: 0; z-index: 998; background: rgba(4, 8, 20, 0.35); pointer-events: none; animation: fade .3s ease; }
+.spot { position: fixed; z-index: 998; border-radius: 18px; pointer-events: none; box-shadow: 0 0 0 9999px rgba(4, 8, 20, 0.62), 0 0 0 2px #E6C27A, 0 0 30px 6px rgba(230, 194, 122, 0.45); transition: all .35s cubic-bezier(.2,.8,.2,1); }
+.card { position: fixed; z-index: 999; right: 20px; bottom: 20px; width: min(420px, calc(100% - 24px)); padding: 16px; border-radius: 22px; color: #F6EEDF; background: linear-gradient(160deg, rgba(19, 34, 74, 0.97), rgba(10, 20, 48, 0.97)); border: 1px solid rgba(230, 194, 122, 0.5); box-shadow: 0 30px 70px -20px rgba(0, 0, 0, 0.85); backdrop-filter: blur(14px); animation: rise .4s cubic-bezier(.2,.8,.2,1); }
+.head { display: flex; align-items: center; gap: 12px; }
+.face { position: relative; flex: none; width: 54px; height: 54px; border-radius: 50%; padding: 2px; background: linear-gradient(180deg, #E6C27A, #C9973F); }
+.face img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; display: block; }
+.talking::after { content: ''; position: absolute; inset: -5px; border-radius: 50%; border: 2px solid rgba(230, 194, 122, 0.7); animation: pulse 1.2s ease-out infinite; }
+.who { flex: 1; min-width: 0; display: grid; }
+.who b { font-size: 16px; }
+.who small { font-size: 12.5px; color: #E6C27A; font-weight: 700; }
+.icon { flex: none; width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; font-size: 15px; cursor: pointer; color: #F6EEDF; background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(230, 194, 122, 0.25); }
+.text { margin: 12px 0 14px; font-size: 15px; line-height: 1.6; color: rgba(246, 238, 223, 0.9); }
+.foot { display: flex; align-items: center; gap: 8px; }
+.dots { flex: 1; display: flex; gap: 5px; }
+.dots span { width: 7px; height: 7px; border-radius: 50%; background: rgba(246, 238, 223, 0.2); }
+.dots .dotDone { background: rgba(230, 194, 122, 0.5); }
+.dots .dotOn { width: 18px; border-radius: 4px; background: #E6C27A; }
+@keyframes fade { from { opacity: 0; } }
+@keyframes rise { from { opacity: 0; transform: translateY(16px) scale(.98); } }
+@keyframes pulse { from { opacity: 1; transform: scale(1); } to { opacity: 0; transform: scale(1.25); } }
+@media (max-width: 768px) {
+  .card { left: 12px; right: 12px; width: auto; bottom: calc(var(--tabbar-h, 64px) + env(safe-area-inset-bottom, 0px) + 10px); padding: 14px; }
+  .text { font-size: 14.5px; margin: 10px 0 12px; }
+  .offer { grid-template-columns: 1fr; }
+  .offerImg { height: 260px; min-height: 0; }
+  .offerBody { padding: 20px; }
+}
+@media (prefers-reduced-motion: reduce) { .card, .offer, .spot, .scrim, .dim { animation: none; transition: none; } .talking::after { animation: none; } }
