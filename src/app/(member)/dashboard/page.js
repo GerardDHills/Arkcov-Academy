@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import Icon from '@/components/Icon';
 import { useAuth } from '@/components/AuthProvider';
 import Link from 'next/link';
+import { GUIDE, startTour } from '@/lib/tour';
 import styles from './dashboard.module.css';
 
 const quickLinks = [
@@ -60,8 +61,14 @@ export default function DashboardPage() {
         </div>
       </div>
 
-      <section className={styles.academy} aria-labelledby="academy-title">
+      <section className={styles.academy} aria-labelledby="academy-title" data-tour="doors">
         <h2 id="academy-title" className={styles.sectionTitle}>Your Academy</h2>
+        <button type="button" className={styles.guide} onClick={startTour} data-tour="tour-button">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={GUIDE.face} alt="" />
+          <span><b>Take the campus tour</b><small>with {GUIDE.name}, {GUIDE.role.toLowerCase()}</small></span>
+          <Icon name="play" size={18} />
+        </button>
         {resume && (
           <Link href={`/classroom/${resume.slug}`} className={styles.resume}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
