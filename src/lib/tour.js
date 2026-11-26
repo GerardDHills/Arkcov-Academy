@@ -5,7 +5,7 @@ export const GUIDE = {
   name: 'Nazareth',
   role: 'Upperclassman Scholar',
   portrait: '/guide/nazareth.jpg',
-  face: '/guide/nazareth-face.jpg',
+  face: '/guide/nazareth-face.jpg?v=2',
 };
 
 export const TOUR = [
