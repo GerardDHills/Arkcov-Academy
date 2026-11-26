@@ -28,10 +28,14 @@ const sp = ([label, why]) => ({ label, why });
 export const SYSTEMS = [
   'Emergency & Resuscitation', 'Newborn', 'Blood & Cancer', 'Heart & Circulation', 'Lungs & Breathing',
   'Digestive System', 'Kidneys & Urinary Tract', 'Hormones & Metabolism', 'Brain & Nerves',
-  'Infection & Immunity', 'Bones, Joints & Sports',
+  'Infection & Immunity', 'Bones, Joints & Sports', 'Reproductive Health', 'Mind & Behavior', 'Child Protection',
 ];
 
 export function makeCase(c) {
+  // Senior-only cases may omit junior variants; reuse the senior ones.
+  for (const k of ['exam', 'act', 'model', 'ddx', 'decision']) {
+    if (c[k] && !c[k].junior) c[k].junior = c[k].senior;
+  }
   const first = c.patient.name.split(' ')[0];
   const stages = [];
 
@@ -112,6 +116,8 @@ export function makeCase(c) {
       specialty: c.specialty,
       system: c.system,
       emergency: Boolean(c.emergency),
+      ...(c.seniorOnly ? { seniorOnly: true } : {}),
+      ...(c.advisory ? { advisory: c.advisory } : {}),
       minutes: { junior: c.minutes?.[0] || 20, senior: c.minutes?.[1] || 30 },
       patient: {
         name: c.patient.name, age: c.patient.age, concern: c.patient.concern,

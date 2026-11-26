@@ -84,6 +84,10 @@ export const ROOMS = [
     'a warm, playful pediatric clinic exam room with a padded exam table, a growth chart on the wall, a stethoscope on a hook, a window with afternoon light, navy and cream with gold accents and subtle illustrated animals, no people'),
   R('teaching-hospital', 'adult-clinic', 'Adult Medicine Clinic', 'Cases', 'adult-clinic', 'Clinic cases for adults: diabetes, thyroid disease and more.',
     'an elegant adult primary care exam room with an exam table, a blood pressure cuff on the wall, a desk with a computer, bookshelves, large window with city view, navy and cream with gold accents, calm daylight, no people'),
+  R('teaching-hospital', 'reproductive-health-clinic', 'Reproductive Health Clinic', 'Cases', 'reproductive-health-clinic', "Women's and men's reproductive health cases, from puberty to pregnancy and beyond.",
+    'a calm, respectful modern reproductive health clinic consultation room with two armchairs, a desk with a simple anatomical model, an exam table behind a soft curtain, plants and natural light, navy and cream with gold accents, private and welcoming, no people'),
+  R('teaching-hospital', 'behavioral-health-center', 'Mind & Wellness Center', 'Cases', 'behavioral-health-center', 'Mental health cases: depression, anxiety, trauma, ADHD and safety planning.',
+    'a serene behavioral health counseling room with a comfortable sofa and armchair, soft lamps, plants, a window with garden view, calming artwork, navy and cream with gold accents, peaceful and safe, no people'),
 ];
 
 // Each residence house gets its own rooms (houses are single-sex).
