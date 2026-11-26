@@ -141,7 +141,7 @@ export default function Studio({ params }) {
                   <Link key={n.slug} href={`/classroom/${n.slug}`} className={s.space}>
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img src={n.art || '/classroom/healers-studio.jpg'} alt="" loading="lazy" />
-                    <span className={s.cap}><b>{n.room}</b><span>{n.step_count ? `${n.step_count} lessons` : 'Curriculum in development'}</span></span>
+                    <span className={s.cap}><b>{n.room}</b><span>{n.step_count ? `${n.step_count} ${n.step_count === 1 ? "lesson" : "lessons"}` : 'Curriculum in development'}</span></span>
                   </Link>
                 ))}
               </div>

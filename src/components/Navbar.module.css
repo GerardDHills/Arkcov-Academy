@@ -6,7 +6,8 @@
   backdrop-filter: blur(18px);
   border-bottom: 1px solid rgba(201, 151, 63, 0.28);
   padding: 0 2rem;
-  height: 72px;
+  height: var(--nav-h);
+  padding-top: env(safe-area-inset-top, 0px);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -162,12 +163,12 @@
 }
 
 @media (max-width: 768px) {
-  .nav { padding: 0 1rem; }
+  .nav { padding: env(safe-area-inset-top, 0px) 1rem 0; }
   .hamburger { display: flex; }
   .links {
     display: none;
     position: fixed;
-    top: 72px; left: 0; right: 0;
+    top: var(--nav-h); left: 0; right: 0;
     background: rgba(8, 16, 39, 0.98);
     backdrop-filter: blur(20px);
     flex-direction: column;

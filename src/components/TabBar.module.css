@@ -11,3 +11,7 @@
   .tab:hover { color: #F6EEDF; }
   .on { color: #E6C27A; background: rgba(230, 194, 122, 0.1); }
 }
+@media (max-width: 768px) {
+  .tab { -webkit-user-select: none; user-select: none; transition: transform .12s ease, color .2s ease; }
+  .tab:active { transform: scale(0.92); }
+}

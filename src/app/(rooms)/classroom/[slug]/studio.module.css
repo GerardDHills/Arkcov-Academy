@@ -1,4 +1,4 @@
-.hero { padding: 120px 0 36px; min-height: 64vh; display: flex; flex-direction: column; justify-content: flex-end; }
+.hero { padding: calc(var(--nav-h) + 48px) 0 36px; min-height: 64vh; display: flex; flex-direction: column; justify-content: flex-end; }
 .heroActions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 22px; }
 .stats { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 34px; align-items: stretch; }
 .stats > div { min-width: 140px; padding: 14px 18px; border-radius: 16px; background: rgba(10, 18, 42, 0.55); border: 1px solid rgba(230, 194, 122, 0.24); backdrop-filter: blur(14px); display: grid; gap: 2px; }
@@ -55,7 +55,7 @@
 @media (max-width: 640px) {
   .stats { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
   .stats > div { min-width: 0; }
-  .hero { padding-top: 100px; }
+  .hero { padding-top: calc(var(--nav-h) + 28px); }
 }
 
 a.space { display: block; color: #F6EEDF; text-decoration: none; }

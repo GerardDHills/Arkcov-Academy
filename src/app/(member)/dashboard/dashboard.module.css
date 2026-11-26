@@ -305,3 +305,27 @@
   .resume { grid-template-columns: 1fr; }
   .resumeIn b { font-size: 1.35rem; }
 }
+
+/* ---- Dark theme: the Academy home lives in the same world as the classrooms ---- */
+.dashboard { color: #F6EEDF; }
+.welcomeTitle { color: #F6EEDF; font-family: var(--font-display); font-weight: 600; letter-spacing: -0.01em; }
+.highlight { background: linear-gradient(135deg, #E6C27A, #C9973F); -webkit-background-clip: text; background-clip: text; }
+.welcomeSub { color: rgba(246, 238, 223, 0.62); }
+.welcomeAvatar { background: linear-gradient(180deg, #E6C27A, #C9973F); color: #0E1A3A; }
+.sectionTitle { color: #E6C27A; font-family: var(--font-brand); font-size: 12px; letter-spacing: .24em; text-transform: uppercase; font-weight: 600; }
+.memberBanner { background: rgba(10, 18, 42, 0.6); border: 1px solid rgba(60, 201, 180, 0.35); backdrop-filter: blur(12px); }
+.memberBanner h3 { color: #F6EEDF; }
+.memberBanner p { color: rgba(246, 238, 223, 0.6); }
+.memberBanner :global(.btn-outline) { color: #E6C27A; border-color: rgba(230, 194, 122, 0.5); }
+.upgradeBanner { background: linear-gradient(135deg, #1B2D5E, #0E1A3A); border: 1px solid rgba(230, 194, 122, 0.35); }
+.door, .quickCard, .statCard, .emptyState, .progressCard {
+  background: rgba(10, 18, 42, 0.62); border: 1px solid rgba(230, 194, 122, 0.22); box-shadow: 0 18px 40px -28px rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(12px); color: #F6EEDF;
+}
+.door b, .quickCard h3, .emptyState h3, .statValue, .progressInfo h4 { color: #F6EEDF; }
+.door > span:last-child, .quickCard p, .emptyState p, .statLabel, .progressInfo span { color: rgba(246, 238, 223, 0.6); }
+.doorIcon { background: linear-gradient(160deg, rgba(230, 194, 122, 0.2), rgba(230, 194, 122, 0.06)); border: 1px solid rgba(230, 194, 122, 0.35); }
+.quickIcon { color: #E6C27A; }
+.emptyState { border-style: dashed; }
+.door:active, .quickCard:active, .resume:active { transform: scale(0.98); }
+.resume { border: 1px solid rgba(230, 194, 122, 0.35); }

@@ -46,7 +46,7 @@ export default function ClassroomDirectory() {
                 <h2>{p.room}</h2>
                 <p>{p.title}{p.subtitle ? `: ${p.subtitle}` : ''}</p>
                 <div className={s.meta}>
-                  <span><Icon name="book" size={15} /> {p.step_count} lessons</span>
+                  <span><Icon name="book" size={15} /> {p.step_count} {p.step_count === 1 ? "lesson" : "lessons"}</span>
                   {p.enrolled && <span><Icon name="check" size={15} /> {p.done} complete</span>}
                   {p.nextSession && p.nextSession.status !== 'live' && <span><Icon name="calendar" size={15} /> Next live class {fmt(p.nextSession.starts_at)}</span>}
                 </div>
@@ -76,7 +76,7 @@ export default function ClassroomDirectory() {
                         <span className={s.roomIn}>
                           <small>{p.kind}</small>
                           <b>{p.room}</b>
-                          <em>{p.nextSession?.status === 'live' ? <span className={`${r.tag} ${r.live}`}>Live</span> : p.step_count ? `${p.step_count} lessons` : data.me.canBuild ? 'Ready to build' : 'Curriculum in development'}</em>
+                          <em>{p.nextSession?.status === 'live' ? <span className={`${r.tag} ${r.live}`}>Live</span> : p.step_count ? `${p.step_count} ${p.step_count === 1 ? "lesson" : "lessons"}` : data.me.canBuild ? 'Ready to build' : 'Curriculum in development'}</em>
                         </span>
                       </Link>
                     ))}

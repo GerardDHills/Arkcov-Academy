@@ -1,6 +1,6 @@
 .sidebar {
   width: 240px;
-  min-height: calc(100vh - 72px);
+  min-height: calc(100vh - var(--nav-h));
   background: var(--warm-white);
   border-right: 1px solid rgba(201, 151, 63, 0.25);
   padding: 1.5rem 0.8rem;
@@ -9,7 +9,7 @@
   gap: 1rem;
   transition: width 0.3s ease;
   position: sticky;
-  top: 72px;
+  top: var(--nav-h);
   overflow-y: auto;
 }
 
@@ -120,7 +120,7 @@
 @media (max-width: 768px) {
   .sidebar {
     width: 100%; min-height: 0; flex-direction: row; align-items: center; gap: 0.4rem;
-    padding: 0.55rem 0.8rem; top: 72px; z-index: 50; overflow-x: auto; overflow-y: hidden;
+    padding: 0.55rem 0.8rem; top: var(--nav-h); z-index: 50; overflow-x: auto; overflow-y: hidden;
     border-right: 0; border-bottom: 1px solid rgba(201, 151, 63, 0.25);
     scrollbar-width: none;
   }
@@ -133,3 +133,11 @@
 
 /* Phones use the bottom tab bar; the Academy home links to everything else. */
 @media (max-width: 768px) { .sidebar { display: none !important; } }
+
+/* Dark sidebar on the Academy home */
+:global(body.dark-home) .sidebar { background: rgba(8, 16, 39, 0.75); border-right-color: rgba(230, 194, 122, 0.2); }
+:global(body.dark-home) .link { color: rgba(246, 238, 223, 0.75); }
+:global(body.dark-home) .link:hover { background: rgba(230, 194, 122, 0.08); color: #F6EEDF; }
+:global(body.dark-home) .active { background: rgba(230, 194, 122, 0.14); color: #E6C27A; }
+:global(body.dark-home) .sectionLabel { color: #E6C27A; }
+:global(body.dark-home) .toggle { background: rgba(230, 194, 122, 0.12); color: #E6C27A; }
