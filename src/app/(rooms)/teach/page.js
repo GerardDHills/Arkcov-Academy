@@ -133,7 +133,7 @@ export default function FacultyHall() {
                             <Link key={p.id} href={`/teach/build/${p.slug}`} className={s.buildRow}>
                               {/* eslint-disable-next-line @next/next/no-img-element */}
                               <img src={p.art} alt="" loading="lazy" />
-                              <span><b>{p.room}</b><small>{p.step_count ? `${p.step_count} lessons` : 'Empty, ready to build'}</small></span>
+                              <span><b>{p.room}</b><small>{p.step_count ? `${p.step_count} ${p.step_count === 1 ? "lesson" : "lessons"}` : 'Empty, ready to build'}</small></span>
                               <Icon name="arrow" size={15} />
                             </Link>
                           ))}

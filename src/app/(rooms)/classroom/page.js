@@ -76,7 +76,7 @@ export default function ClassroomDirectory() {
                         <span className={s.roomIn}>
                           <small>{p.kind}</small>
                           <b>{p.room}</b>
-                          <em>{p.nextSession?.status === 'live' ? <span className={`${r.tag} ${r.live}`}>Live</span> : p.step_count ? `${p.step_count} {p.step_count === 1 ? "lesson" : "lessons"}` : data.me.canBuild ? 'Ready to build' : 'Curriculum in development'}</em>
+                          <em>{p.nextSession?.status === 'live' ? <span className={`${r.tag} ${r.live}`}>Live</span> : p.step_count ? `${p.step_count} ${p.step_count === 1 ? "lesson" : "lessons"}` : data.me.canBuild ? 'Ready to build' : 'Curriculum in development'}</em>
                         </span>
                       </Link>
                     ))}
