@@ -78,6 +78,7 @@ export default function DashboardPage() {
           {[
             { href: '/classroom', icon: 'door', label: 'Virtual Classrooms', desc: 'Every building and room on campus' },
             { href: '/cases', icon: 'stethoscope', label: 'Case Library', desc: 'Solve patient cases, from clinic to emergency' },
+            { href: '/atlas', icon: 'heart', label: 'Body Atlas', desc: 'Anatomy to bedside, all connected' },
             { href: '/passport', icon: 'award', label: 'Cadet Passport', desc: 'Stamps, honors and your journal' },
             { href: '/superpower', icon: 'sparkle', label: 'Superpower Assessment', desc: 'Discover your social superpower' },
             { href: '/classroom/gaming-hall', icon: 'game', label: 'Gaming Hall', desc: 'Games by medical specialty' },

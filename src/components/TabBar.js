@@ -12,7 +12,7 @@ const TABS = [
   { href: '/dashboard', label: 'Home', icon: 'home', match: ['/dashboard'] },
   { href: '/classroom', label: 'Classrooms', icon: 'door', match: ['/classroom', '/live'] },
   { href: '/cases', label: 'Cases', icon: 'stethoscope', match: ['/cases'] },
-  { href: '/passport', label: 'Passport', icon: 'award', match: ['/passport'] },
+  { href: '/atlas', label: 'Atlas', icon: 'heart', match: ['/atlas'] },
   { href: '/classroom/gaming-hall', label: 'Games', icon: 'game', match: ['/classroom/gaming-hall', '/play', '/games'] },
 ];
 
