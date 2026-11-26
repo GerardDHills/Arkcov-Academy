@@ -1,4 +1,5 @@
 import { sql } from '@/lib/db';
+import { ensureCaseLibrary } from '@/lib/cases';
 
 // Season One starter content from the Curriculum Blueprint (Volume I).
 // Seeded as drafts (reviewed = false): cadets don't see them until the Dean
@@ -108,8 +109,9 @@ export const CASE001 = {
   honor: 'Clinical Investigator',
   data: {
     code: 'CASE-001',
-    rev: 3,
+    rev: 4,
     specialty: 'Hematology · Gastroenterology',
+    system: 'Digestive System',
     minutes: { junior: 20, senior: 35 },
     patient: {
       name: 'Isaiah Brooks', age: 13, interests: ['Basketball', 'Video games'], concern: 'Fatigue',
@@ -340,6 +342,7 @@ export async function ensureSeasonOne() {
         ${item.minutes}, false, ${item.founder_notes}, ${item.code}, ${item.honor})`;
   }
   seeded = true;
+  await ensureCaseLibrary();
 }
 
 export { SUPERPOWER_BODY, SUPERPOWER_CHECK };

@@ -36,7 +36,7 @@ export function middleware(request) {
     if (token && (pathname === '/login' || pathname === '/signup')) {
       const user = decodeToken(token);
       if (user) {
-        const redirect = user.role === 'admin' ? '/admin' : '/dashboard';
+        const redirect = '/dashboard';
         return NextResponse.redirect(new URL(redirect, request.url));
       }
     }
@@ -83,6 +83,7 @@ export function middleware(request) {
 export const config = {
   matcher: [
     '/dashboard/:path*',
+    '/cases/:path*',
     '/explore/:path*',
     '/course/:path*',
     '/classroom/:path*',

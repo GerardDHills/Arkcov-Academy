@@ -22,7 +22,7 @@ function LoginForm() {
     setLoading(true);
     try {
       const user = await login(email, password);
-      const redirect = searchParams.get('redirect') || (user.role === 'admin' ? '/admin' : '/dashboard');
+      const redirect = searchParams.get('redirect') || '/dashboard';
       router.push(redirect);
     } catch (err) {
       setError(err.message);

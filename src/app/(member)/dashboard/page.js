@@ -30,6 +30,13 @@ export default function DashboardPage() {
     fetchProgress();
   }, []);
 
+  const [academy, setAcademy] = useState(null);
+  useEffect(() => {
+    fetch('/api/classroom/programs').then((x) => x.json()).then((d) => { if (!d.error) setAcademy(d); }).catch(() => {});
+  }, []);
+  const myRooms = (academy?.programs || []).filter((p) => p.enrolled).sort((a, b) => (a.done >= a.step_count) - (b.done >= b.step_count));
+  const resume = myRooms.find((p) => p.done < p.step_count) || myRooms[0];
+
   const { progress, stats } = progressData;
   const inProgress = progress.filter(p => !p.completed);
   const completed = progress.filter(p => p.completed);
@@ -48,6 +55,38 @@ export default function DashboardPage() {
           {user?.name?.charAt(0).toUpperCase()}
         </div>
       </div>
+
+      <section className={styles.academy} aria-labelledby="academy-title">
+        <h2 id="academy-title" className={styles.sectionTitle}>Your Academy</h2>
+        {resume && (
+          <Link href={`/classroom/${resume.slug}`} className={styles.resume}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={resume.art || '/classroom/healers-studio.jpg'} alt="" />
+            <span className={styles.resumeIn}>
+              <small>Pick up where you left off</small>
+              <b>{resume.room}</b>
+              <em>{resume.done} of {resume.step_count} complete</em>
+            </span>
+            <span className={styles.resumeGo}>Continue <Icon name="arrow" size={18} /></span>
+          </Link>
+        )}
+        <div className={styles.doors}>
+          {[
+            { href: '/classroom', icon: 'door', label: 'Virtual Classrooms', desc: 'Every building and room on campus' },
+            { href: '/cases', icon: 'stethoscope', label: 'Case Library', desc: 'Solve patient cases, from clinic to emergency' },
+            { href: '/passport', icon: 'award', label: 'Cadet Passport', desc: 'Stamps, honors and your journal' },
+            { href: '/superpower', icon: 'sparkle', label: 'Superpower Assessment', desc: 'Discover your social superpower' },
+            { href: '/classroom/gaming-hall', icon: 'game', label: 'Gaming Hall', desc: 'Games by medical specialty' },
+            { href: '/campus', icon: 'compass', label: 'Campus Map', desc: 'Walk the grounds' },
+          ].map((d) => (
+            <Link key={d.href} href={d.href} className={styles.door}>
+              <span className={styles.doorIcon}><Icon name={d.icon} size={24} /></span>
+              <b>{d.label}</b>
+              <span>{d.desc}</span>
+            </Link>
+          ))}
+        </div>
+      </section>
 
       {user?.role === 'free' ? (
         <div className={styles.upgradeBanner}>
@@ -72,7 +111,7 @@ export default function DashboardPage() {
       )}
 
       <section className={styles.section}>
-        <h2 className={styles.sectionTitle}>Explore the Library</h2>
+        <h2 className={styles.sectionTitle}>Watch &amp; listen</h2>
         <div className={styles.quickGrid}>
           {quickLinks.map((link) => (
             <Link key={link.href} href={link.href} className={styles.quickCard}>

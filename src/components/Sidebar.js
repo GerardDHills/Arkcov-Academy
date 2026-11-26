@@ -8,18 +8,20 @@ import styles from './Sidebar.module.css';
 import Icon from './Icon';
 
 const memberLinks = [
-  { href: '/dashboard', label: 'Dashboard', icon: 'home' },
-  { href: '/explore', label: 'Explore', icon: 'compass' },
+  { href: '/dashboard', label: 'Academy Home', icon: 'home' },
   { href: '/classroom', label: 'Virtual Classrooms', icon: 'door' },
+  { href: '/cases', label: 'Case Library', icon: 'stethoscope' },
   { href: '/passport', label: 'Cadet Passport', icon: 'award' },
   { href: '/superpower', label: 'Superpower Assessment', icon: 'sparkle' },
+  { href: '/classroom/gaming-hall', label: 'Gaming Hall', icon: 'game' },
   { href: '/teach', label: 'Faculty Hall', icon: 'cap' },
+  { section: 'Watch & listen' },
+  { href: '/explore', label: 'Explore the library', icon: 'compass' },
   { href: '/explore?type=course', label: 'Courses', icon: 'book' },
   { href: '/explore?type=podcast', label: 'Podcasts', icon: 'mic' },
   { href: '/explore?type=movie', label: 'Movies', icon: 'film' },
   { href: '/explore?type=tv_show', label: 'TV Shows', icon: 'tv' },
   { href: '/explore?type=animated_short', label: 'Animated Shorts', icon: 'sparkle' },
-  { href: '/explore?type=interactive_game', label: 'Interactive Games', icon: 'game' },
 ];
 
 const adminLinks = [
@@ -45,7 +47,9 @@ export default function Sidebar() {
 
       <div className={styles.section}>
         <div className={styles.sectionLabel}>{isAdmin ? 'Admin' : 'Academy'}</div>
-        {links.map((link) => (
+        {links.map((link) => link.section ? (
+          !collapsed && <div key={link.section} className={styles.sectionLabel} style={{ marginTop: 14 }}>{link.section}</div>
+        ) : (
           <Link
             key={link.href}
             href={link.href}
