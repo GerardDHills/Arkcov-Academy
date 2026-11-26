@@ -16,6 +16,7 @@ export async function GET(_req, { params }) {
   if (!me) return fail('Please log in.', 401);
   const { step, program } = await load(params.id);
   if (!step || (step.reviewed === false && !me.isStaff)) return fail('Not found', 404);
+  if (step.data?.seniorOnly && !me.isStaff && me.division !== 'senior') return fail('This case is for senior cadets.', 404);
   const steps = await stepsFor(program.id, { drafts: me.isStaff });
   const i = steps.findIndex((s) => s.id === step.id);
   const [mine] = await sql`SELECT completed, score, attempts, data FROM step_progress WHERE user_id = ${me.id} AND step_id = ${step.id}`;
@@ -37,6 +38,7 @@ export async function POST(request, { params }) {
   if (!me) return fail('Please log in.', 401);
   const { step, program } = await load(params.id);
   if (!step || (step.reviewed === false && !me.isStaff)) return fail('Not found', 404);
+  if (step.data?.seniorOnly && !me.isStaff && me.division !== 'senior') return fail('This case is for senior cadets.', 404);
   const body = await request.json().catch(() => ({}));
   const track = body.track === 'senior' ? 'senior' : 'junior';
   const journal = String(body.journal || '').trim().slice(0, 4000);

@@ -88,6 +88,7 @@ export default function CaseLibrary() {
                       <span className={s.tags}>
                         {c.emergency && <span className={`${s.tag} ${s.tagEmer}`}><Icon name="bolt" size={12} /> Emergency</span>}
                         {c.reviewed === false && <span className={`${s.tag} ${s.tagDraft}`}>Draft</span>}
+                        {c.senior_only && <span className={`${s.tag} ${s.tagSenior}`}>Senior track</span>}
                         {c.completed && <span className={`${s.tag} ${s.tagDone}`}><Icon name="check" size={12} /> {c.score != null ? `${c.score}%` : 'Solved'}</span>}
                       </span>
                     </span>

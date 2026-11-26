@@ -119,6 +119,8 @@ export default function CaseView({ step, track = 'junior', sessionId = null, onS
                 {d.opening?.dialogue && <blockquote className={s.bubble}><b>{d.opening.speaker || pt.name?.split(' ')[0]}</b>{d.opening.dialogue}</blockquote>}
               </div>
             )}
+            {d.advisory && <div className={s.advisory} role="note"><b>Content note</b><p>{d.advisory}</p></div>}
+            {d.seniorOnly && track === 'junior' && <div className={s.advisory} role="note"><b>Senior track only</b><p>Junior cadets don’t see this case. You are previewing it as faculty.</p></div>}
             <p className={s.sceneText}>{d.opening?.scene}</p>
             <div className={s.attending}><Icon name="cap" size={18} /><p><b>{d.opening?.narratorRole || 'Attending physician'}</b>{d.opening?.narrator}</p></div>
             <div className={s.actions}><button type="button" className={r.btn} onClick={() => setI(0)}>{d.emergency ? 'Respond now' : 'Enter the clinic'} <Icon name="arrow" size={16} /></button></div>

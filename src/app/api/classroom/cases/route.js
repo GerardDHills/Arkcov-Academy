@@ -13,7 +13,7 @@ export async function GET() {
   if (!me) return fail('Please log in.', 401);
   await ensureSeed();
   const rows = await sql`SELECT s.id, s.title, s.summary, s.minutes, s.code, s.honor, s.reviewed,
-      s.data->>'system' AS system, s.data->>'specialty' AS specialty, (s.data->>'emergency')::boolean AS emergency,
+      s.data->>'system' AS system, (s.data->>'seniorOnly')::boolean AS senior_only, s.data->>'advisory' AS advisory, s.data->>'specialty' AS specialty, (s.data->>'emergency')::boolean AS emergency,
       s.data->'patient'->>'name' AS patient, s.data->'patient'->>'age' AS age, s.data->'patient'->>'concern' AS concern,
       COALESCE(s.data->'patient'->>'scene', s.data->'patient'->>'portrait') AS image,
       p.slug AS room_slug, p.room,
@@ -21,6 +21,7 @@ export async function GET() {
     FROM program_steps s JOIN programs p ON p.id = s.program_id
     LEFT JOIN step_progress sp ON sp.step_id = s.id AND sp.user_id = ${me.id}
     WHERE s.kind = 'case' AND (s.reviewed IS NOT FALSE OR ${me.isStaff})
+      AND (${me.isStaff} OR ${me.division === 'senior'} OR COALESCE((s.data->>'seniorOnly')::boolean, false) = false)
     ORDER BY s.code NULLS LAST, s.id`;
   return json({
     cases: rows,
