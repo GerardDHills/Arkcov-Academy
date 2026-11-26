@@ -26,6 +26,8 @@ export default function Tour() {
   const [muted, setMuted] = useState(false);
   const [playing, setPlaying] = useState(false);
   const [box, setBox] = useState(null);
+  const [auto, setAuto] = useState(false); // after the first Next, stops advance on their own
+  const timer = useRef(null);
   const stop = TOUR[i];
   const here = stop && path === stop.path;
 
@@ -58,6 +60,20 @@ export default function Tour() {
     return () => clearTimeout(t);
   }, [mode, i, here, muted]);
 
+  // Auto-advance: when narration ends (or after reading time if sound is off).
+  const last = i === TOUR.length - 1;
+  const queueNext = useCallback((ms) => {
+    clearTimeout(timer.current);
+    if (!auto || last) return;
+    timer.current = setTimeout(() => setI((k) => Math.min(k + 1, TOUR.length - 1)), ms);
+  }, [auto, last]);
+  useEffect(() => {
+    clearTimeout(timer.current);
+    if (mode !== 'on' || !here || !auto || last) return undefined;
+    if (muted) queueNext(Math.max(5000, stop.text.length * 55));
+    return () => clearTimeout(timer.current);
+  }, [mode, i, here, auto, muted]); // eslint-disable-line react-hooks/exhaustive-deps
+
   // Spotlight the target element, following scroll and resize.
   useEffect(() => {
     setBox(null);
@@ -75,6 +91,7 @@ export default function Tour() {
   }, [mode, i, here]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const end = useCallback(() => {
+    clearTimeout(timer.current); setAuto(false);
     audio.current?.pause(); setPlaying(false); setMode('off'); setBox(null);
     store.set(SEEN, '1'); store.set(STEP, null, 'session');
   }, []);
@@ -82,15 +99,19 @@ export default function Tour() {
     // Starting from a tap unlocks audio on phones for the rest of the tour.
     const a = audio.current;
     if (a && !muted) { a.src = audioFor(0); a.play().then(() => a.pause()).catch(() => {}); }
-    setI(0); setMode('on');
+    setAuto(false); setI(0); setMode('on');
   };
-  const next = () => (i < TOUR.length - 1 ? setI(i + 1) : end());
-  const back = () => i > 0 && setI(i - 1);
+  const next = () => { setAuto(true); if (i < TOUR.length - 1) setI(i + 1); else end(); };
+  const back = () => { if (i > 0) setI(i - 1); };
   const toggleSound = () => {
     const m = !muted; setMuted(m); store.set(MUTE, m ? '1' : '0');
     if (m) { audio.current?.pause(); setPlaying(false); }
   };
-  const replay = () => { const a = audio.current; if (!a) return; if (playing) { a.pause(); setPlaying(false); } else { a.src = audioFor(i); a.play().then(() => setPlaying(true)).catch(() => {}); } };
+  const replay = () => {
+    const a = audio.current; if (!a) return;
+    if (playing || auto) { a.pause(); setPlaying(false); setAuto(false); clearTimeout(timer.current); }
+    else { setAuto(i > 0); a.src = audioFor(i); a.play().then(() => setPlaying(true)).catch(() => {}); }
+  };
 
   useEffect(() => {
     if (mode === 'off') return undefined;
@@ -102,7 +123,7 @@ export default function Tour() {
   if (!user) return null;
   return (
     <>
-      <audio ref={audio} preload="auto" onEnded={() => setPlaying(false)} onError={() => setPlaying(false)} />
+      <audio ref={audio} preload="auto" onEnded={() => { setPlaying(false); queueNext(1200); }} onError={() => { setPlaying(false); if (mode === 'on') queueNext(Math.max(5000, (stop?.text.length || 100) * 55)); }} />
       {mode === 'offer' && (
         <div className={s.scrim} role="dialog" aria-modal="true" aria-labelledby="tour-hi">
           <div className={s.offer}>
@@ -132,7 +153,7 @@ export default function Tour() {
             <p className={s.text}>{stop.text}</p>
             <div className={s.foot}>
               <div className={s.dots} aria-hidden="true">{TOUR.map((_, k) => <span key={k} className={k === i ? s.dotOn : k < i ? s.dotDone : ''} />)}</div>
-              {!muted && <button type="button" className={s.ghost} onClick={replay}>{playing ? 'Pause' : 'Play'}</button>}
+              {(!muted || auto) && <button type="button" className={s.ghost} onClick={muted ? () => { setAuto(false); clearTimeout(timer.current); } : replay}>{playing || auto ? 'Pause' : 'Play'}</button>}
               {i > 0 && <button type="button" className={s.ghost} onClick={back}>Back</button>}
               <button type="button" className={s.primary} onClick={next}>{i === TOUR.length - 1 ? 'Finish' : 'Next'}</button>
             </div>
