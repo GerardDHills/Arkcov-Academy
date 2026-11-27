@@ -11,6 +11,8 @@ const PATHS = [
   {
     icon: 'family',
     title: 'Young explorers & families',
+    image: '/images/paths/families.jpg',
+    alt: 'A family learning about the heart together at the kitchen table, the children in Arkcov Academy sweaters',
     who: 'Ages 7 and up, learning together',
     text: 'Animated shorts, games and stories that make the human body an adventure you share at home.',
     links: [{ label: 'Browse the library', href: '#explore' }, { label: 'Family plan', href: '#join' }],
@@ -18,6 +20,8 @@ const PATHS = [
   {
     icon: 'shield',
     title: 'Cadets',
+    image: '/images/paths/cadets.jpg',
+    alt: 'Arkcov Academy cadets in uniform working with a microscope and a training mannequin in the science lab',
     who: 'Middle and high school students',
     text: 'Structured courses, progress tracking and certificates for students who are curious about science and medicine.',
     links: [{ label: 'Discover your superpower', href: '/superpower' }, { label: 'Inspiring Healers', href: '/inspiring-healers' }],
@@ -25,6 +29,8 @@ const PATHS = [
   {
     icon: 'stethoscope',
     title: 'Future healers',
+    image: '/images/paths/future-healers.jpg',
+    alt: 'Two Arkcov Academy alumni at college graduation, wearing stoles from the University of Pennsylvania and Spelman College with the Arkcov Academy crest',
     who: 'College, pre-med and health-science students',
     text: 'Mentorship, scholarship opportunities and the encouragement to keep going on the road into medicine.',
     links: [{ label: 'Scholars Foundation', href: '#programs' }, { label: 'Join the Academy', href: '/signup' }],
@@ -32,6 +38,8 @@ const PATHS = [
   {
     icon: 'school',
     title: 'Educators & partners',
+    image: '/images/paths/educators.jpg',
+    alt: 'A teacher and a community health worker leading Arkcov Academy cadets in a lesson about the heart',
     who: 'Schools, churches, clinics and community groups',
     text: 'Bring Arkcov stories, games and curriculum to your classroom or community.',
     links: [{ label: 'About the Academy', href: '#about' }, { label: 'Create a free account', href: '/signup' }],
@@ -96,16 +104,22 @@ export default function LandingPage() {
             </h1>
             <p className={styles.motto}>Train · Heal · Discover · Inspire</p>
             <p className={styles.heroDesc}>
-              Courses, films, games and mentorship that re-present medicine as art, for curious kids,
-              families, students and future healers. Because it&apos;s cool to be smart.
+              Arkcov Academy trains middle and high school students the way medical school trains doctors.
+              Built by physicians, it gives cadets a years-long head start on the science, clinical reasoning and
+              character that medical school, nursing school and every healthcare career demand.
             </p>
+            <ul className={styles.heroPoints}>
+              <li>Solve real patient cases, from first symptom to diagnosis</li>
+              <li>Learn the body the way doctors do, with anatomy, physiology and disease connected</li>
+              <li>Get mentored by working healers, from first lesson to college application</li>
+            </ul>
             <div className={styles.heroBtns}>
               <Link href="/signup" className="btn btn-crimson btn-lg">Join the Academy</Link>
               <Link href="#paths" className="btn btn-ghost btn-lg">Find your path</Link>
             </div>
             <ul className={styles.stats}>
-              <li><strong>All ages</strong><span>Kids to adults</span></li>
-              <li><strong>6 ways</strong><span>to learn</span></li>
+              <li><strong>Grade 6</strong><span>start years ahead</span></li>
+              <li><strong>Physician-led</strong><span>built by doctors</span></li>
               <li><strong>Free</strong><span>to start</span></li>
             </ul>
           </div>
@@ -157,7 +171,13 @@ export default function LandingPage() {
           <div className={styles.pathsGrid}>
             {PATHS.map((p) => (
               <article key={p.title} className={styles.pathCard}>
-                <div className={styles.pathIcon}><Icon name={p.icon} size={24} /></div>
+                {p.image && (
+                  <div className={styles.pathMedia}>
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={p.image} alt={p.alt} loading="lazy" />
+                  </div>
+                )}
+                <div className={`${styles.pathIcon} ${p.image ? styles.pathIconOn : ''}`}><Icon name={p.icon} size={24} /></div>
                 <h3>{p.title}</h3>
                 <p className={styles.pathWho}>{p.who}</p>
                 <p>{p.text}</p>

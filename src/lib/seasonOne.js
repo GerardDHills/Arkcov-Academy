@@ -28,6 +28,7 @@ export const OR01 = {
   honor: 'Cadet Passport',
   data: {
     code: 'OR-01',
+    discoveryRev: 2,
     minutes: { junior: 20, senior: 30 },
     objectives: {
       junior: ['Explain what Arkcov Academy is for', 'Find your way around the virtual campus', 'Name at least three healthcare professions', 'Write a personal learning goal'],
@@ -38,8 +39,10 @@ export const OR01 = {
     },
     discovery: {
       junior: P(
+        '## What Arkcov Academy is for',
+        'Arkcov Academy trains you the way medical school trains doctors, starting now. Instead of only memorizing facts, you’ll solve real patient cases, learn how the body works and what goes wrong in disease, and practice the character every healer needs. By the time you apply to college, and later to medical school, nursing school or another health program, you’ll already think like a healer.',
         '## A campus built for curious minds',
-        'Arkcov Academy is a place to explore how the human body works and how people care for one another. Every building is a different way to learn:',
+        'Every building on campus is a different way to learn:',
         '- **Main Learning Hall**: lessons, labs and the Healers Library.',
         '- **BodyWorld**: travel through the heart, brain and bloodstream, and play in the Gaming Hall.',
         '- **Conference Hall**: talks from real healers and the Cadet Showcase.',
@@ -47,8 +50,10 @@ export const OR01 = {
         '## Healthcare is a team',
         'Doctors are only one part of the team. Nurses, pharmacists, lab scientists, therapists, social workers and many others work together to help each patient. As you explore, look for the ones that interest you.'),
       senior: P(
+        '## What Arkcov Academy is for',
+        'Arkcov Academy trains Senior Cadets the way medical school trains doctors. Built by physicians, it develops the three things every health program looks for: strong science, sharp clinical reasoning and the character to care for people well. Cadets who complete the pathway arrive at college, and later at medical school, nursing school or any health profession, years ahead of where most students start.',
         '## More than a campus: a pathway',
-        'Arkcov Academy prepares future healers for the science, reasoning and character that healthcare demands. Senior Cadets move from learning facts to investigating problems.',
+        'Senior Cadets move from learning facts to investigating problems, the same shift medical students make:',
         '- **Core curriculum**: biomedical science in the Senior Cadet Classrooms, from molecules to clinical reasoning.',
         '- **Clinical Skills Lab**: patient cases where you interview, examine, interpret data and explain your reasoning.',
         '- **Research Lab**: ask a real question, analyze data and present your findings.',
@@ -322,6 +327,12 @@ export async function ensureSeasonOne() {
   await sql`UPDATE program_steps SET data = ${JSON.stringify(SUPERPOWER_CHECK)}::jsonb,
       summary = 'The seven superpowers in action.'
     WHERE title = 'Superpower Check' AND data::text LIKE '%Creativity%'`;
+
+  // Push revised Orientation "Discovery" text into OR-01 even if the lesson is approved,
+  // replacing only that section so the Dean's other edits are kept.
+  await sql`UPDATE program_steps
+      SET data = jsonb_set(jsonb_set(data, '{discovery}', ${JSON.stringify(OR01.data.discovery)}::jsonb), '{discoveryRev}', ${String(OR01.data.discoveryRev)}::jsonb)
+    WHERE code = 'OR-01' AND COALESCE((data->>'discoveryRev')::int, 1) < ${OR01.data.discoveryRev}`;
 
   for (const item of [OR01, CASE001]) {
     const [p] = await sql`SELECT id FROM programs WHERE slug = ${item.room}`;
