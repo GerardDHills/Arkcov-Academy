@@ -257,7 +257,7 @@ export function canBuild(me) {
 
 export function siteUrl() {
   if (process.env.NEXT_PUBLIC_SITE_URL) return process.env.NEXT_PUBLIC_SITE_URL;
-  if (process.env.VERCEL_ENV === 'production') return 'https://arkcov-academy.vercel.app';
+  if (process.env.VERCEL_ENV === 'production') return process.env.NEXT_PUBLIC_APP_URL || 'https://www.arkcovacademy.com';
   if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`;
   return 'http://localhost:3000';
 }
