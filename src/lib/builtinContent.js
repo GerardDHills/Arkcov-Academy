@@ -19,6 +19,24 @@ export const BUILTIN_CONTENT = [
     featured: true,
     sort_order: 0,
   },
+  {
+    id: 'short-nico-gene-group-project',
+    title: 'Nico & Gene: Group Project',
+    description:
+      'Same parents, different gene shuffle. Gene is sure he got the “handsome gene.” His brainy brother Nico explains that lots of genes shape how you look — which makes Gene’s face a group project.',
+    type: 'animated_short',
+    thumbnail_url: '/images/posters/nico-gene-group-project.jpg',
+    trailer_url: null,
+    media_url: '/videos/nico-gene-group-project.mp4',
+    access_level: 'free',
+    category: 'Nico & Gene',
+    tags: ['animated short', 'genetics', 'inheritance', 'comedy'],
+    duration_minutes: 1,
+    release_year: 2026,
+    rating: 'TV-G',
+    featured: false,
+    sort_order: 0,
+  },
 ];
 
 export function builtinContentFor({ type, featured } = {}) {
