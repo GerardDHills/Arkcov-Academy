@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { sql } from '@/lib/db';
 import { getCurrentUser } from '@/lib/auth';
+import { builtinContentFor } from '@/lib/builtinContent';
 
 export const dynamic = 'force-dynamic';
 
@@ -59,9 +60,12 @@ export async function GET(request) {
       `;
     }
 
-    return NextResponse.json({ content: query });
+    const builtin = builtinContentFor({ type, featured });
+    return NextResponse.json({ content: [...builtin, ...query] });
   } catch (error) {
     console.error('Public content fetch error:', error);
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    // Still serve the built-in library items if the database is unavailable
+    const { searchParams } = new URL(request.url);
+    return NextResponse.json({ content: builtinContentFor({ type: searchParams.get('type'), featured: searchParams.get('featured') }) });
   }
 }

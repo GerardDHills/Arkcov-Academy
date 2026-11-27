@@ -50,7 +50,7 @@ const CONTENT_TYPES = [
 const VIDEOS = [
   { src: '/videos/arkcov_welcome.mp4', poster: '/images/posters/arkcov-welcome.jpg', tag: 'Featured', title: 'Welcome to Arkcov Academy', text: 'Where young minds discover the art of medicine, and curiosity becomes a calling.' },
   { src: '/videos/arkcov_bodyworld.mp4', poster: '/images/posters/arkcov-bodyworld.jpg', tag: 'Virtual campus', title: 'BodyWorld: Your Virtual Campus', text: 'Explore real medicine from inside the human body. Study together, run labs and prepare for college.', href: '/campus' },
-  { image: '/images/posters/arkcov-academy-tv-show.jpg', soon: true, tag: 'TV series', title: 'Arkcov Academy: The TV Show', text: 'Step inside the Academy, where cadets train to become the most diverse healers the world has seen, and medicine comes alive as story and art.' },
+  { src: '/videos/arkcov-academy-ep1.mp4', poster: '/images/posters/arkcov-academy-ep1.jpg', badge: 'New episode', tag: 'TV series · Mission 001', title: 'Arkcov Academy: The TV Show', text: 'Episode 1, \u201cA Mystery in the Blood.\u201d Nazareth and the cadets solve Isaiah\u2019s case, and you answer along with them.', href: '/explore?type=tv_show', linkLabel: 'Watch in TV Shows' },
 ];
 
 const PILLARS = [
@@ -196,12 +196,13 @@ export default function LandingPage() {
                     <video src={v.src} poster={v.poster} controls playsInline preload="metadata" aria-label={`${v.title} trailer`} />
                   )}
                   {v.soon && <span className={styles.soonBadge}>Coming soon</span>}
+                  {v.badge && <span className={`${styles.soonBadge} ${styles.newBadge}`}>{v.badge}</span>}
                 </div>
                 <div className={styles.cardBody}>
                   <span className={styles.cardTag}>{v.tag}</span>
                   <h3>{v.title}</h3>
                   <p>{v.text}</p>
-                  {v.href && <a href={v.href} className={styles.cardLink}>Tour the virtual campus</a>}
+                  {v.href && <a href={v.href} className={styles.cardLink}>{v.linkLabel || 'Tour the virtual campus'}</a>}
                 </div>
               </article>
             ))}
