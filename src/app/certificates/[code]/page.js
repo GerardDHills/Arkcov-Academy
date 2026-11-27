@@ -50,7 +50,7 @@ export default async function Certificate({ params }) {
             <div><span className={s.line} /><b>Dr. Gerard D. Hills, M.D.</b><small>Founder and Dean, Arkcov Academy</small></div>
             <div><span className={s.dateText}>{date}</span><span className={s.line} /><small>Date awarded</small></div>
           </div>
-          <p className={s.verify}>Verify at arkcov-academy.vercel.app/certificates/{c.code} · Code {c.code}</p>
+          <p className={s.verify}>Verify at arkcovacademy.com/certificates/{c.code} · Code {c.code}</p>
         </div>
       </article>
     </main>
