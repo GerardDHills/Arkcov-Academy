@@ -1,3 +1,4 @@
+import { roleForPlan } from './plans';
 import Stripe from 'stripe';
 
 let stripe;
@@ -14,45 +15,21 @@ export function getStripe() {
   return stripe;
 }
 
-// Map internal roles to Stripe price IDs
-// Set these in your .env.local after creating products in Stripe Dashboard
-export const PRICE_IDS = {
-  member: process.env.STRIPE_PRICE_MEMBER || '',   // $9/mo
-  family: process.env.STRIPE_PRICE_FAMILY || '',    // $14/mo
+// Price IDs from subscriptions created before plans moved to src/lib/plans.js.
+// New checkouts build their prices from the plan catalog, so these are optional.
+export const LEGACY_PRICE_IDS = {
+  member: process.env.STRIPE_PRICE_MEMBER || '',
+  family: process.env.STRIPE_PRICE_FAMILY || '',
 };
 
-export const PLAN_DETAILS = {
-  member: {
-    name: 'Member',
-    price: 9,
-    interval: 'month',
-    features: [
-      'Full library access',
-      'Interactive games',
-      'Member store discounts',
-      'Scholarship tools',
-      'Certificates & badges',
-    ],
-  },
-  family: {
-    name: 'Family',
-    price: 14,
-    interval: 'month',
-    features: [
-      'Everything in Member',
-      'Up to 5 profiles',
-      'Parental controls',
-      'Priority registration',
-      'Family bundles',
-    ],
-  },
-};
-
-// Map a Stripe subscription status to our internal role
-export function subscriptionStatusToRole(status, priceId) {
+// Map a Stripe subscription to our internal role. The plan key is stored on the
+// subscription metadata at checkout; legacy price IDs are the fallback.
+export function subscriptionStatusToRole(status, priceId, planKey) {
   if (status === 'active' || status === 'trialing') {
-    if (priceId === PRICE_IDS.family) return 'family';
-    if (priceId === PRICE_IDS.member) return 'member';
+    const fromPlan = roleForPlan(planKey);
+    if (fromPlan) return fromPlan;
+    if (priceId && priceId === LEGACY_PRICE_IDS.family) return 'family';
+    if (priceId && priceId === LEGACY_PRICE_IDS.member) return 'member';
   }
   return 'free';
 }

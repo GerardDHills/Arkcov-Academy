@@ -15,8 +15,8 @@ const CONTENT_TYPES = [
 
 const ACCESS_LEVELS = [
   { value: 'free', label: 'Free — Everyone' },
-  { value: 'member', label: 'Member — $9/mo' },
-  { value: 'family', label: 'Family — $14/mo' },
+  { value: 'member', label: 'Cadet (and above)' },
+  { value: 'family', label: 'Family only' },
 ];
 
 const EMPTY_FORM = {

@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import { PLANS, dollars, yearlySavings } from '@/lib/plans';
 import styles from './LandingPage.module.css';
 import Icon from './Icon';
 import { ArkcovMark, ArkcovLockup, ArkcovCrest } from './BrandMark';
@@ -71,7 +72,7 @@ const PILLARS = [
 const STEPS = [
   { n: 'I', title: 'Enlist', text: 'Create a free account and choose what you want to learn first.' },
   { n: 'II', title: 'Train', text: 'Work through courses and media at your own pace. Your progress is saved on your dashboard.' },
-  { n: 'III', title: 'Earn', text: 'Members complete courses for certificates and badges, and unlock mentorship and scholarship tools.' },
+  { n: 'III', title: 'Earn', text: 'Cadets complete missions for certificates, badges and rank, and unlock mentorship and scholarship tools.' },
 ];
 
 const GEAR = [
@@ -81,9 +82,9 @@ const GEAR = [
 ];
 
 const TIERS = [
-  { name: 'Free', price: '$0', desc: 'Explore and get started', features: ['Content previews', 'Newsletter & updates', 'Scholarship hub (basic)', 'Store access'], cta: 'Sign up free', btn: 'btn-outline' },
-  { name: 'Member', price: '$9', per: '/mo', desc: 'Full access to everything', features: ['Full library access', 'Interactive games', 'Certificates & badges', 'Scholarship tools', 'Member store discounts'], cta: 'Become a member', btn: 'btn-crimson', featured: true },
-  { name: 'Family', price: '$14', per: '/mo', desc: 'For families learning together', features: ['Everything in Member', 'Up to 5 profiles', 'Parental controls', 'Priority registration', 'Family bundles'], cta: 'Start family plan', btn: 'btn-navy' },
+  { ...PLANS.free, price: '$0', note: 'Free forever', cta: 'Enlist free', href: '/signup', btn: 'btn-outline' },
+  { ...PLANS.cadet, price: dollars(PLANS.cadet.prices.month), per: '/mo', note: `or ${dollars(PLANS.cadet.prices.year)}/yr, save ${yearlySavings(PLANS.cadet)}%`, cta: 'Become a Cadet', href: '/pricing', btn: 'btn-crimson' },
+  { ...PLANS.family, price: dollars(PLANS.family.prices.month), per: '/mo', note: `or ${dollars(PLANS.family.prices.year)}/yr, save ${yearlySavings(PLANS.family)}%`, cta: 'Start the Family plan', href: '/pricing', btn: 'btn-navy' },
 ];
 
 // ---------- Page ----------
@@ -356,22 +357,28 @@ export default function LandingPage() {
           <div className={`${styles.head} ${styles.center}`}>
             <p className={styles.eyebrow}>Membership</p>
             <h2 id="join-title" className={styles.sectionTitle}>Join Arkcov Academy</h2>
-            <p className={styles.sectionSub}>Start free. Upgrade any time for the full library, games and certificates.</p>
+            <p className={styles.sectionSub}>Start free as a Recruit. Become a Cadet to unlock every patient case, the full curriculum and certificates.</p>
           </div>
           <div className={styles.tiersGrid}>
             {TIERS.map((t) => (
-              <article key={t.name} className={`${styles.tierCard} ${t.featured ? styles.featured : ''}`}>
+              <article key={t.key} className={`${styles.tierCard} ${t.featured ? styles.featured : ''}`}>
                 {t.featured && <div className={styles.tierBadge}>Most popular</div>}
                 <h3 className={styles.tierName}>{t.name}</h3>
+                <p className={styles.tierDesc}>{t.tagline}</p>
                 <div className={styles.tierPrice}>{t.price}{t.per && <span>{t.per}</span>}</div>
-                <p className={styles.tierDesc}>{t.desc}</p>
+                <p className={styles.tierNote}>{t.note}</p>
+                <p className={styles.tierUnlock}>{t.key === 'free' ? 'Includes' : 'Unlocks'}</p>
                 <ul className={styles.tierFeatures}>
-                  {t.features.map((f) => <li key={f}><Icon name="check" size={16} /> {f}</li>)}
+                  {t.unlocks.map((f) => <li key={f}><Icon name="check" size={16} /> {f}</li>)}
                 </ul>
-                <Link href="/signup" className={`btn ${t.btn} btn-full`}>{t.cta}</Link>
+                <Link href={t.href} className={`btn ${t.btn} btn-full`}>{t.cta}</Link>
               </article>
             ))}
           </div>
+          <p className={styles.foundingNote}>
+            <strong>Founding Cadet rate:</strong> our first families get everything in Cadet for {dollars(PLANS.founding.prices.year)}/yr, locked in. <Link href="/pricing">Claim it</Link>
+            {' '}&middot; Want to help a student? <Link href="/pricing#sponsor">Sponsor a Cadet</Link>
+          </p>
           <p className={styles.compare}><Link href="/pricing">Compare plans in detail</Link></p>
         </div>
       </section>

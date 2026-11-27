@@ -97,3 +97,42 @@
   .faqGrid { grid-template-columns: 1fr; }
   .container { padding: 3rem 1.5rem; }
 }
+
+/* Billing toggle */
+.toggle { display: flex; justify-content: center; gap: 0.3rem; width: fit-content; margin: -1.5rem auto 2.5rem; padding: 0.3rem; background: white; border-radius: 999px; box-shadow: var(--shadow-soft); }
+.toggle button { border: none; background: none; font-family: inherit; font-weight: 800; font-size: 0.92rem; color: var(--text-muted); padding: 0.6rem 1.3rem; border-radius: 999px; cursor: pointer; display: inline-flex; align-items: center; gap: 0.5rem; }
+.toggle .toggleOn { background: var(--navy); color: white; }
+.save { font-size: 0.7rem; font-weight: 800; letter-spacing: 0.04em; background: var(--gold, #C9A227); color: var(--navy); padding: 0.15rem 0.5rem; border-radius: 999px; }
+
+.planNote { font-size: 0.82rem; color: var(--text-muted); font-weight: 700; margin-bottom: 1.6rem; min-height: 1.2em; }
+.unlockLabel { text-align: left; font-family: var(--font-brand); font-size: 0.68rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--crimson); margin-bottom: 0.7rem; }
+.planDesc { margin-bottom: 1rem; }
+
+/* Founding Cadet banner */
+.founding { display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; background: var(--navy); color: white; border-radius: 24px; padding: 2rem 2.4rem; margin: 2.5rem 0 1rem; box-shadow: var(--shadow-hero); }
+.founding h2 { color: white; font-size: clamp(1.3rem, 2.6vw, 1.8rem); margin: 0.3rem 0 0.4rem; }
+.founding p { color: rgba(255,255,255,0.8); font-weight: 600; }
+.founding button { flex-shrink: 0; }
+.foundingTag { font-family: var(--font-brand); font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold, #C9A227); font-weight: 700; }
+
+/* Add-ons, sponsor, partners */
+.extras { margin-top: 4.5rem; }
+.extras h2, .giveGrid h2 { font-size: 1.8rem; color: var(--navy); text-align: center; margin-bottom: 0.4rem; }
+.extrasLede { text-align: center; color: var(--text-muted); font-weight: 600; margin-bottom: 2rem; }
+.extrasGrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+.extraCard, .giveCard { background: white; border-radius: 20px; padding: 1.8rem; box-shadow: var(--shadow-soft); display: flex; flex-direction: column; gap: 0.6rem; align-items: flex-start; }
+.extraCard h3, .giveCard h3 { font-size: 1.1rem; color: var(--navy); }
+.extraCard p, .giveCard p { font-size: 0.92rem; color: var(--text-muted); line-height: 1.65; flex: 1; }
+.extraStatus { font-size: 0.66rem; font-weight: 800; letter-spacing: 0.16em; text-transform: uppercase; color: var(--crimson); background: var(--crimson-glow); padding: 0.25rem 0.7rem; border-radius: 999px; }
+.extraLink { font-weight: 800; color: var(--crimson); text-decoration: underline; text-underline-offset: 3px; font-size: 0.92rem; }
+.giveGrid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 1.5rem; }
+.giveCard .currentLabel { width: 100%; }
+.sponsorRow { display: flex; align-items: center; gap: 0.7rem; font-weight: 700; color: var(--navy); margin-bottom: 0.4rem; }
+.sponsorRow select { font: inherit; padding: 0.4rem 0.6rem; border-radius: 10px; border: 1.5px solid #d9d4c7; background: white; }
+.sponsorTotal { font-family: var(--font-display); font-size: 1.4rem; font-weight: 800; }
+
+@media (max-width: 768px) {
+  .extrasGrid, .giveGrid { grid-template-columns: 1fr; }
+  .founding { flex-direction: column; align-items: flex-start; padding: 1.6rem; }
+  .toggle button { padding: 0.55rem 0.9rem; }
+}

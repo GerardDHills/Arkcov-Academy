@@ -187,11 +187,15 @@
 .tierName { font-family: var(--font-brand); font-weight: 600; font-size: 1rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--crimson); }
 .tierPrice { font-family: var(--font-display); font-size: 3.4rem; font-weight: 700; color: var(--navy); line-height: 1.1; margin: 0.4rem 0 0.2rem; }
 .tierPrice span { font-family: var(--font-body); font-size: 1rem; font-weight: 600; color: var(--text-muted); margin-left: 0.2rem; }
-.tierDesc { color: var(--text-muted); margin-bottom: 1.2rem; }
+.tierDesc { color: var(--text-muted); margin: 0.3rem 0 0.2rem; font-weight: 600; }
 .tierFeatures { list-style: none; display: grid; gap: 0.55rem; margin-bottom: 1.8rem; flex: 1; }
 .tierFeatures li { display: flex; gap: 0.5rem; align-items: center; font-size: 0.95rem; color: var(--text-body); }
 .tierFeatures svg { color: var(--gold-dark); flex-shrink: 0; }
-.compare { text-align: center; margin-top: 2rem; }
+.tierNote { font-size: 0.82rem; font-weight: 700; color: var(--text-muted); margin: 0 0 1.1rem; }
+.tierUnlock { font-family: var(--font-brand); font-size: 0.66rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--crimson); margin-bottom: 0.6rem; }
+.foundingNote { text-align: center; margin: 2rem auto 0; max-width: 760px; color: var(--text-body); line-height: 1.7; }
+.foundingNote a { font-weight: 800; color: var(--crimson); text-decoration: underline; text-underline-offset: 3px; }
+.compare { text-align: center; margin-top: 1rem; }
 .compare a { font-weight: 800; color: var(--crimson); text-decoration: underline; text-underline-offset: 3px; }
 
 /* ===== Footer ===== */
