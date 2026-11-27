@@ -104,7 +104,7 @@ export default function DashboardPage() {
         <div className={styles.upgradeBanner}>
           <div>
             <h3>Unlock Full Access</h3>
-            <p>Upgrade to Member ($9/mo) for the complete library, interactive games, and more.</p>
+            <p>Become a Cadet ($19/mo or $149/yr) to unlock every patient case, the full curriculum, games and certificates.</p>
           </div>
           <Link href="/pricing" className="btn btn-crimson">Upgrade Now</Link>
         </div>

@@ -32,6 +32,11 @@ export async function POST(request) {
     switch (type) {
       case 'checkout.session.completed': {
         const session = data.object;
+        if (session.metadata?.kind === 'sponsor') {
+          // Sponsor a Cadet gift: payment is recorded in Stripe; the team assigns the seat
+          console.log(`Sponsor a Cadet gift received: ${session.id} (${session.metadata?.seats || 1} seat(s))`);
+          break;
+        }
         if (session.metadata?.kind === 'store') {
           // Store purchase: re-read the session from Stripe, record it, send merch to Printful
           await recordStoreOrder(session.id);
@@ -44,7 +49,7 @@ export async function POST(request) {
           // Fetch subscription to get the price/plan
           const subscription = await stripe.subscriptions.retrieve(subscriptionId);
           const priceId = subscription.items.data[0]?.price?.id;
-          const newRole = subscriptionStatusToRole(subscription.status, priceId);
+          const newRole = subscriptionStatusToRole(subscription.status, priceId, subscription.metadata?.plan || session.metadata?.plan);
 
           await sql`
             UPDATE users SET
@@ -63,7 +68,7 @@ export async function POST(request) {
         const subscription = data.object;
         const userId = subscription.metadata?.userId;
         const priceId = subscription.items.data[0]?.price?.id;
-        const newRole = subscriptionStatusToRole(subscription.status, priceId);
+        const newRole = subscriptionStatusToRole(subscription.status, priceId, subscription.metadata?.plan);
 
         if (userId) {
           await sql`

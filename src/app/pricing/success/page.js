@@ -11,7 +11,7 @@ import styles from './success.module.css';
 function SuccessContent() {
   const { fetchUser } = useAuth();
   const searchParams = useSearchParams();
-  const sessionId = searchParams.get('session_id');
+  const sponsor = searchParams.get('sponsor') === '1';
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -26,15 +26,20 @@ function SuccessContent() {
       <div className={styles.page}>
         <div className={styles.card}>
           <div className={styles.icon}><ArkcovCrest size={110} title="Arkcov Academy crest" /></div>
-          <h1>Welcome to Arkcov Academy!</h1>
-          <p>Your membership is now active. You have full access to the library, interactive games, and member perks.</p>
-          <div className={styles.buttons}>
+          <h1>{sponsor ? 'Thank you for sponsoring a cadet!' : 'Welcome to Arkcov Academy, Cadet!'}</h1>
+          <p>
+            {sponsor
+              ? 'Your gift pays for a full Cadet year for a student on scholarship. Our team will place your seat with a cadet and email your receipt from Stripe.'
+              : 'Your membership is active. Every case, the full Season One curriculum, films, games and certificates are now open to you.'}
+          </p>
+          {!sponsor && <div className={styles.buttons}>
             <Link href="/dashboard" className="btn btn-crimson btn-lg">Go to Dashboard</Link>
             <Link href="/explore" className="btn btn-outline btn-lg">Explore Content</Link>
-          </div>
-          <p className={styles.note}>
+          </div>}
+          {sponsor && <div className={styles.buttons}><Link href="/" className="btn btn-crimson btn-lg">Back to Arkcov Academy</Link></div>}
+          {!sponsor && <p className={styles.note}>
             Your account may take a moment to update. If you don't see full access yet, try refreshing the page.
-          </p>
+          </p>}
         </div>
       </div>
     </>
